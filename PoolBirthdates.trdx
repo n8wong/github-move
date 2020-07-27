@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Report DataSourceName="Main" Width="6.5in" Name="PoolBirthdates" Zoom="1.5" xmlns="http://schemas.telerik.com/reporting/2020/2.0">
+  <DataSources>
+    <SqlDataSource QueryDesignerState="null" ParameterValues="null" ConnectionString="JmsDb" SelectCommand="select pc.CandidateId, p.PoolNumber, p.SummonsDateTime, c.FirstName, c.MiddleName, c.LastName, pc.OrderNumber, cadd.City, c.DateOfBirth from PoolCandidates pc &#xD;&#xA;inner join pools p on pc.PoolId = p.Id&#xD;&#xA;inner join candidates c on pc.CandidateId = c.id&#xD;&#xA;inner join CandidateAddresses cadd on pc.CandidateId = cadd.CandidateId&#xD;&#xA;where p.id = @PoolId" Name="Main">
+      <Parameters>
+        <SqlDataSourceParameter DbType="Int32" Name="@PoolId">
+          <Value>
+            <String>= Parameters.PoolId.Value</String>
+          </Value>
+        </SqlDataSourceParameter>
+      </Parameters>
+    </SqlDataSource>
+    <SqlDataSource QueryDesignerState="null" ParameterValues="null" ConnectionString="JmsDb" SelectCommand="select distinct(p.LocationId), l.name from pools p&#xD;&#xA;inner join locations l on l.id = p.LocationId" Name="Location" />
+    <SqlDataSource QueryDesignerState="null" ParameterValues="null" ConnectionString="JmsDb" SelectCommand="select p.Id, p.PoolNumber from pools p&#xD;&#xA;where p.LocationId = @LocationId&#xD;&#xA;order by p.SummonsDateTime desc&#xD;&#xA;" Name="Pool">
+      <Parameters>
+        <SqlDataSourceParameter DbType="Int32" Name="@LocationId">
+          <Value>
+            <String>= Parameters.LocationId.Value</String>
+          </Value>
+        </SqlDataSourceParameter>
+      </Parameters>
+    </SqlDataSource>
+  </DataSources>
+  <Items>
+    <PageHeaderSection Height="1.2in" Name="pageHeaderSection1">
+      <Items>
+        <TextBox Width="2.2in" Height="0.2in" Left="0in" Top="0.56in" Value="Poold ID: {Fields.PoolNumber}" Name="textBox6">
+          <Style>
+            <Font Bold="True" />
+          </Style>
+        </TextBox>
+        <TextBox Width="2.7in" Height="0.3in" Left="1.96in" Top="0.1in" Value="List of Pool Candidate Birthdates " Name="textBox5">
+          <Style TextAlign="Center" VerticalAlign="Middle">
+            <Font Bold="True" Underline="True" />
+          </Style>
+        </TextBox>
+        <TextBox Width="2.426in" Height="0.2in" Left="0in" Top="0.9in" Value="Full Name" Name="textBox4">
+          <Style>
+            <Font Bold="True" />
+          </Style>
+        </TextBox>
+        <TextBox Width="1.2in" Height="0.2in" Left="2.426in" Top="0.9in" Value="Pool Order No." Name="textBox3">
+          <Style>
+            <Font Bold="True" />
+          </Style>
+        </TextBox>
+        <TextBox Width="1.2in" Height="0.2in" Left="3.626in" Top="0.9in" Value="City" Name="textBox2">
+          <Style>
+            <Font Bold="True" />
+          </Style>
+        </TextBox>
+        <TextBox Width="1.674in" Height="0.2in" Left="4.826in" Top="0.9in" Value="Birthdate" Name="textBox1">
+          <Style>
+            <Font Bold="True" />
+          </Style>
+        </TextBox>
+        <Shape Width="6.5in" Height="0.052in" Left="0in" Top="1.1in" Name="shape1">
+          <ShapeType>
+            <LineShape Direction="EW" />
+          </ShapeType>
+        </Shape>
+      </Items>
+    </PageHeaderSection>
+    <DetailSection Height="0.2in" Name="detailSection1">
+      <Items>
+        <TextBox Width="2.426in" Height="0.2in" Left="0in" Top="0in" Value="= Fields.LastName + &quot;, &quot; + Fields.FirstName + &quot; &quot; + Fields.MiddleName" Name="textBox7" />
+        <TextBox Width="1.2in" Height="0.2in" Left="2.426in" Top="0in" Value="= Fields.OrderNumber" Format="{0:000000}" Name="textBox9">
+          <Style TextAlign="Center" />
+        </TextBox>
+        <TextBox Width="1.2in" Height="0.2in" Left="3.626in" Top="0in" Value="= Fields.City" Name="textBox10" />
+        <TextBox Width="1.674in" Height="0.2in" Left="4.826in" Top="0in" Value="= Fields.DateOfBirth" Format="{0:D}" Name="textBox11" />
+      </Items>
+    </DetailSection>
+    <PageFooterSection Height="0.4in" Name="pageFooterSection1">
+      <Items>
+        <TextBox Width="6.1in" Height="0.2in" Left="0in" Top="0.2in" Value="= &quot;Powered by Courthouse Technologies on &quot; + Format('{0:dddd, MMMM d, yyyy}',Today())" Name="textBox8" />
+        <Shape Width="6.5in" Height="0.052in" Left="0in" Top="0.1in" Name="shape2">
+          <ShapeType>
+            <LineShape Direction="EW" />
+          </ShapeType>
+        </Shape>
+      </Items>
+    </PageFooterSection>
+  </Items>
+  <PageSettings PaperKind="Letter" Landscape="False" ColumnCount="1" ColumnSpacing="0in">
+    <Margins>
+      <MarginsU Left="1in" Right="1in" Top="1in" Bottom="1in" />
+    </Margins>
+  </PageSettings>
+  <StyleSheet>
+    <StyleRule>
+      <Style>
+        <Padding Left="2pt" Right="2pt" />
+      </Style>
+      <Selectors>
+        <TypeSelector Type="TextItemBase" />
+        <TypeSelector Type="HtmlTextBox" />
+      </Selectors>
+    </StyleRule>
+  </StyleSheet>
+  <ReportParameters>
+    <ReportParameter Name="LocationId" Type="Integer" Text="Location" Visible="True">
+      <AvailableValues DataSourceName="Location" DisplayMember="= Fields.name" ValueMember="= Fields.LocationId">
+        <Sortings>
+          <Sorting Expression="= Fields.LocationId" Direction="Asc" />
+        </Sortings>
+      </AvailableValues>
+    </ReportParameter>
+    <ReportParameter Name="PoolId" Type="Integer" Text="Pool" Visible="True">
+      <AvailableValues DataSourceName="Pool" DisplayMember="= Fields.PoolNumber" ValueMember="= Fields.Id">
+        <Sortings>
+          <Sorting Direction="Asc" />
+        </Sortings>
+      </AvailableValues>
+    </ReportParameter>
+  </ReportParameters>
+</Report>

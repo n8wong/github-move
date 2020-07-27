@@ -10,8 +10,8 @@
         </SqlDataSourceParameter>
       </Parameters>
     </SqlDataSource>
-    <SqlDataSource QueryDesignerState="null" ParameterValues="null" ConnectionString="JmsDb" SelectCommand="select distinct(l.name), l.id from pools p &#xD;&#xA;inner join locations l on p.LocationId = l.id&#xD;&#xA;" Name="Location" />
-    <SqlDataSource QueryDesignerState="null" ParameterValues="null" ConnectionString="JmsDb" SelectCommand="select p.PoolNumber, p.id 'PoolId', l.id 'LocationId', l.name 'LocationName' from pools p &#xD;&#xA;inner join locations l on p.LocationId = l.id&#xD;&#xA;where l.id = @LocationId&#xD;&#xA;order by p.SummonsDateTime desc" Name="Pool">
+    <SqlDataSource QueryDesignerState="null" ParameterValues="null" ConnectionString="JmsDb" SelectCommand="select distinct(l.name), l.id from PoolCandidates pc&#xD;&#xA;inner join candidates c on pc.CandidateId = c.id&#xD;&#xA;inner join CandidateAddresses ca on pc.CandidateId = ca.CandidateId&#xD;&#xA;inner join pools p on p.id = pc.PoolId&#xD;&#xA;inner join locations l on p.LocationId = l.id&#xD;&#xA;where pc.Status in ('1','2')" Name="Location" />
+    <SqlDataSource QueryDesignerState="null" ParameterValues="null" ConnectionString="JmsDb" SelectCommand="select distinct(p.PoolNumber), p.id, p.SummonsDateTime from PoolCandidates pc&#xD;&#xA;inner join candidates c on pc.CandidateId = c.id&#xD;&#xA;inner join CandidateAddresses ca on pc.CandidateId = ca.CandidateId&#xD;&#xA;inner join pools p on p.id = pc.PoolId&#xD;&#xA;inner join locations l on p.LocationId = l.id&#xD;&#xA;where pc.Status in ('1','2')&#xD;&#xA;and l.id = @LocationId&#xD;&#xA;order by p.SummonsDateTime desc" Name="Pool">
       <Parameters>
         <SqlDataSourceParameter DbType="Int32" Name="@LocationId">
           <Value>
@@ -60,6 +60,7 @@
             <LineShape Direction="EW" />
           </ShapeType>
         </Shape>
+        <TextBox Width="1.2in" Height="0.2in" Left="3in" Top="0.5in" Value="test" Name="textBox9" />
       </Items>
     </PageHeaderSection>
     <DetailSection Height="0.3in" Name="detailSection1">
@@ -114,7 +115,11 @@
       <AvailableValues DataSourceName="Location" DisplayMember="= Fields.name" ValueMember="= Fields.id" />
     </ReportParameter>
     <ReportParameter Name="PoolId" Type="Integer" Text="Pool" Visible="True">
-      <AvailableValues DataSourceName="Pool" DisplayMember="= Fields.PoolNumber" ValueMember="= Fields.PoolId" />
+      <AvailableValues DataSourceName="Pool" DisplayMember="= Fields.PoolNumber" ValueMember="= Fields.id">
+        <Sortings>
+          <Sorting Expression="= Fields.SummonsDateTime" Direction="Desc" />
+        </Sortings>
+      </AvailableValues>
     </ReportParameter>
   </ReportParameters>
 </Report>
