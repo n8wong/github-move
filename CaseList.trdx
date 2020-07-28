@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Report DataSourceName="Main" Width="7.4in" Name="CaseList" xmlns="http://schemas.telerik.com/reporting/2020/2.0">
+  <DataSources>
+    <SqlDataSource QueryDesignerState="null" ParameterValues="null" ConnectionString="JmsDb" SelectCommand="select ca.id 'CaseId', &#xD;&#xA;&#x9;ca.name 'CaseName', &#xD;&#xA;&#x9;ca.RoomId 'RoomId', &#xD;&#xA;&#x9;r.ShortName 'RoomShortName', &#xD;&#xA;&#x9;r.Name 'RoomName',&#xD;&#xA;&#x9;CaseTypes.Name 'CaseType', &#xD;&#xA;&#x9;CaseTypes.ShortName 'CaseTypeShortName', &#xD;&#xA;&#x9;ca.StartDateTime 'CaseStartDate', &#xD;&#xA;&#x9;VoirDireEndDateTime 'VoirDireEndDate', &#xD;&#xA;&#x9;ca.EndDate 'CaseEndDate',&#xD;&#xA;&#x9;ch.Name 'Charge', &#xD;&#xA;&#x9;d.Name 'Disposition', &#xD;&#xA;&#x9;can.Name 'CancelReason', &#xD;&#xA;&#x9;j.Name 'JudgeName',&#xD;&#xA;&#x9;l.Name 'LocationName'&#xD;&#xA;from cases ca&#xD;&#xA;&#x9;left join rooms r on ca.RoomId = r.Id and r.LocationId = ca.LocationId&#xD;&#xA;&#x9;left join CaseTypes on ca.CaseTypeId = CaseTypes.Id &#xD;&#xA;&#x9;left join charges ch on ca.ChargeId = ch.id&#xD;&#xA;&#x9;left join Dispositions d on ca.DispositionId = d.id &#xD;&#xA;&#x9;left join CancelReasons can on ca.CancelReasonId = can.Id&#xD;&#xA;&#x9;left join Judges j on ca.JudgeId = j.Id&#xD;&#xA;&#x9;left join Locations l on ca.LocationId = l.id&#xD;&#xA;where l.id = @LocationId" Name="Main">
+      <Parameters>
+        <SqlDataSourceParameter DbType="Int32" Name="@LocationId">
+          <Value>
+            <String>= Parameters.LocationId.Value</String>
+          </Value>
+        </SqlDataSourceParameter>
+      </Parameters>
+    </SqlDataSource>
+    <SqlDataSource QueryDesignerState="null" ParameterValues="null" ConnectionString="JmsDb" SelectCommand="select distinct(l.id), l.name from Cases ca&#xD;&#xA;inner join locations l on l.id = ca.LocationId" Name="Location" />
+  </DataSources>
+  <Items>
+    <PageHeaderSection Height="0.7in" Name="pageHeaderSection1">
+      <Style>
+        <BorderStyle Top="None" Bottom="None" Left="None" Right="None" />
+        <BorderColor Top="Black" Bottom="Black" Left="Black" Right="Black" />
+        <BorderWidth Top="1pt" Bottom="1pt" Left="1pt" Right="1pt" />
+      </Style>
+      <Items>
+        <TextBox Width="1.9in" Height="0.3in" Left="3.1in" Top="0.2in" Value="Case List" Name="textBox13">
+          <Style TextAlign="Center">
+            <Font Size="14pt" Bold="True" Underline="True" />
+          </Style>
+        </TextBox>
+        <TextBox Width="0.8in" Height="0.2in" Left="0in" Top="0.1in" Value="Case List:" Name="textBox14">
+          <Style TextAlign="Right">
+            <Font Bold="True" />
+          </Style>
+        </TextBox>
+        <TextBox Width="0.8in" Height="0.2in" Left="0in" Top="0.4in" Value="Date:" Name="textBox15">
+          <Style TextAlign="Right">
+            <Font Bold="True" />
+          </Style>
+        </TextBox>
+        <TextBox Width="2.3in" Height="0.2in" Left="0.8in" Top="0.4in" Value="= Format('{0: dddd, MMMM d, yyyy}',Today() )" Name="textBox17" />
+        <TextBox Width="2.3in" Height="0.2in" Left="0.8in" Top="0.1in" Value="= Fields.LocationName" Name="textBox18" />
+      </Items>
+    </PageHeaderSection>
+    <DetailSection Height="0.2in" Name="detailSection1">
+      <Items>
+        <TextBox Width="1.2in" Height="0.2in" Left="0in" Top="0in" Value="= Fields.CaseName" Name="textBox1" />
+        <TextBox Width="0.5in" Height="0.2in" Left="1.7in" Top="0in" Value="= Fields.RoomShortName" Name="textBox2" />
+        <TextBox Width="0.6in" Height="0.2in" Left="2.2in" Top="0in" Value="= Fields.CaseTypeShortName" Name="textBox3" />
+        <TextBox Width="1.2in" Height="0.2in" Left="3.2in" Top="0in" Value="= Format('{0:MM/dd/yy}',Fields.CaseStartDate)" Name="textBox4" />
+        <TextBox Width="1.3in" Height="0.2in" Left="4.7in" Top="0in" Value="= Format('{0:MM/dd/yy}',Fields.VoirDireEndDate)" Name="textBox5" />
+        <TextBox Width="1.2in" Height="0.2in" Left="6.2in" Top="0in" Value="= Format('{0:MM/dd/yy}',Fields.CaseEndDate)" Name="textBox6" />
+      </Items>
+    </DetailSection>
+    <PageFooterSection Height="0.3in" Name="pageFooterSection1" />
+  </Items>
+  <PageSettings PaperKind="Letter" Landscape="False" ColumnCount="1" ColumnSpacing="0in">
+    <Margins>
+      <MarginsU Left="1in" Right="1in" Top="1in" Bottom="1in" />
+    </Margins>
+  </PageSettings>
+  <StyleSheet>
+    <StyleRule>
+      <Style>
+        <Padding Left="2pt" Right="2pt" />
+      </Style>
+      <Selectors>
+        <TypeSelector Type="TextItemBase" />
+        <TypeSelector Type="HtmlTextBox" />
+      </Selectors>
+    </StyleRule>
+  </StyleSheet>
+  <Groups>
+    <Group Name="group">
+      <GroupHeader>
+        <GroupHeaderSection Height="0.752in" Name="groupHeaderSection">
+          <Items>
+            <TextBox Width="1.2in" Height="0.2in" Left="3.2in" Top="0.5in" Value="Start Date" Name="textBox9">
+              <Style>
+                <Font Bold="True" />
+              </Style>
+            </TextBox>
+            <TextBox Width="0.5in" Height="0.2in" Left="1.7in" Top="0.5in" Value="Room" Name="textBox8">
+              <Style>
+                <Font Bold="True" />
+              </Style>
+            </TextBox>
+            <TextBox Width="1.2in" Height="0.2in" Left="0in" Top="0.5in" Value="Case Name" Name="textBox7">
+              <Style>
+                <Font Bold="True" />
+              </Style>
+            </TextBox>
+            <TextBox Width="1.3in" Height="0.2in" Left="4.7in" Top="0.5in" Value="Voir Dire End Date" Name="textBox10">
+              <Style>
+                <Font Bold="True" />
+              </Style>
+            </TextBox>
+            <TextBox Width="1.2in" Height="0.2in" Left="6.2in" Top="0.5in" Value="Case End Date" Name="textBox11">
+              <Style>
+                <Font Bold="True" />
+              </Style>
+            </TextBox>
+            <TextBox Width="0.8in" Height="0.2in" Left="2.2in" Top="0.5in" Value="Case Type" Name="textBox12">
+              <Style>
+                <Font Bold="True" />
+              </Style>
+            </TextBox>
+            <TextBox Width="3in" Height="0.3in" Left="0in" Top="0.1in" Value="= iif( Len(Fields.RoomName)=0,&quot;No Room Assigned&quot;, Fields.RoomName)&#xD;&#xA;&#xD;&#xA;" Name="textBox16">
+              <Style>
+                <Font Size="14pt" Bold="True" Underline="True" />
+              </Style>
+            </TextBox>
+            <Shape Width="7.4in" Height="0.052in" Left="0in" Top="0.7in" Name="shape1">
+              <ShapeType>
+                <LineShape Direction="EW" />
+              </ShapeType>
+            </Shape>
+          </Items>
+        </GroupHeaderSection>
+      </GroupHeader>
+      <GroupFooter>
+        <GroupFooterSection Height="0.052in" Name="groupFooterSection" />
+      </GroupFooter>
+      <Groupings>
+        <Grouping Expression="= Fields.RoomId" />
+      </Groupings>
+      <Sortings>
+        <Sorting Expression="= Fields.RoomName" Direction="Asc" />
+      </Sortings>
+    </Group>
+  </Groups>
+  <ReportParameters>
+    <ReportParameter Name="LocationId" Type="Integer" Text="Location" Visible="True">
+      <AvailableValues DataSourceName="Location" DisplayMember="= Fields.name" ValueMember="= Fields.id">
+        <Sortings>
+          <Sorting Expression="= Fields.id" Direction="Asc" />
+        </Sortings>
+      </AvailableValues>
+    </ReportParameter>
+  </ReportParameters>
+</Report>
