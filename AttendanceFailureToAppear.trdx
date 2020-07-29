@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Report DataSourceName="Main" Width="7.3in" Name="r_fta_report" Zoom="1.5" xmlns="http://schemas.telerik.com/reporting/2020/2.0">
+  <DataSources>
+    <SqlDataSource QueryDesignerState="null" ParameterValues="null" ConnectionString="JmsDb" SelectCommand="select c.id as 'CandidateId', p.PoolNumber, c.FirstName, c.LastName, ca.Address, ca.City, ca.state, ca.Zip,&#xD;&#xA;l.name as 'LocationName', l.Building,&#xD;&#xA;(select con.ContactValue from CandidateContacts con where con.ContactType=1 and con.CandidateId = c.id) as 'HomePhone' from AttendanceSchedules a&#xD;&#xA;left join PoolCandidates pc on pc.id = a.PoolCandidateId&#xD;&#xA;left join candidates c on pc.CandidateId = c.Id&#xD;&#xA;left join pools p on a.PoolId = p.id&#xD;&#xA;left join CandidateAddresses ca on c.id = ca.CandidateId&#xD;&#xA;left join Locations l on p.LocationId = l.Id&#xD;&#xA;where Convert(date,a.AttendDateTime) &lt; @FtaDate&#xD;&#xA;and  a.TimeIn IS NULL&#xD;&#xA;and l.id = @LocationId" Name="Main">
+      <Parameters>
+        <SqlDataSourceParameter DbType="DateTime" Name="@ftaDate">
+          <Value>
+            <String>= Parameters.ftaDate.Value</String>
+          </Value>
+        </SqlDataSourceParameter>
+        <SqlDataSourceParameter DbType="Int32" Name="@LocationId">
+          <Value>
+            <String>= Parameters.LocationId.Value</String>
+          </Value>
+        </SqlDataSourceParameter>
+      </Parameters>
+    </SqlDataSource>
+    <SqlDataSource QueryDesignerState="null" ParameterValues="null" ConnectionString="JmsDb" SelectCommand="select distinct(l.id),l.name as 'LocationName' from AttendanceSchedules a&#xD;&#xA;left join PoolCandidates pc on pc.id = a.PoolCandidateId&#xD;&#xA;left join candidates c on pc.CandidateId = c.Id&#xD;&#xA;left join pools p on a.PoolId = p.id&#xD;&#xA;left join CandidateAddresses ca on c.id = ca.CandidateId&#xD;&#xA;left join Locations l on p.LocationId = l.Id&#xD;&#xA;left join CandidateContacts cc on c.id = cc.CandidateId&#xD;&#xA;where a.TimeIn IS NULL" Name="Location" />
+  </DataSources>
+  <Items>
+    <PageHeaderSection Height="1.6in" Name="pageHeaderSection1">
+      <Items>
+        <TextBox Width="2.3in" Height="0.2in" Left="1.2in" Top="0.5in" Value="= Fields.LocationName" Name="textBox5" />
+        <TextBox Width="3.66in" Height="0.3in" Left="1.94in" Top="0.1in" Value="= &quot;FTA Report for: &quot; + Format('{0:ddd, MMM d, yyyy}', Parameters.FtaDate.Value)" Name="textBox12">
+          <Style TextAlign="Center">
+            <Font Size="16pt" Bold="True" />
+          </Style>
+        </TextBox>
+        <TextBox Width="1.2in" Height="0.2in" Left="0in" Top="0.7in" Value="Date:" Name="textBox13">
+          <Style TextAlign="Right">
+            <Font Bold="True" />
+          </Style>
+        </TextBox>
+        <TextBox Width="1.2in" Height="0.2in" Left="0in" Top="0.5in" Value="Court:" Name="textBox14">
+          <Style TextAlign="Right">
+            <Font Bold="True" />
+          </Style>
+        </TextBox>
+        <TextBox Width="2.3in" Height="0.2in" Left="1.2in" Top="0.7in" Value="= Today()" Name="textBox15" />
+        <TextBox Width="0.9in" Height="0.2in" Left="0in" Top="1.3in" Value="Candidate Id" Name="textBox10">
+          <Style>
+            <Font Size="9pt" />
+          </Style>
+        </TextBox>
+        <TextBox Width="1.2in" Height="0.2in" Left="6.09in" Top="1.3in" Value="Phone" Name="textBox6">
+          <Style>
+            <Font Size="9pt" />
+          </Style>
+        </TextBox>
+        <TextBox Width="1.2in" Height="0.2in" Left="1.9in" Top="1.3in" Value="Name" Name="textBox7">
+          <Style>
+            <Font Size="9pt" />
+          </Style>
+        </TextBox>
+        <TextBox Width="1.2in" Height="0.2in" Left="3.49in" Top="1.3in" Value="Address" Name="textBox8">
+          <Style>
+            <Font Size="9pt" />
+          </Style>
+        </TextBox>
+        <TextBox Width="0.96in" Height="0.2in" Left="0.9in" Top="1.3in" Value="Pool Id" Name="textBox9">
+          <Style>
+            <Font Size="9pt" />
+          </Style>
+        </TextBox>
+        <Shape Width="7.3in" Height="0.052in" Left="0in" Top="1.5in" Name="shape1">
+          <Style>
+            <Font Size="9pt" />
+          </Style>
+          <ShapeType>
+            <LineShape Direction="EW" />
+          </ShapeType>
+        </Shape>
+      </Items>
+    </PageHeaderSection>
+    <DetailSection Height="0.248in" Name="detailSection1">
+      <Items>
+        <TextBox Width="0.9in" Height="0.2in" Left="0in" Top="0in" Value="= Fields.CandidateId" Format="{0:0000000000}" Name="textBox1">
+          <Style>
+            <Font Size="9pt" />
+          </Style>
+        </TextBox>
+        <TextBox Width="0.96in" Height="0.2in" Left="0.9in" Top="0in" Value="= Fields.PoolNumber" Name="textBox2">
+          <Style>
+            <Font Size="9pt" />
+          </Style>
+        </TextBox>
+        <TextBox Width="1.6in" Height="0.2in" Left="1.9in" Top="0in" Value="= Fields.FirstName + &quot; &quot; + Fields.LastName" Name="textBox3">
+          <Style>
+            <Font Size="9pt" />
+          </Style>
+        </TextBox>
+        <TextBox Width="2.5in" Height="0.2in" Left="3.5in" Top="0in" Value="= Fields.Address + &quot; &quot; + Fields.City + &quot; &quot; + Fields.state + &quot; &quot; + Fields.Zip" Name="textBox4">
+          <Style>
+            <Font Size="9pt" />
+          </Style>
+        </TextBox>
+        <TextBox Width="1.2in" Height="0.2in" Left="6.1in" Top="0in" Value="= IIF(len(Fields.HomePhone)&gt;0,&quot;(&quot; + Substr(Fields.HomePhone,0,3) +&quot;) &quot; +&#xD;&#xA;Substr(Fields.HomePhone,3,3) + &quot;-&quot; +&#xD;&#xA;Substr(Fields.HomePhone,6,4),&quot;&quot;)&#xD;&#xA;&#xD;&#xA;" Name="textBox16">
+          <Style>
+            <Font Size="9pt" />
+          </Style>
+        </TextBox>
+      </Items>
+    </DetailSection>
+    <PageFooterSection Height="1in" Name="pageFooterSection1">
+      <Items>
+        <Shape Width="7.3in" Height="0.1in" Left="0in" Top="0in" Name="shape2">
+          <Style>
+            <Font Size="9pt" />
+          </Style>
+          <ShapeType>
+            <LineShape Direction="EW" />
+          </ShapeType>
+        </Shape>
+        <TextBox Width="3.2in" Height="0.2in" Left="0in" Top="0.1in" Value="= &quot;Powered By Courthouse Technologies on &quot; + Format('{0:ddd, MMM d, yyyy}',Today())" Name="textBox11">
+          <Style>
+            <Font Size="9pt" />
+          </Style>
+        </TextBox>
+      </Items>
+    </PageFooterSection>
+    <ReportHeaderSection Height="0.052in" Name="reportHeaderSection1" />
+  </Items>
+  <PageSettings PaperKind="Letter" Landscape="False" ColumnCount="1" ColumnSpacing="0in" ContinuousPaper="False">
+    <Margins>
+      <MarginsU Left="0.5in" Right="0.5in" Top="0.5in" Bottom="0.5in" />
+    </Margins>
+  </PageSettings>
+  <StyleSheet>
+    <StyleRule>
+      <Style>
+        <Padding Left="2pt" Right="2pt" />
+      </Style>
+      <Selectors>
+        <TypeSelector Type="TextItemBase" />
+        <TypeSelector Type="HtmlTextBox" />
+      </Selectors>
+    </StyleRule>
+  </StyleSheet>
+  <ReportParameters>
+    <ReportParameter Name="LocationId" Type="Integer" Text="Location" Visible="True">
+      <AvailableValues DataSourceName="Location" DisplayMember="= Fields.LocationName" ValueMember="= Fields.id">
+        <Sortings>
+          <Sorting Expression="= Fields.id" Direction="Asc" />
+        </Sortings>
+      </AvailableValues>
+    </ReportParameter>
+    <ReportParameter Name="FtaDate" Type="DateTime" Text="FTA Date" Visible="True">
+      <AvailableValues DisplayMember="= Fields.AttendDateTime" ValueMember="= Fields.AttendDateTime" />
+    </ReportParameter>
+  </ReportParameters>
+</Report>

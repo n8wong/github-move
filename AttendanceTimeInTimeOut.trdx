@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Report DataSourceName="Main" Width="7.5in" Name="AttendanceTimeInTimeOut" xmlns="http://schemas.telerik.com/reporting/2020/2.0">
+  <DataSources>
+    <SqlDataSource QueryDesignerState="null" ParameterValues="null" ConnectionString="JmsDb" SelectCommand="select c.id 'CandidateId', c.FirstName, c.LastName, p.PoolNumber, pc.Status,&#xD;&#xA;CASE&#xD;&#xA;&#x9;WHEN pc.Status=0 THEN 'Selected'&#xD;&#xA;    WHEN pc.Status=1 THEN 'Summoned'&#xD;&#xA;&#x9;WHEN pc.Status=2 THEN 'Confirmed'&#xD;&#xA;&#x9;WHEN pc.Status=3 THEN 'Excused'&#xD;&#xA;&#x9;WHEN pc.Status=4 THEN 'Disqualified'&#xD;&#xA;&#x9;WHEN pc.Status=5 THEN 'Deferred'&#xD;&#xA;&#x9;WHEN pc.Status=6 THEN 'Postponed'&#xD;&#xA;&#x9;WHEN pc.Status=7 THEN 'Panel'&#xD;&#xA;&#x9;WHEN pc.Status=8 THEN 'Juror'&#xD;&#xA;&#x9;WHEN pc.Status=9 THEN 'Undeliverable'&#xD;&#xA;&#x9;WHEN pc.Status=10 THEN 'Selected for Qualification'&#xD;&#xA;&#x9;WHEN pc.Status=11 THEN 'Questionnaire Sent'&#xD;&#xA;&#x9;WHEN pc.Status=12 THEN 'Questionnaire Pending Review'&#xD;&#xA;&#x9;WHEN pc.Status=13 THEN 'Qualified'&#xD;&#xA;&#x9;WHEN pc.Status=14 THEN 'Excused (Wheel)'&#xD;&#xA;&#x9;WHEN pc.Status=15 THEN 'Disqualified (Wheel)'&#xD;&#xA;&#x9;ELSE 'INVALID STATUS'&#xD;&#xA;END as 'CandidateStatus',&#xD;&#xA;pc.GroupNumber, pc.OrderNumber, l.Name,&#xD;&#xA;asch.AttendDateTime, asch.TimeIn, asch.TimeOut, ca.name 'CaseName' from AttendanceSchedules asch&#xD;&#xA;left join PoolCandidates pc on asch.PoolCandidateId = pc.Id&#xD;&#xA;left join pools p on pc.PoolId = p.id&#xD;&#xA;left join candidates c on pc.CandidateId = c.id&#xD;&#xA;left join cases ca on asch.CaseId = ca.id&#xD;&#xA;inner join locations l on asch.LocationId = l.id&#xD;&#xA;where asch.TimeIn is not null&#xD;&#xA;and asch.AttendDateTime between @FromDate and @ToDate&#xD;&#xA;and l.id = @LocationId" Name="Main">
+      <Parameters>
+        <SqlDataSourceParameter DbType="DateTime" Name="@FromDate">
+          <Value>
+            <String>= Parameters.FromDate.Value</String>
+          </Value>
+        </SqlDataSourceParameter>
+        <SqlDataSourceParameter DbType="DateTime" Name="@ToDate">
+          <Value>
+            <String>= Parameters.ToDate.Value</String>
+          </Value>
+        </SqlDataSourceParameter>
+        <SqlDataSourceParameter DbType="Int32" Name="@LocationId">
+          <Value>
+            <String>= Parameters.LocationId.Value</String>
+          </Value>
+        </SqlDataSourceParameter>
+      </Parameters>
+    </SqlDataSource>
+    <SqlDataSource QueryDesignerState="null" ParameterValues="null" ConnectionString="JmsDb" SelectCommand="select distinct(l.id), l.name 'LocationName' from AttendanceSchedules asch&#xD;&#xA;left join PoolCandidates pc on asch.PoolCandidateId = pc.Id&#xD;&#xA;left join pools p on pc.PoolId = p.id&#xD;&#xA;left join candidates c on pc.CandidateId = c.id&#xD;&#xA;left join cases ca on asch.CaseId = ca.id&#xD;&#xA;inner join locations l on asch.LocationId = l.id" Name="Location" />
+  </DataSources>
+  <Items>
+    <PageHeaderSection Height="1.5in" Name="pageHeaderSection1">
+      <Items>
+        <TextBox Width="1.2in" Height="0.2in" Left="2.3in" Top="1.3in" Value="Time Out" Name="textBox1">
+          <Style TextAlign="Center">
+            <Font Bold="True" />
+            <BorderStyle Bottom="Solid" />
+          </Style>
+        </TextBox>
+        <TextBox Width="1.1in" Height="0.2in" Left="1.2in" Top="1.3in" Value="Time In" Name="textBox2">
+          <Style TextAlign="Center">
+            <Font Bold="True" />
+            <BorderStyle Bottom="Solid" />
+          </Style>
+        </TextBox>
+        <TextBox Width="1.4in" Height="0.2in" Left="3.7in" Top="1.3in" Value="Status" Name="textBox3">
+          <Style TextAlign="Center">
+            <Font Bold="True" />
+            <BorderStyle Bottom="Solid" />
+          </Style>
+        </TextBox>
+        <TextBox Width="1.1in" Height="0.2in" Left="5.1in" Top="1.3in" Value="Pool" Name="textBox4">
+          <Style TextAlign="Center">
+            <Font Bold="True" />
+            <BorderStyle Bottom="Solid" />
+          </Style>
+        </TextBox>
+        <TextBox Width="1.3in" Height="0.2in" Left="6.2in" Top="1.3in" Value="Case No." Name="textBox5">
+          <Style TextAlign="Center">
+            <Font Bold="True" />
+            <BorderStyle Bottom="Solid" />
+          </Style>
+        </TextBox>
+        <TextBox Width="6.4in" Height="0.4in" Left="0.5in" Top="0.4in" Value="Time In/Time Out Report" Name="textBox6">
+          <Style TextAlign="Center" VerticalAlign="Middle">
+            <Font Size="14pt" Bold="True" Underline="True" />
+          </Style>
+        </TextBox>
+      </Items>
+    </PageHeaderSection>
+    <DetailSection Height="0.248in" Name="detailSection1">
+      <Items>
+        <TextBox Width="1.1in" Height="0.2in" Left="1.2in" Top="0.048in" Value="= Fields.TimeIn" Format="{0:t}" Name="textBox8">
+          <Style TextAlign="Center" />
+        </TextBox>
+        <TextBox Width="1.2in" Height="0.2in" Left="2.3in" Top="0.048in" Value="= Fields.TimeOut" Format="{0:t}" Name="textBox9">
+          <Style TextAlign="Center" />
+        </TextBox>
+        <TextBox Width="1.1in" Height="0.2in" Left="5.1in" Top="0.048in" Value="= Fields.PoolNumber" Name="textBox10">
+          <Style TextAlign="Center" />
+        </TextBox>
+        <TextBox Width="1.3in" Height="0.2in" Left="6.2in" Top="0.048in" Value="= Fields.CaseName" Name="textBox11">
+          <Style TextAlign="Center" />
+        </TextBox>
+        <TextBox Width="1.4in" Height="0.2in" Left="3.7in" Top="0.048in" Value="= Fields.CandidateStatus" Name="textBox12">
+          <Style TextAlign="Center" />
+        </TextBox>
+      </Items>
+    </DetailSection>
+    <PageFooterSection Height="0.296in" Name="pageFooterSection1">
+      <Items>
+        <TextBox Width="2.4in" Height="0.2in" Left="0in" Top="0.096in" Value="Powered by Courthouse Technologies" Name="textBox14" />
+      </Items>
+    </PageFooterSection>
+  </Items>
+  <PageSettings PaperKind="Letter" Landscape="False" ColumnCount="1" ColumnSpacing="0in" ContinuousPaper="False">
+    <Margins>
+      <MarginsU Left="0.5in" Right="0.5in" Top="0.5in" Bottom="0.5in" />
+    </Margins>
+  </PageSettings>
+  <StyleSheet>
+    <StyleRule>
+      <Style>
+        <Padding Left="2pt" Right="2pt" />
+      </Style>
+      <Selectors>
+        <TypeSelector Type="TextItemBase" />
+        <TypeSelector Type="HtmlTextBox" />
+      </Selectors>
+    </StyleRule>
+  </StyleSheet>
+  <Groups>
+    <Group Name="group">
+      <GroupHeader>
+        <GroupHeaderSection Height="0.052in" Name="groupHeaderSection" />
+      </GroupHeader>
+      <GroupFooter>
+        <GroupFooterSection Height="0.052in" Name="groupFooterSection" />
+      </GroupFooter>
+      <Groupings>
+        <Grouping Expression="= Fields.CandidateId" />
+      </Groupings>
+    </Group>
+    <Group Name="group1">
+      <GroupHeader>
+        <GroupHeaderSection Height="0.2in" Name="groupHeaderSection1">
+          <Items>
+            <TextBox Width="6.5in" Height="0.2in" Left="0in" Top="0in" Value="= Fields.LastName + &quot;, &quot; + Fields.FirstName + &quot;, ID: &quot; + Format(&quot;{0:0000000000}&quot;,Fields.CandidateId)&#xD;&#xA;+ &quot;, Group-Order: &quot; + Format(&quot;{0:0000}&quot;,Fields.GroupNumber) + &quot;-&quot; + Format(&quot;{0:0000}&quot;,Fields.OrderNumber)" Name="textBox7" />
+          </Items>
+        </GroupHeaderSection>
+      </GroupHeader>
+      <GroupFooter>
+        <GroupFooterSection Height="0.052in" Name="groupFooterSection1" />
+      </GroupFooter>
+      <Groupings>
+        <Grouping Expression="= Fields.AttendDateTime" />
+      </Groupings>
+    </Group>
+  </Groups>
+  <ReportParameters>
+    <ReportParameter Name="FromDate" Type="DateTime" Text="From Date" Visible="True" />
+    <ReportParameter Name="ToDate" Type="DateTime" Text="To Date" Visible="True" />
+    <ReportParameter Name="LocationId" Type="Integer" Text="Location" Visible="True">
+      <AvailableValues DataSourceName="Location" DisplayMember="= Fields.LocationName" ValueMember="= Fields.id">
+        <Sortings>
+          <Sorting Expression="= Fields.locationid" Direction="Asc" />
+        </Sortings>
+      </AvailableValues>
+    </ReportParameter>
+  </ReportParameters>
+</Report>

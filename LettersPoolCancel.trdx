@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Report DataSourceName="Main" Width="6.5in" Name="LettersPoolCancel" xmlns="http://schemas.telerik.com/reporting/2020/2.0">
+  <DataSources>
+    <SqlDataSource QueryDesignerState="null" ParameterValues="null" ConnectionString="JmsDb" SelectCommand="select pc.CandidateId, pc.Id, p.PoolNumber, p.SummonsDateTime, c.FirstName, c.LastName,&#xD;&#xA;cadd.Address 'CandidateAddress', cadd.City 'CandidateCity', cadd.State 'CandidateState', cadd.zip 'CandidateZip',&#xD;&#xA;l.name 'LocationName', l.Building, l.Address 'LocationAddress', l.City 'LocationCity', l.state 'LocationState', l.zip 'LocationZip', l.Phone 'LocationPhone', l.Fax 'LocationFax' from PoolCandidates pc&#xD;&#xA;inner join candidates c on pc.CandidateId = c.id&#xD;&#xA;inner join pools p on pc.PoolId = p.id&#xD;&#xA;inner join CandidateAddresses cadd on pc.CandidateId = cadd.CandidateId&#xD;&#xA;inner join locations l on p.LocationId = l.Id&#xD;&#xA;where pc.PoolId = @PoolId" Name="Main">
+      <Parameters>
+        <SqlDataSourceParameter DbType="Int32" Name="@PoolId">
+          <Value>
+            <String>= Parameters.PoolId.Value</String>
+          </Value>
+        </SqlDataSourceParameter>
+      </Parameters>
+    </SqlDataSource>
+    <SqlDataSource QueryDesignerState="null" ParameterValues="null" ConnectionString="JmsDb" SelectCommand="select distinct(p.LocationId), l.Name from PoolCandidates pc&#xD;&#xA;inner join pools p on pc.PoolId = p.Id&#xD;&#xA;inner join locations l on p.LocationId = l.id&#xD;&#xA;" Name="Location" />
+    <SqlDataSource QueryDesignerState="null" ParameterValues="null" ConnectionString="JmsDb" SelectCommand="select p.id, p.PoolNumber,p.SummonsDateTime from pools p&#xD;&#xA;where p.LocationId=@LocationdId" Name="Pool">
+      <Parameters>
+        <SqlDataSourceParameter DbType="Int32" Name="@LocationdId">
+          <Value>
+            <String>= Parameters.LocationId.Value</String>
+          </Value>
+        </SqlDataSourceParameter>
+      </Parameters>
+    </SqlDataSource>
+  </DataSources>
+  <Items>
+    <PageHeaderSection Height="2.1in" Name="pageHeaderSection1">
+      <Items>
+        <TextBox Width="4.5in" Height="0.2in" Left="0.9in" Top="0.5in" Value="= Fields.LocationName" Name="textBox8">
+          <Style TextAlign="Center" />
+        </TextBox>
+        <TextBox Width="4.5in" Height="0.2in" Left="0.9in" Top="0.7in" Value="= Fields.Building" Name="textBox9">
+          <Style TextAlign="Center" />
+        </TextBox>
+        <TextBox Width="4.5in" Height="0.2in" Left="0.9in" Top="0.9in" Value="= &quot;Phone: &quot; + Fields.LocationPhone" Name="textBox10">
+          <Style TextAlign="Center" />
+        </TextBox>
+        <TextBox Width="4.5in" Height="0.2in" Left="0.9in" Top="1.1in" Value="= &quot;Fax: &quot; + Fields.LocationFax" Name="textBox11">
+          <Style TextAlign="Center" />
+        </TextBox>
+      </Items>
+    </PageHeaderSection>
+    <DetailSection Height="4.8in" Name="detailSection1">
+      <Items>
+        <TextBox Width="4.8in" Height="0.2in" Left="0in" Top="0in" Value="= Fields.FirstName + &quot; &quot; + Fields.LastName" Name="textBox1" />
+        <TextBox Width="4.8in" Height="0.2in" Left="0in" Top="0.2in" Value="= Fields.CandidateAddress" Name="textBox2" />
+        <TextBox Width="4.8in" Height="0.2in" Left="0in" Top="0.4in" Value="= Fields.LocationCity + &quot; &quot; + Fields.LocationState + &quot; &quot; + Fields.LocationZip" Name="textBox3" />
+        <TextBox Width="4.8in" Height="0.2in" Left="0in" Top="1.1in" Value="= &quot;Candidate Id: &quot; + Fields.CandidateId" Name="textBox5" />
+        <TextBox Width="4.8in" Height="0.2in" Left="0in" Top="1.3in" Value="= &quot;Report Date: &quot; + Fields.SummonsDateTime" Name="textBox6" />
+        <TextBox Width="6.5in" Height="0.5in" Left="0in" Top="1.7in" Value="Due to a change in the court’s docket, your summons for jury duty has been cancelled and you&#xD;&#xA;are released from service. You should not report for jury duty as originally scheduled." Name="textBox7" />
+        <TextBox Width="4.8in" Height="0.2in" Left="0in" Top="0.9in" Value="= Fields.FirstName + &quot; &quot; + Fields.LastName" Name="textBox4" />
+      </Items>
+    </DetailSection>
+    <PageFooterSection Height="0.5in" Name="pageFooterSection1">
+      <Items>
+        <TextBox Width="5.6in" Height="0.2in" Left="0in" Top="0.1in" Value="= &quot;Powered by Courthouse Technologies on &quot; + Today()" Name="textBox12" />
+      </Items>
+    </PageFooterSection>
+  </Items>
+  <PageSettings PaperKind="Letter" Landscape="False" ColumnCount="1" ColumnSpacing="0in">
+    <Margins>
+      <MarginsU Left="1in" Right="1in" Top="1in" Bottom="1in" />
+    </Margins>
+  </PageSettings>
+  <StyleSheet>
+    <StyleRule>
+      <Style>
+        <Padding Left="2pt" Right="2pt" />
+      </Style>
+      <Selectors>
+        <TypeSelector Type="TextItemBase" />
+        <TypeSelector Type="HtmlTextBox" />
+      </Selectors>
+    </StyleRule>
+  </StyleSheet>
+  <ReportParameters>
+    <ReportParameter Name="LocationId" Type="Integer" Text="Location" Visible="True">
+      <AvailableValues DataSourceName="Location" DisplayMember="= Fields.Name" ValueMember="= Fields.LocationId">
+        <Sortings>
+          <Sorting Expression="= Fields.LocationId" Direction="Asc" />
+        </Sortings>
+      </AvailableValues>
+    </ReportParameter>
+    <ReportParameter Name="PoolId" Type="Integer" Text="Pool" Visible="True">
+      <AvailableValues DataSourceName="Pool" DisplayMember="= Fields.PoolNumber" ValueMember="= Fields.id">
+        <Sortings>
+          <Sorting Expression="= Fields.SummonsDateTime" Direction="Desc" />
+        </Sortings>
+      </AvailableValues>
+    </ReportParameter>
+    <ReportParameter Name="CandidateId" Type="Integer" Text="Candidate" Visible="True" MultiValue="True">
+      <AvailableValues DataSourceName="Main" DisplayMember="=Format(&quot;{0:0000000000}&quot;, Fields.CandidateId)" ValueMember="= Fields.CandidateId">
+        <Sortings>
+          <Sorting Expression="= Fields.CandidateId" Direction="Asc" />
+        </Sortings>
+      </AvailableValues>
+    </ReportParameter>
+  </ReportParameters>
+</Report>
