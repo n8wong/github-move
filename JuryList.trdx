@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Report DataSourceName="Main" Width="7.5in" Name="JuryList" xmlns="http://schemas.telerik.com/reporting/2020/2.0">
+  <DataSources>
+    <SqlDataSource QueryDesignerState="null" ParameterValues="null" ConnectionString="JmsDb" SelectCommand="select cc.CandidateId, cc.EmpanelmentResult, cc.CaseId, can.FirstName, can.LastName, l.Name LocationName, j.Name JudgeName, ca.Name CaseName, &#xD;&#xA;(select con.ContactValue from CandidateContacts con where con.ContactType=0 and con.CandidateId = can.id) as 'EmailAddress' from CaseCandidates cc&#xD;&#xA;inner join Candidates can on can.id = cc.CandidateId&#xD;&#xA;inner join Locations l on cc.LocationId = l.Id&#xD;&#xA;inner join Cases ca on ca.id = cc.CaseId&#xD;&#xA;left join Judges j on j.id = ca.JudgeId&#xD;&#xA;where ca.id = @case&#xD;&#xA;--and cc.EmpanelmentResult IS NOT NULL&#xD;&#xA;" Name="Main">
+      <Parameters>
+        <SqlDataSourceParameter DbType="Int32" Name="@case">
+          <Value>
+            <String>= Parameters.CaseId.Value</String>
+          </Value>
+        </SqlDataSourceParameter>
+      </Parameters>
+    </SqlDataSource>
+    <SqlDataSource QueryDesignerState="null" ParameterValues="null" ConnectionString="JmsDb" SelectCommand="select &#xD;&#xA;distinct(l.id), l.name&#xD;&#xA;from CaseCandidates cc&#xD;&#xA;inner join Candidates can on can.id = cc.CandidateId&#xD;&#xA;inner join Locations l on cc.LocationId = l.Id&#xD;&#xA;inner join Cases ca on ca.id = cc.CaseId&#xD;&#xA;left join Judges j on j.id = ca.JudgeId" Name="Location" />
+    <SqlDataSource QueryDesignerState="null" ParameterValues="null" ConnectionString="JmsDb" SelectCommand="select &#xD;&#xA;distinct(ca.id), ca.name, ca.StartDateTime&#xD;&#xA;from CaseCandidates cc&#xD;&#xA;inner join Candidates can on can.id = cc.CandidateId&#xD;&#xA;inner join Locations l on cc.LocationId = l.Id&#xD;&#xA;inner join Cases ca on ca.id = cc.CaseId&#xD;&#xA;left join Judges j on j.id = ca.JudgeId&#xD;&#xA;where ca.LocationId = @LocationId&#xD;&#xA;" Name="Case">
+      <Parameters>
+        <SqlDataSourceParameter DbType="Int32" Name="@LocationId">
+          <Value>
+            <String>= Parameters.LocationId.Value</String>
+          </Value>
+        </SqlDataSourceParameter>
+      </Parameters>
+    </SqlDataSource>
+  </DataSources>
+  <Items>
+    <PageHeaderSection Height="1in" Name="pageHeaderSection1">
+      <Items>
+        <TextBox Width="1.2in" Height="0.2in" Left="0in" Top="0.8in" Value="Candidate Id" Name="textBox5">
+          <Style>
+            <Font Bold="True" />
+          </Style>
+        </TextBox>
+        <TextBox Width="1.2in" Height="0.2in" Left="1.3in" Top="0.8in" Value="Status" Name="textBox6">
+          <Style>
+            <Font Bold="True" />
+          </Style>
+        </TextBox>
+        <TextBox Width="1.2in" Height="0.2in" Left="2.6in" Top="0.8in" Value="Last Name" Name="textBox7">
+          <Style>
+            <Font Bold="True" />
+          </Style>
+        </TextBox>
+        <TextBox Width="1.2in" Height="0.2in" Left="3.8in" Top="0.8in" Value="First Name" Name="textBox8">
+          <Style>
+            <Font Bold="True" />
+          </Style>
+        </TextBox>
+        <TextBox Width="1.2in" Height="0.2in" Left="1.1in" Top="0.5in" Value="Court" Name="textBox9">
+          <Style>
+            <Font Bold="True" />
+          </Style>
+        </TextBox>
+        <TextBox Width="1.2in" Height="0.2in" Left="2.3in" Top="0.5in" Value="= Fields.LocationName" Name="textBox10" />
+        <TextBox Width="1.2in" Height="0.2in" Left="4.1in" Top="0.5in" Value="Judge" Name="textBox11">
+          <Style>
+            <Font Bold="True" />
+          </Style>
+        </TextBox>
+        <TextBox Width="1.2in" Height="0.2in" Left="5.4in" Top="0.5in" Value="= Fields.JudgeName" Name="textBox12" />
+        <TextBox Width="2.7in" Height="0.3in" Left="2.7in" Top="0.1in" Value="= Fields.CaseName" Name="textBox13">
+          <Style TextAlign="Center">
+            <Font Size="14pt" />
+          </Style>
+        </TextBox>
+        <TextBox Width="1.6in" Height="0.2in" Left="5.4in" Top="0.8in" Value="Email" Name="textBox15">
+          <Style>
+            <Font Bold="True" />
+          </Style>
+        </TextBox>
+      </Items>
+    </PageHeaderSection>
+    <DetailSection Height="0.3in" Name="detailSection1">
+      <Items>
+        <TextBox Width="1.2in" Height="0.2in" Left="0in" Top="0in" Value="= Format(&quot;{0:0000000000}&quot;,Fields.CandidateId)" Name="textBox1" />
+        <TextBox Width="1.2in" Height="0.2in" Left="1.3in" Top="0in" Value="= IIf(Fields.EmpanelmentResult=&quot;0&quot;,&quot;Juror&quot;,&#xD;&#xA;IIf(Fields.EmpanelmentResult=&quot;1&quot;,&quot;Alternate&quot;,&#xD;&#xA;IIf(Fields.EmpanelmentResult=&quot;2&quot;,&quot;For Cause (P)&quot;,&#xD;&#xA;IIf(Fields.EmpanelmentResult=&quot;3&quot;,&quot;For Cause (D)&quot;,&#xD;&#xA;IIf(Fields.EmpanelmentResult=&quot;4&quot;,&quot;Peremptory (D)&quot;,&#xD;&#xA;IIf(Fields.EmpanelmentResult=&quot;5&quot;,&quot;Peremptory (P)&quot;,&#xD;&#xA;IIf(Fields.EmpanelmentResult=&quot;6&quot;,&quot;Joint Cause&quot;,&#xD;&#xA;IIf(Fields.EmpanelmentResult=&quot;7&quot;,&quot;Court&quot;,&#xD;&#xA;&quot;Panel&quot;))))))))" Name="textBox2" />
+        <TextBox Width="1.2in" Height="0.2in" Left="2.6in" Top="0in" Value="= Fields.LastName" Name="textBox3" />
+        <TextBox Width="1.2in" Height="0.2in" Left="3.8in" Top="0in" Value="= Fields.FirstName" Name="textBox4" />
+        <TextBox Width="1.2in" Height="0.2in" Left="5.4in" Top="0in" Value="= Fields.EmailAddress" Name="textBox14" />
+      </Items>
+    </DetailSection>
+    <PageFooterSection Height="0.2in" Name="pageFooterSection1" />
+  </Items>
+  <PageSettings PaperKind="Letter" Landscape="False" ColumnCount="1" ColumnSpacing="0in" ContinuousPaper="False">
+    <Margins>
+      <MarginsU Left="0.5in" Right="0.5in" Top="0.5in" Bottom="0.5in" />
+    </Margins>
+  </PageSettings>
+  <StyleSheet>
+    <StyleRule>
+      <Style>
+        <Padding Left="2pt" Right="2pt" />
+      </Style>
+      <Selectors>
+        <TypeSelector Type="TextItemBase" />
+        <TypeSelector Type="HtmlTextBox" />
+      </Selectors>
+    </StyleRule>
+  </StyleSheet>
+  <Groups>
+    <Group Name="group">
+      <GroupHeader>
+        <GroupHeaderSection Height="0.1in" Name="groupHeaderSection">
+          <Style Visible="False" />
+        </GroupHeaderSection>
+      </GroupHeader>
+      <GroupFooter>
+        <GroupFooterSection Height="0.2in" Name="groupFooterSection">
+          <Style Visible="False" />
+        </GroupFooterSection>
+      </GroupFooter>
+      <Groupings>
+        <Grouping Expression="= Fields.CandidateId" />
+      </Groupings>
+      <Sortings>
+        <Sorting Expression="= Fields.EmpanelmentResult" Direction="Asc" />
+      </Sortings>
+    </Group>
+  </Groups>
+  <ReportParameters>
+    <ReportParameter Name="LocationId" Type="Integer" Text="Location" Visible="True">
+      <AvailableValues DataSourceName="Location" DisplayMember="= Fields.Name" ValueMember="= Fields.id">
+        <Sortings>
+          <Sorting Expression="= Fields.id" Direction="Asc" />
+        </Sortings>
+      </AvailableValues>
+    </ReportParameter>
+    <ReportParameter Name="CaseId" Type="Integer" Text="Case" Visible="True">
+      <AvailableValues DataSourceName="Case" DisplayMember="= Fields.Name" ValueMember="= Fields.id" />
+    </ReportParameter>
+  </ReportParameters>
+</Report>

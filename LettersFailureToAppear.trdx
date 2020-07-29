@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Report DataSourceName="Main" Width="7.5in" Name="l_fta_letter" xmlns="http://schemas.telerik.com/reporting/2020/2.0">
   <DataSources>
-    <SqlDataSource QueryDesignerState="null" ParameterValues="null" ConnectionString="JmsDb" SelectCommand="select c.id as 'CandidateId', p.PoolNumber, c.FirstName, c.LastName, ca.Address, ca.City, ca.state, ca.Zip,&#xD;&#xA;l.name as 'LocationName', l.Building, a.AttendDateTime,&#xD;&#xA;l.Address as 'LocationAddress', l.City as 'LocationCity', l.State  as 'LocationState', &#xD;&#xA;l.Zip  as 'LocationZip', l.Phone  as 'LocationPhone', l.CallInPhone, l.Fax, &#xD;&#xA;l.SignatureName, l.SignatureTitle&#xD;&#xA;from AttendanceSchedules a&#xD;&#xA;left join PoolCandidates pc on pc.id = a.PoolCandidateId&#xD;&#xA;left join candidates c on pc.CandidateId = c.Id&#xD;&#xA;left join pools p on a.PoolId = p.id&#xD;&#xA;left join CandidateAddresses ca on c.id = ca.CandidateId&#xD;&#xA;left join Locations l on p.LocationId = l.Id&#xD;&#xA;where a.AttendDateTime &lt; getdate()&#xD;&#xA;and Convert(date,a.AttendDateTime) = @ftaDate&#xD;&#xA;and  a.TimeIn IS NULL&#xD;&#xA;and l.id = @LocationId" Name="Main">
+    <SqlDataSource QueryDesignerState="null" ParameterValues="null" ConnectionString="JmsDb" SelectCommand="select c.id as 'CandidateId', p.PoolNumber, c.FirstName, c.LastName, ca.Address, ca.City, ca.state, ca.Zip,&#xD;&#xA;l.name as 'LocationName', l.Building, a.AttendDateTime,&#xD;&#xA;l.Address as 'LocationAddress', l.City as 'LocationCity', l.State  as 'LocationState', &#xD;&#xA;l.Zip  as 'LocationZip', l.Phone  as 'LocationPhone', l.CallInPhone, l.Fax, &#xD;&#xA;l.SignatureName, l.SignatureTitle&#xD;&#xA;from AttendanceSchedules a&#xD;&#xA;left join PoolCandidates pc on pc.id = a.PoolCandidateId&#xD;&#xA;left join candidates c on pc.CandidateId = c.Id&#xD;&#xA;left join pools p on a.PoolId = p.id&#xD;&#xA;left join CandidateAddresses ca on c.id = ca.CandidateId&#xD;&#xA;left join Locations l on p.LocationId = l.Id&#xD;&#xA;where a.AttendDateTime &lt; getdate()&#xD;&#xA;and Convert(date,a.AttendDateTime) = @FtaDate&#xD;&#xA;and  a.TimeIn IS NULL&#xD;&#xA;and l.id = @LocationId" Name="Main">
       <Parameters>
         <SqlDataSourceParameter DbType="DateTime" Name="@ftaDate">
           <Value>
@@ -15,7 +15,7 @@
         </SqlDataSourceParameter>
       </Parameters>
     </SqlDataSource>
-    <SqlDataSource QueryDesignerState="null" ParameterValues="null" ConnectionString="JmsDb" SelectCommand="select distinct(l.id), l.name&#xD;&#xA;from AttendanceSchedules a&#xD;&#xA;inner join PoolCandidates pc on pc.id = a.PoolCandidateId&#xD;&#xA;inner join candidates c on pc.CandidateId = c.Id&#xD;&#xA;inner join pools p on a.PoolId = p.id&#xD;&#xA;inner join CandidateAddresses ca on c.id = ca.CandidateId&#xD;&#xA;inner join Locations l on p.LocationId = l.Id&#xD;&#xA;where a.AttendDateTime &lt; getdate()&#xD;&#xA;and  a.TimeIn IS NULL&#xD;&#xA;" Name="Location" />
+    <SqlDataSource QueryDesignerState="null" ParameterValues="null" ConnectionString="JmsDb" SelectCommand="select distinct(l.id), l.name&#xD;&#xA;from AttendanceSchedules a&#xD;&#xA;left join PoolCandidates pc on pc.id = a.PoolCandidateId&#xD;&#xA;left join candidates c on pc.CandidateId = c.Id&#xD;&#xA;left join pools p on a.PoolId = p.id&#xD;&#xA;left join CandidateAddresses ca on c.id = ca.CandidateId&#xD;&#xA;left join Locations l on p.LocationId = l.Id&#xD;&#xA;left join CandidateContacts cc on c.id = cc.CandidateId&#xD;&#xA;where a.AttendDateTime &lt; getdate()&#xD;&#xA;and  a.TimeIn IS NULL" Name="Location" />
   </DataSources>
   <Items>
     <PageHeaderSection Height="1.6in" Name="pageHeaderSection1">
@@ -41,7 +41,7 @@
         </TextBox>
       </Items>
     </PageHeaderSection>
-    <DetailSection PageBreak="None" Height="1.4in" Name="detailSection1">
+    <DetailSection Height="1.6in" Name="detailSection1">
       <Items>
         <TextBox Width="7.5in" Height="0.2in" Left="0in" Top="0.6in" Value="= Format( '{0:dddd, MMMM d, yyyy}',Fields.AttendDateTime)" Name="textBox5">
           <Style>
@@ -76,7 +76,7 @@
   <Groups>
     <Group Name="group">
       <GroupHeader>
-        <GroupHeaderSection PageBreak="None" Height="1.3in" Name="groupHeaderSection">
+        <GroupHeaderSection Height="1.3in" Name="groupHeaderSection">
           <Items>
             <TextBox Width="3.1in" Height="0.2in" Left="0in" Top="0in" Value="= Fields.FirstName + &quot; &quot; + Fields.LastName" Name="textBox1" />
             <TextBox Width="3.1in" Height="0.2in" Left="0in" Top="0.2in" Value="= Fields.Address" Name="textBox2" />

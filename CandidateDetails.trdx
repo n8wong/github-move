@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Report DataSourceName="Main" Width="7.8in" Name="r_candidate_retail" xmlns="http://schemas.telerik.com/reporting/2020/2.0">
+  <DataSources>
+    <SqlDataSource QueryDesignerState="null" ParameterValues="{&quot;@candidateId&quot;:&quot;71&quot;}" ConnectionString="JmsDb" SelectCommand="select c.id 'CandidateId', c.FirstName, c.MiddleName, c.LastName, c.Gender, c.DateOfBirth, &#xD;&#xA;ca.Address, ca.city, ca.County, ca.State, ca.Zip,&#xD;&#xA;c.BirthCity, c.BirthStateId,&#xD;&#xA;c.IsGovernmentEmployee, c.Employer,&#xD;&#xA;c.DriversLicenseNumber, c.DriversStateId, c.SocialSecurityNumber, c.IsHispanic,&#xD;&#xA;(select con.ContactValue from CandidateContacts con where con.ContactType=0 and con.CandidateId = c.id) as 'EmailAddress',&#xD;&#xA;(select con.ContactValue from CandidateContacts con where con.ContactType=1 and con.CandidateId = c.id) as 'HomePhone',&#xD;&#xA;(select con.ContactValue from CandidateContacts con where con.ContactType=2 and con.CandidateId = c.id) as 'MobilePhone' from Candidates c &#xD;&#xA;left join CandidateAddresses ca on c.id = ca.CandidateId&#xD;&#xA;where c.id = @CandidateId&#xD;&#xA;&#xD;&#xA;" Name="Main">
+      <Parameters>
+        <SqlDataSourceParameter DbType="Int32" Name="@candidateId">
+          <Value>
+            <String>= Parameters.CandidateId.Value</String>
+          </Value>
+        </SqlDataSourceParameter>
+      </Parameters>
+    </SqlDataSource>
+    <SqlDataSource QueryDesignerState="null" ParameterValues="{&quot;@candidateId&quot;:&quot;71&quot;}" ConnectionString="JmsDb" SelectCommand="select * from CandidateHistoryEntries&#xD;&#xA;where CandidateId =@candidateId" Name="Candidate">
+      <Parameters>
+        <SqlDataSourceParameter DbType="String" Name="@candidateId">
+          <Value>
+            <String>71</String>
+          </Value>
+        </SqlDataSourceParameter>
+      </Parameters>
+    </SqlDataSource>
+  </DataSources>
+  <Items>
+    <PageHeaderSection Height="5in" Name="pageHeaderSection1">
+      <Items>
+        <TextBox Width="3.25in" Height="0.2in" Left="2.3in" Top="0.2in" Value="Candidate Details / Profile History" Name="textBox6">
+          <Style TextAlign="Center">
+            <Font Bold="True" Underline="True" />
+          </Style>
+        </TextBox>
+        <TextBox Width="1.2in" Height="0.2in" Left="0.2in" Top="0.7in" Value="Candidate ID: " Name="textBox3">
+          <Style TextAlign="Right">
+            <Font Bold="True" />
+          </Style>
+        </TextBox>
+        <TextBox Width="1.2in" Height="0.2in" Left="0.2in" Top="1.1in" Value="Name: " Name="textBox4">
+          <Style TextAlign="Right">
+            <Font Bold="True" />
+          </Style>
+        </TextBox>
+        <TextBox Width="3in" Height="0.2in" Left="1.4in" Top="1.1in" Value="{Fields.LastName}, {Fields.FirstName} {Fields.MiddleName}" Name="textBox5">
+          <Style>
+            <Font Bold="True" />
+          </Style>
+        </TextBox>
+        <Shape Width="7.8in" Height="0.052in" Left="0in" Top="2in" Name="shape1">
+          <ShapeType>
+            <LineShape Direction="EW" />
+          </ShapeType>
+        </Shape>
+        <TextBox Width="3in" Height="0.2in" Left="1.4in" Top="1.4in" Value="= Fields.Address" Name="textBox43">
+          <Style>
+            <Font Bold="True" />
+          </Style>
+        </TextBox>
+        <TextBox Width="3in" Height="0.2in" Left="1.4in" Top="1.7in" Value="= Fields.city + &quot;, &quot; + Fields.State + &quot; &quot; + Fields.Zip" Name="textBox44">
+          <Style>
+            <Font Bold="True" />
+          </Style>
+        </TextBox>
+        <TextBox Width="1.2in" Height="0.2in" Left="0.2in" Top="2.5in" Value="Cell Phone: " Name="textBox7">
+          <Style TextAlign="Right">
+            <Font Bold="True" />
+          </Style>
+        </TextBox>
+        <TextBox Width="1.2in" Height="0.2in" Left="0.2in" Top="2.8in" Value="E-Mail:" Name="textBox8">
+          <Style TextAlign="Right">
+            <Font Bold="True" />
+          </Style>
+        </TextBox>
+        <TextBox Width="1.2in" Height="0.2in" Left="0.2in" Top="3.1in" Value="Gender: " Name="textBox9">
+          <Style TextAlign="Right">
+            <Font Bold="True" />
+          </Style>
+        </TextBox>
+        <TextBox Width="1.2in" Height="0.2in" Left="0.2in" Top="3.4in" Value="Birthplace City: " Name="textBox10">
+          <Style TextAlign="Right">
+            <Font Bold="True" />
+          </Style>
+        </TextBox>
+        <TextBox Width="1.2in" Height="0.2in" Left="0.2in" Top="3.7in" Value="Birthplace State: " Name="textBox11">
+          <Style TextAlign="Right">
+            <Font Bold="True" />
+          </Style>
+        </TextBox>
+        <TextBox Width="1.2in" Height="0.2in" Left="0.2in" Top="4in" Value="Employer: " Name="textBox12">
+          <Style TextAlign="Right">
+            <Font Bold="True" />
+          </Style>
+        </TextBox>
+        <TextBox Width="1.2in" Height="0.2in" Left="0.2in" Top="4.3in" Value="Gvmt Employee: " Name="textBox13">
+          <Style TextAlign="Right">
+            <Font Bold="True" />
+          </Style>
+        </TextBox>
+        <TextBox Width="1.6in" Height="0.2in" Left="4.9in" Top="4.3in" Value="Drivers License No: " Name="textBox15">
+          <Style TextAlign="Right">
+            <Font Bold="True" />
+          </Style>
+        </TextBox>
+        <TextBox Width="1.6in" Height="0.2in" Left="4.9in" Top="4in" Value="Social Security No: " Name="textBox16">
+          <Style TextAlign="Right">
+            <Font Bold="True" />
+          </Style>
+        </TextBox>
+        <TextBox Width="1.6in" Height="0.2in" Left="4.9in" Top="3.7in" Value="Drivers License State: " Name="textBox17">
+          <Style TextAlign="Right">
+            <Font Bold="True" />
+          </Style>
+        </TextBox>
+        <TextBox Width="0.8in" Height="0.2in" Left="3in" Top="4.3in" Value="Hispanic: " Name="textBox14">
+          <Style TextAlign="Right">
+            <Font Bold="True" />
+          </Style>
+        </TextBox>
+        <TextBox Width="1.2in" Height="0.2in" Left="1.4in" Top="3.1in" Value="= Fields.Gender" Name="textBox18" />
+        <TextBox Width="1.2in" Height="0.2in" Left="1.4in" Top="4.3in" Value="= Fields.IsGovernmentEmployee" Name="textBox19" />
+        <TextBox Width="1.2in" Height="0.2in" Left="1.4in" Top="4in" Value="= Fields.Employer" Name="textBox20" />
+        <TextBox Width="1.2in" Height="0.2in" Left="1.4in" Top="3.7in" Value="= Fields.BirthStateId" Name="textBox21" />
+        <TextBox Width="1.2in" Height="0.2in" Left="1.4in" Top="3.4in" Value="= Fields.BirthCity" Name="textBox22" />
+        <TextBox Width="1.2in" Height="0.2in" Left="6.5in" Top="4.3in" Value="= Fields.DriversLicenseNumber" Name="textBox23" />
+        <TextBox Width="1.2in" Height="0.2in" Left="6.5in" Top="4in" Value="= Fields.SocialSecurityNumber" Name="textBox24" />
+        <TextBox Width="1.2in" Height="0.2in" Left="6.5in" Top="3.7in" Value="= Fields.DriversLicenseNumber" Name="textBox25" />
+        <Shape Width="7.8in" Height="0.052in" Left="0in" Top="4.6in" Name="shape2">
+          <ShapeType>
+            <LineShape Direction="EW" />
+          </ShapeType>
+        </Shape>
+        <TextBox Width="0.8in" Height="0.2in" Left="3.8in" Top="4.3in" Value="= Fields.IsHispanic" Name="textBox26" />
+        <TextBox Width="1.2in" Height="0.2in" Left="0.2in" Top="2.2in" Value="Home Phone: " Name="textBox2">
+          <Style TextAlign="Right">
+            <Font Bold="True" />
+          </Style>
+        </TextBox>
+        <TextBox Width="4.4in" Height="0.2in" Left="0.2in" Top="4.7in" Value="Candidate Action History: " Name="textBox45">
+          <Style TextAlign="Left">
+            <Font Bold="True" Italic="True" />
+          </Style>
+        </TextBox>
+        <TextBox Width="1.2in" Height="0.2in" Left="1.4in" Top="2.8in" Value="= Fields.EmailAddress" Name="textBox27" />
+        <TextBox Width="1.2in" Height="0.2in" Left="1.4in" Top="2.5in" Value="= Fields.MobilePhone" Name="textBox28" />
+        <TextBox Width="1.2in" Height="0.2in" Left="1.4in" Top="2.2in" Value="= Fields.HomePhone" Name="textBox29" />
+        <TextBox Width="1.2in" Height="0.2in" Left="1.4in" Top="0.7in" Value="= Fields.CandidateId" Name="textBox1" />
+      </Items>
+    </PageHeaderSection>
+    <DetailSection Height="0.7in" Name="detailSection1" />
+    <PageFooterSection Height="0.448in" Name="pageFooterSection1">
+      <Items>
+        <Shape Width="7.8in" Height="0.052in" Left="0in" Top="0in" Name="shape3">
+          <ShapeType>
+            <LineShape Direction="EW" />
+          </ShapeType>
+        </Shape>
+        <TextBox Width="2.6in" Height="0.2in" Left="0in" Top="0.052in" Value="Powered By Courthouse Technologies" Name="textBox34" />
+      </Items>
+    </PageFooterSection>
+  </Items>
+  <PageSettings PaperKind="Letter" Landscape="False" ColumnCount="1" ColumnSpacing="0in" ContinuousPaper="False">
+    <Margins>
+      <MarginsU Left="0.5in" Right="0.5in" Top="0.5in" Bottom="0.5in" />
+    </Margins>
+  </PageSettings>
+  <StyleSheet>
+    <StyleRule>
+      <Style>
+        <Padding Left="2pt" Right="2pt" />
+      </Style>
+      <Selectors>
+        <TypeSelector Type="TextItemBase" />
+        <TypeSelector Type="HtmlTextBox" />
+      </Selectors>
+    </StyleRule>
+    <StyleRule>
+      <Style Color="Black">
+        <Font Name="Tahoma" Size="9pt" />
+        <BorderStyle Default="Solid" />
+        <BorderColor Default="Black" />
+        <BorderWidth Default="1px" />
+      </Style>
+      <Selectors>
+        <StyleSelector Type="Table" StyleName="Normal.TableNormal" />
+      </Selectors>
+    </StyleRule>
+    <StyleRule>
+      <Style>
+        <Font Name="Tahoma" Size="9pt" />
+        <BorderStyle Default="Solid" />
+        <BorderColor Default="Black" />
+        <BorderWidth Default="1px" />
+      </Style>
+      <Selectors>
+        <DescendantSelector>
+          <Selectors>
+            <TypeSelector Type="Table" />
+            <StyleSelector Type="ReportItem" StyleName="Normal.TableBody" />
+          </Selectors>
+        </DescendantSelector>
+      </Selectors>
+    </StyleRule>
+    <StyleRule>
+      <Style VerticalAlign="Middle">
+        <Font Name="Tahoma" Size="10pt" />
+        <BorderStyle Default="Solid" />
+        <BorderColor Default="Black" />
+        <BorderWidth Default="1px" />
+      </Style>
+      <Selectors>
+        <DescendantSelector>
+          <Selectors>
+            <TypeSelector Type="Table" />
+            <StyleSelector Type="ReportItem" StyleName="Normal.TableHeader" />
+          </Selectors>
+        </DescendantSelector>
+      </Selectors>
+    </StyleRule>
+  </StyleSheet>
+  <ReportParameters>
+    <ReportParameter Name="CandidateId" Type="Integer" Text="Candidate" Visible="True" />
+  </ReportParameters>
+</Report>

@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Report DataSourceName="Main" Width="7.518in" Name="StatisticalExemptionCounts" Zoom="1.5" xmlns="http://schemas.telerik.com/reporting/2020/2.0">
+  <DataSources>
+    <SqlDataSource QueryDesignerState="null" ParameterValues="null" ConnectionString="JmsDb" SelectCommand="select pc.CandidateId, pc.PoolId, p.PoolNumber, cr.CandidateStatus, cr.ExemptionId, ex.Description, ex.DocumentDescription, ex.Id 'ExemptionCode', ex.IsPermanentlyDisqualified,&#xD;&#xA;p.SummonsDateTime, l.Name 'LocationName' from PoolCandidates pc&#xD;&#xA;inner join pools p on pc.PoolId = p.Id&#xD;&#xA;inner join locations l on p.LocationId = l.id&#xD;&#xA;inner join CandidateRequests cr on pc.CandidateId = cr.CandidateId and pc.PoolId = cr.PoolId and pc.Status = cr.CandidateStatus&#xD;&#xA;inner join Exemptions ex on cr.ExemptionId = ex.id&#xD;&#xA;where pc.Status in ('3','4')&#xD;&#xA;and p.SummonsDateTime between @FromDate and @ToDate&#xD;&#xA;and l.id = @LocationId" Name="Main">
+      <Parameters>
+        <SqlDataSourceParameter DbType="DateTime" Name="@FromDate">
+          <Value>
+            <String>= Parameters.FromDate.Value</String>
+          </Value>
+        </SqlDataSourceParameter>
+        <SqlDataSourceParameter DbType="DateTime" Name="@ToDate">
+          <Value>
+            <String>= Parameters.ToDate.Value</String>
+          </Value>
+        </SqlDataSourceParameter>
+        <SqlDataSourceParameter DbType="Int32" Name="@LocationId">
+          <Value>
+            <String>= Parameters.LocationId.Value</String>
+          </Value>
+        </SqlDataSourceParameter>
+      </Parameters>
+    </SqlDataSource>
+    <SqlDataSource QueryDesignerState="null" ParameterValues="null" ConnectionString="JmsDb" SelectCommand="select distinct(l.Name) 'LocationName', l.id 'LocationId' from PoolCandidates pc&#xD;&#xA;inner join pools p on pc.PoolId = p.Id&#xD;&#xA;inner join locations l on p.LocationId = l.id&#xD;&#xA;inner join CandidateRequests cr on pc.CandidateId = cr.CandidateId and pc.PoolId = cr.PoolId and pc.Status = cr.CandidateStatus&#xD;&#xA;inner join Exemptions ex on cr.ExemptionId = ex.id&#xD;&#xA;where pc.Status in ('3','4')" Name="Location" />
+  </DataSources>
+  <Items>
+    <PageHeaderSection Height="1.1in" Name="pageHeaderSection1">
+      <Items>
+        <TextBox Width="4.1in" Height="0.2in" Left="0.9in" Top="0.36in" Value="= Fields.LocationName" Name="textBox4" />
+        <TextBox Width="0.9in" Height="0.2in" Left="0in" Top="0.36in" Value="Court Name: " Name="textBox11">
+          <Style>
+            <Font Bold="True" Underline="False" />
+          </Style>
+        </TextBox>
+        <TextBox Width="3.5in" Height="0.2in" Left="2.026in" Top="0in" Value="Exemption Code Counts" Name="textBox12">
+          <Style TextAlign="Center">
+            <Font Bold="True" Underline="True" />
+          </Style>
+        </TextBox>
+        <TextBox Width="3.2in" Height="0.2in" Left="0in" Top="0.7in" Value="= &quot;From: &quot; + Format('{0:MM-dd-yy}', Parameters.FromDate.Value) + &quot; To: &quot; + Format('{0:MM-dd-yy}', Parameters.ToDate.Value)&#xD;&#xA;&#xD;&#xA;" Name="textBox18" />
+      </Items>
+    </PageHeaderSection>
+    <DetailSection Height="0.052in" Name="detailSection1">
+      <Style Visible="False" />
+    </DetailSection>
+    <PageFooterSection Height="0.2in" Name="pageFooterSection1">
+      <Items>
+        <TextBox Width="6.1in" Height="0.2in" Left="0in" Top="0in" Value="= &quot;Powered by Courthouse Technologies on &quot; + Format('{0:dddd, MMMM d, yyyy}',Today())" Name="textBox10" />
+      </Items>
+    </PageFooterSection>
+    <ReportFooterSection Height="0.496in" Name="reportFooterSection1">
+      <Items>
+        <TextBox Width="0.492in" Height="0.2in" Left="7.026in" Top="0.156in" Value="= Count(Fields.CandidateId)" Name="textBox13">
+          <Style TextAlign="Right" />
+        </TextBox>
+        <TextBox Width="1.587in" Height="0.2in" Left="5.44in" Top="0.156in" Value="Total Exemptions:" Name="textBox14">
+          <Style TextAlign="Right">
+            <Font Bold="True" />
+          </Style>
+        </TextBox>
+        <Shape Width="2.079in" Height="0.06in" Left="5.44in" Top="0.096in" Name="shape2">
+          <ShapeType>
+            <LineShape Direction="EW" />
+          </ShapeType>
+        </Shape>
+      </Items>
+    </ReportFooterSection>
+  </Items>
+  <PageSettings PaperKind="Letter" Landscape="False" ColumnCount="1" ColumnSpacing="0in" ContinuousPaper="False">
+    <Margins>
+      <MarginsU Left="0.5in" Right="0.5in" Top="0.5in" Bottom="0.5in" />
+    </Margins>
+  </PageSettings>
+  <StyleSheet>
+    <StyleRule>
+      <Style>
+        <Padding Left="2pt" Right="2pt" />
+      </Style>
+      <Selectors>
+        <TypeSelector Type="TextItemBase" />
+        <TypeSelector Type="HtmlTextBox" />
+      </Selectors>
+    </StyleRule>
+  </StyleSheet>
+  <Groups>
+    <Group Name="group1">
+      <GroupHeader>
+        <GroupHeaderSection Height="0.512in" Name="groupHeaderSection1">
+          <Items>
+            <TextBox Width="0.492in" Height="0.2in" Left="7in" Top="0.26in" Value="Count" Name="textBox9">
+              <Style TextAlign="Right">
+                <Font Bold="True" />
+              </Style>
+            </TextBox>
+            <TextBox Width="4.5in" Height="0.2in" Left="0.8in" Top="0.26in" Value="Description" Name="textBox7">
+              <Style>
+                <Font Bold="True" />
+              </Style>
+            </TextBox>
+            <TextBox Width="1.2in" Height="0.2in" Left="5.5in" Top="0.26in" Value="Permanent" Name="textBox8">
+              <Style TextAlign="Center">
+                <Font Bold="True" />
+              </Style>
+            </TextBox>
+            <TextBox Width="0.7in" Height="0.2in" Left="0in" Top="0.26in" Value="Code" Name="textBox6">
+              <Style TextAlign="Center">
+                <Font Bold="True" />
+              </Style>
+            </TextBox>
+            <Shape Width="7.492in" Height="0.052in" Left="0in" Top="0.46in" Name="shape1">
+              <ShapeType>
+                <LineShape Direction="EW" />
+              </ShapeType>
+            </Shape>
+            <TextBox Width="1.2in" Height="0.2in" Left="0in" Top="0in" Value="= IIF(Fields.CandidateStatus='3', 'Excused', 'Disqualified')" Name="textBox17" />
+          </Items>
+        </GroupHeaderSection>
+      </GroupHeader>
+      <GroupFooter>
+        <GroupFooterSection Height="0.344in" Name="groupFooterSection1">
+          <Items>
+            <TextBox Width="0.492in" Height="0.2in" Left="7.025in" Top="0.144in" Value="= Count(Fields.CandidateId)" Name="textBox16">
+              <Style TextAlign="Right" />
+            </TextBox>
+            <TextBox Width="1.587in" Height="0.2in" Left="5.439in" Top="0.144in" Value="Group Total:" Name="textBox15">
+              <Style TextAlign="Right">
+                <Font Bold="True" />
+              </Style>
+            </TextBox>
+            <Shape Width="2.079in" Height="0.06in" Left="5.439in" Top="0.084in" Name="shape3">
+              <ShapeType>
+                <LineShape Direction="EW" />
+              </ShapeType>
+            </Shape>
+          </Items>
+        </GroupFooterSection>
+      </GroupFooter>
+      <Groupings>
+        <Grouping Expression="= Fields.CandidateStatus" />
+      </Groupings>
+    </Group>
+    <Group Name="group">
+      <GroupHeader>
+        <GroupHeaderSection Height="0.2in" Name="groupHeaderSection">
+          <Items>
+            <TextBox Width="0.7in" Height="0.2in" Left="0in" Top="0in" Value="= &quot;( &quot; + Fields.ExemptionCode + &quot; )&quot;" Name="textBox1">
+              <Style TextAlign="Center" />
+            </TextBox>
+            <TextBox Width="3.708in" Height="0.2in" Left="0.792in" Top="0in" Value="= Fields.Description" Name="textBox2" />
+            <TextBox Width="1.2in" Height="0.2in" Left="5.5in" Top="0in" Value="= Fields.IsPermanentlyDisqualified" Name="textBox3">
+              <Style TextAlign="Center" />
+            </TextBox>
+            <TextBox Width="0.492in" Height="0.2in" Left="7in" Top="0in" Value="= Count(Fields.CandidateId)" Name="textBox5">
+              <Style TextAlign="Right" />
+            </TextBox>
+          </Items>
+        </GroupHeaderSection>
+      </GroupHeader>
+      <GroupFooter>
+        <GroupFooterSection Height="0.052in" Name="groupFooterSection">
+          <Style Visible="False" />
+        </GroupFooterSection>
+      </GroupFooter>
+      <Groupings>
+        <Grouping Expression="= Fields.ExemptionId" />
+      </Groupings>
+      <Sortings>
+        <Sorting Expression="= Fields.ExemptionId" Direction="Asc" />
+      </Sortings>
+    </Group>
+  </Groups>
+  <ReportParameters>
+    <ReportParameter Name="FromDate" Type="DateTime" Text="From Date" Visible="True" />
+    <ReportParameter Name="ToDate" Type="DateTime" Text="To Date" Visible="True" />
+    <ReportParameter Name="LocationId" Type="Integer" Text="Location" Visible="True">
+      <AvailableValues DataSourceName="Location" DisplayMember="= Fields.LocationName" ValueMember="= Fields.LocationId">
+        <Sortings>
+          <Sorting Expression="= Fields.LocationId" Direction="Asc" />
+        </Sortings>
+      </AvailableValues>
+    </ReportParameter>
+  </ReportParameters>
+</Report>
