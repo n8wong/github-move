@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Report Width="6.5in" Name="QUICK_FORMULAS" xmlns="http://schemas.telerik.com/reporting/2020/2.0">
+  <Items>
+    <PageHeaderSection Height="1in" Name="pageHeaderSection1" />
+    <DetailSection Height="2in" Name="detailSection1">
+      <Items>
+        <TextBox Width="2.7in" Height="0.2in" Left="0.2in" Top="0in" Value="suppress if null" Name="textBox1" />
+        <TextBox Width="3.3in" Height="0.2in" Left="2.9in" Top="0in" Value="= IIF(len(Fields.locationFax)&gt;0, Fields.locationFax,&quot;&quot;)&#xD;&#xA;&#xD;&#xA;" Name="textBox3">
+          <Style TextAlign="Right" />
+        </TextBox>
+      </Items>
+    </DetailSection>
+    <PageFooterSection Height="1in" Name="pageFooterSection1">
+      <Items>
+        <TextBox Width="6.1in" Height="0.2in" Left="0in" Top="0.3in" Value="= &quot;Powered by Courthouse Technologies on &quot; + Format('{0:dddd, MMMM d, yyyy}',Today())" Name="textBox4" />
+      </Items>
+    </PageFooterSection>
+  </Items>
+  <PageSettings PaperKind="Letter" Landscape="False" ColumnCount="1" ColumnSpacing="0in">
+    <Margins>
+      <MarginsU Left="1in" Right="1in" Top="1in" Bottom="1in" />
+    </Margins>
+  </PageSettings>
+  <StyleSheet>
+    <StyleRule>
+      <Style>
+        <Padding Left="2pt" Right="2pt" />
+      </Style>
+      <Selectors>
+        <TypeSelector Type="TextItemBase" />
+        <TypeSelector Type="HtmlTextBox" />
+      </Selectors>
+    </StyleRule>
+  </StyleSheet>
+</Report>

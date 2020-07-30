@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Report DataSourceName="Main" Width="7.5in" Name="r_non_responded" xmlns="http://schemas.telerik.com/reporting/2020/2.0">
+  <DataSources>
+    <SqlDataSource QueryDesignerState="null" ParameterValues="null" ConnectionString="JmsDb" SelectCommand="select pc.CandidateId, c.FirstName, c.LastName, p.PoolNumber, l.Id, ca.Address, ca.City, ca.State, ca.zip from PoolCandidates pc&#xD;&#xA;inner join Candidates c on pc.CandidateId = c.id&#xD;&#xA;inner join pools p on p.id = pc.PoolId&#xD;&#xA;inner join Locations l on p.LocationId = l.id&#xD;&#xA;inner join CandidateAddresses ca on ca.CandidateId = c.Id&#xD;&#xA;where Status &lt; 2&#xD;&#xA;and p.id = @PoolId&#xD;&#xA;" Name="Main">
+      <Parameters>
+        <SqlDataSourceParameter DbType="Int32" Name="@PoolId">
+          <Value>
+            <String>= Parameters.PoolId.Value</String>
+          </Value>
+        </SqlDataSourceParameter>
+      </Parameters>
+    </SqlDataSource>
+    <SqlDataSource QueryDesignerState="null" ParameterValues="null" ConnectionString="JmsDb" SelectCommand="select distinct(l.id) 'LocationId',p.PoolNumber, p.id 'PoolId', l.name 'LocationName' from Pools p&#xD;&#xA;inner join locations l on p.LocationId = l.id&#xD;&#xA;where p.id in &#xD;&#xA;(&#xD;&#xA;&#x9;select PoolId from PoolCandidates&#xD;&#xA;&#x9;where Status &lt; 2&#xD;&#xA;&#x9;)" Name="Location" />
+    <SqlDataSource QueryDesignerState="null" ParameterValues="null" ConnectionString="JmsDb" SelectCommand="select p.PoolNumber, p.id 'PoolId', l.id 'LocationId', l.name 'LocationName',&#xD;&#xA;p.SummonsDateTime&#xD;&#xA; from Pools p&#xD;&#xA;inner join locations l on p.LocationId = l.id&#xD;&#xA;where p.id in &#xD;&#xA;(&#xD;&#xA;&#x9;select PoolId from PoolCandidates&#xD;&#xA;&#x9;where Status &lt; 2&#xD;&#xA;&#x9;)&#xD;&#xA;and l.id =@LocationId&#xD;&#xA;" Name="Pool">
+      <Parameters>
+        <SqlDataSourceParameter DbType="Int32" Name="@LocationId">
+          <Value>
+            <String>= Parameters.LocationId.Value</String>
+          </Value>
+        </SqlDataSourceParameter>
+      </Parameters>
+    </SqlDataSource>
+  </DataSources>
+  <Items>
+    <PageHeaderSection Height="1in" Name="pageHeaderSection1">
+      <Items>
+        <TextBox Width="5.3in" Height="0.4in" Left="1.1in" Top="0.3in" Value="= &quot;Non Responded Report for Pool No: &quot; + Fields.PoolNumber" Name="textBox5">
+          <Style TextAlign="Center">
+            <Font Size="12pt" Bold="True" Underline="True" />
+          </Style>
+        </TextBox>
+      </Items>
+    </PageHeaderSection>
+    <DetailSection Height="0.2in" Name="detailSection1">
+      <Items>
+        <TextBox Width="1in" Height="0.2in" Left="0in" Top="0in" Value="= Fields.CandidateId" Format="{0:0000000000}" Name="textBox1">
+          <Style>
+            <Font Size="8pt" />
+          </Style>
+        </TextBox>
+        <TextBox Width="2in" Height="0.2in" Left="1in" Top="0in" Value="= Fields.FirstName + &quot; &quot; + Fields.LastName" Name="textBox2">
+          <Style>
+            <Font Size="8pt" />
+          </Style>
+        </TextBox>
+        <TextBox Width="2.5in" Height="0.2in" Left="3in" Top="0in" Value="= Fields.Address" Name="textBox3">
+          <Style>
+            <Font Size="8pt" />
+          </Style>
+        </TextBox>
+        <TextBox Width="1.7in" Height="0.2in" Left="5.6in" Top="0in" Value="= Fields.City" Name="textBox4">
+          <Style>
+            <Font Size="8pt" />
+          </Style>
+        </TextBox>
+      </Items>
+    </DetailSection>
+    <PageFooterSection Height="0.496in" Name="pageFooterSection1">
+      <Items>
+        <Shape Width="7.5in" Height="0.052in" Left="0in" Top="0in" Name="shape2">
+          <ShapeType>
+            <LineShape Direction="EW" />
+          </ShapeType>
+        </Shape>
+        <TextBox Width="3.4in" Height="0.2in" Left="0in" Top="0.052in" Value="Powered By Courthouse Technologies" Name="textBox6" />
+      </Items>
+    </PageFooterSection>
+    <ReportHeaderSection Height="0.252in" Name="reportHeaderSection1">
+      <Items>
+        <TextBox Width="1.2in" Height="0.2in" Left="5.6in" Top="0in" Value="City" Name="textBox7">
+          <Style VerticalAlign="Bottom">
+            <Font Bold="True" />
+          </Style>
+        </TextBox>
+        <TextBox Width="1.2in" Height="0.2in" Left="3in" Top="0in" Value="Address" Name="textBox8">
+          <Style VerticalAlign="Bottom">
+            <Font Bold="True" />
+          </Style>
+        </TextBox>
+        <TextBox Width="1.2in" Height="0.2in" Left="1in" Top="0in" Value="Name " Name="textBox9">
+          <Style VerticalAlign="Bottom">
+            <Font Bold="True" />
+          </Style>
+        </TextBox>
+        <TextBox Width="1in" Height="0.2in" Left="0in" Top="0in" Value="Candidate ID" Name="textBox10">
+          <Style VerticalAlign="Bottom">
+            <Font Bold="True" />
+          </Style>
+        </TextBox>
+        <Shape Width="7.5in" Height="0.052in" Left="0in" Top="0.2in" Name="shape1">
+          <ShapeType>
+            <LineShape Direction="EW" />
+          </ShapeType>
+        </Shape>
+      </Items>
+    </ReportHeaderSection>
+    <ReportFooterSection Height="0.348in" Name="reportFooterSection1">
+      <Items>
+        <TextBox Width="1.2in" Height="0.2in" Left="0.4in" Top="0.148in" Value="= &quot;Pool Total: &quot; + Count(Fields.CandidateId)" Name="textBox11" />
+      </Items>
+    </ReportFooterSection>
+  </Items>
+  <PageSettings PaperKind="Letter" Landscape="False" ColumnCount="1" ColumnSpacing="0in" ContinuousPaper="False">
+    <Margins>
+      <MarginsU Left="0.5in" Right="0.5in" Top="0.5in" Bottom="0.5in" />
+    </Margins>
+  </PageSettings>
+  <StyleSheet>
+    <StyleRule>
+      <Style>
+        <Padding Left="2pt" Right="2pt" />
+      </Style>
+      <Selectors>
+        <TypeSelector Type="TextItemBase" />
+        <TypeSelector Type="HtmlTextBox" />
+      </Selectors>
+    </StyleRule>
+  </StyleSheet>
+  <ReportParameters>
+    <ReportParameter Name="LocationId" Type="Integer" Text="Location" Visible="True">
+      <AvailableValues DataSourceName="Location" DisplayMember="= Fields.LocationName" ValueMember="= Fields.LocationId">
+        <Sortings>
+          <Sorting Expression="= Fields.LocationId" Direction="Asc" />
+        </Sortings>
+      </AvailableValues>
+    </ReportParameter>
+    <ReportParameter Name="PoolId" Type="Integer" Text="Pool" Visible="True">
+      <AvailableValues DataSourceName="Pool" DisplayMember="= Fields.PoolNumber" ValueMember="= Fields.PoolId">
+        <Sortings>
+          <Sorting Expression="= Fields.PoolId" Direction="Desc" />
+        </Sortings>
+      </AvailableValues>
+    </ReportParameter>
+  </ReportParameters>
+</Report>

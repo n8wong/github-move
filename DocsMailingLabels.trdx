@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Report DataSourceName="Main" Width="4in" Name="mailing_labels" xmlns="http://schemas.telerik.com/reporting/2020/2.0">
+  <DataSources>
+    <SqlDataSource QueryDesignerState="null" ParameterValues="null" ConnectionString="JmsDb" SelectCommand="select c.id, c.FirstName, c.MiddleName, c.LastName, ca.Address, ca.city, ca.Zip from PoolCandidates pc&#xD;&#xA;left join Candidates c on pc.CandidateId = c.Id&#xD;&#xA;left join CandidateAddresses ca on c.id = ca.CandidateId&#xD;&#xA;left join pools p on pc.PoolId = p.Id&#xD;&#xA;where p.id = @PoolId&#xD;&#xA;&#xD;&#xA;" Name="Main">
+      <Parameters>
+        <SqlDataSourceParameter DbType="Int32" Name="@PoolId">
+          <Value>
+            <String>= Parameters.PoolID.Value</String>
+          </Value>
+        </SqlDataSourceParameter>
+      </Parameters>
+    </SqlDataSource>
+    <SqlDataSource QueryDesignerState="null" ParameterValues="null" ConnectionString="JmsDb" SelectCommand="select distinct(l.id), l.name from Pools p&#xD;&#xA;inner join locations l on p.LocationId = l.id&#xD;&#xA;" Name="Location" />
+    <SqlDataSource QueryDesignerState="null" ParameterValues="null" ConnectionString="JmsDb" SelectCommand="select p.PoolNumber, p.id, p.SummonsDateTime from Pools p&#xD;&#xA;inner join locations l on p.LocationId = l.id&#xD;&#xA;where l.id = @LocationId" Name="Pool">
+      <Parameters>
+        <SqlDataSourceParameter DbType="Int32" Name="@LocationId">
+          <Value>
+            <String>= Parameters.LocationId.Value</String>
+          </Value>
+        </SqlDataSourceParameter>
+      </Parameters>
+    </SqlDataSource>
+  </DataSources>
+  <Items>
+    <DetailSection Height="1.333in" Name="detail">
+      <Items>
+        <TextBox Width="3.8in" Height="0.2in" Left="0.2in" Top="0.166in" Value="= Fields.FirstName + &quot; &quot; + Fields.MiddleName + &quot; &quot; + Fields.LastName" CanGrow="False" CanShrink="False" Name="firstNameDataTextBox" />
+        <TextBox Width="3.8in" Height="0.2in" Left="0.2in" Top="0.367in" Value="= Fields.Address" CanGrow="False" CanShrink="False" Name="addressDataTextBox" />
+        <TextBox Width="3.8in" Height="0.2in" Left="0.2in" Top="0.567in" Value="= Fields.city" CanGrow="False" CanShrink="False" Name="cityDataTextBox" />
+        <TextBox Width="3.8in" Height="0.2in" Left="0.2in" Top="0.767in" Value="= Fields.Zip" Name="textBox1" />
+      </Items>
+    </DetailSection>
+  </Items>
+  <PageSettings PaperKind="Letter" Landscape="False" ColumnCount="2" ColumnSpacing="0.188in" ContinuousPaper="False">
+    <Margins>
+      <MarginsU Left="0.156in" Right="0.156in" Top="0.833in" Bottom="0.833in" />
+    </Margins>
+  </PageSettings>
+  <StyleSheet>
+    <StyleRule>
+      <Style>
+        <Padding Left="2pt" Right="2pt" />
+      </Style>
+      <Selectors>
+        <TypeSelector Type="TextItemBase" />
+        <TypeSelector Type="HtmlTextBox" />
+      </Selectors>
+    </StyleRule>
+  </StyleSheet>
+  <ReportParameters>
+    <ReportParameter Name="LocationId" Type="Integer" Text="Location" Visible="True">
+      <AvailableValues DataSourceName="Location" DisplayMember="= Fields.name" ValueMember="= Fields.id">
+        <Sortings>
+          <Sorting Expression="= Fields.id" Direction="Asc" />
+        </Sortings>
+      </AvailableValues>
+    </ReportParameter>
+    <ReportParameter Name="PoolID" Type="Integer" Text="Pool" Visible="True">
+      <AvailableValues DataSourceName="Pool" DisplayMember="= Fields.PoolNumber" ValueMember="= Fields.id">
+        <Sortings>
+          <Sorting Expression="= Fields.SummonsDateTime" Direction="Desc" />
+        </Sortings>
+      </AvailableValues>
+    </ReportParameter>
+    <ReportParameter Name="CandidateID" Type="Integer" Text="Candidate" Visible="True" MultiValue="True">
+      <AvailableValues DataSourceName="Main" DisplayMember="= Format( &quot;{0:0000000000}&quot;,Fields.id)" ValueMember="= Fields.id">
+        <Sortings>
+          <Sorting Expression="= Fields.id" Direction="Asc" />
+        </Sortings>
+      </AvailableValues>
+    </ReportParameter>
+  </ReportParameters>
+</Report>
