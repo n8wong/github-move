@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Report DataSourceName="Main" Width="19.05cm" Name="r_attended" Zoom="2" xmlns="http://schemas.telerik.com/reporting/2020/2.0">
+  <DataSources>
+    <SqlDataSource QueryDesignerState="null" ParameterValues="{&quot;@locationName&quot;:&quot;1&quot;}" ConnectionString="JmsDb" SelectCommand="Select a.AttendDateTime,&#xD;&#xA;&#x9;CONVERT(varchar,a.AttendDateTime,110) as 'Format Date',&#xD;&#xA;&#x9;l.Name as 'Court', &#xD;&#xA;&#x9;REPLICATE('0',10-LEN(a.PoolCandidateId)) + RTRIM(a.PoolCandidateId) as 'Candidate ID',&#xD;&#xA;&#x9;REPLICATE('0',5-LEN(pc.OrderNumber)) + RTRIM(pc.OrderNumber) as 'Pool Order',&#xD;&#xA;&#x9;CONCAT(c.FirstName,' ', c.LastName) as 'Name',&#xD;&#xA;&#x9;CONCAT(ca.City,', ', ca.State,' ', ca.Zip) as 'City, Zip', &#xD;&#xA;&#x9;CASE WHEN a.AttendStatus = '0' THEN 'Selected'&#xD;&#xA;&#x9;&#x9;WHEN a.AttendStatus = '1' THEN 'Confirmed'&#xD;&#xA;&#x9;&#x9;ELSE 'NULL' &#xD;&#xA;&#x9;END as 'Current Status', &#xD;&#xA;&#x9;cc.ContactValue as 'Email' &#xD;&#xA;FROM AttendanceSchedules a&#xD;&#xA;Left join Candidates c on a.PoolCandidateId = c.Id&#xD;&#xA;Left join CandidateAddresses ca on c.Id = ca.CandidateId&#xD;&#xA;Left join Locations l on a.LocationId=l.Id&#xD;&#xA;Left join CandidateContacts cc on c.id=cc.CandidateId&#xD;&#xA;Left join PoolCandidates pc on a.PoolCandidateId=pc.id&#xD;&#xA;where TimeIn &lt;&gt; '' AND l.id=@LocationId AND convert(date,a.AttendDateTime)=@AttendDate" Name="Main">
+      <Parameters>
+        <SqlDataSourceParameter DbType="Int32" Name="@LocationId">
+          <Value>
+            <String>= Parameters.LocationId.Value</String>
+          </Value>
+        </SqlDataSourceParameter>
+        <SqlDataSourceParameter DbType="DateTime" Name="@AttendDate">
+          <Value>
+            <String>= Parameters.AttendDate.Value</String>
+          </Value>
+        </SqlDataSourceParameter>
+      </Parameters>
+    </SqlDataSource>
+    <SqlDataSource QueryDesignerState="null" ParameterValues="null" ConnectionString="JmsDb" SelectCommand="Select Distinct(l.Name), l.id&#xD;&#xA;FROM AttendanceSchedules a&#xD;&#xA;Left join Candidates c on a.PoolCandidateId = c.Id&#xD;&#xA;Left join CandidateAddresses ca on c.Id = ca.CandidateId&#xD;&#xA;Left join Locations l on a.LocationId=l.Id&#xD;&#xA;Left join CandidateContacts cc on c.id=cc.CandidateId&#xD;&#xA;Left join PoolCandidates pc on  c.id=pc.CandidateId" Name="Location" />
+  </DataSources>
+  <Items>
+    <PageHeaderSection Height="2.5cm" Name="pageHeaderSection1">
+      <Items>
+        <TextBox Width="2.7cm" Height="0.4cm" Left="6.1cm" Top="0.5cm" Value="Attended on: " Name="textBox1">
+          <Style>
+            <Font Size="10pt" Bold="True" />
+            <BorderStyle Bottom="Solid" />
+            <BorderColor Bottom="Black" />
+            <BorderWidth Bottom="1pt" />
+          </Style>
+        </TextBox>
+        <TextBox Width="1.3cm" Height="0.4cm" Left="0cm" Top="1.1cm" Value="Court: " Name="textBox3">
+          <Style>
+            <Font Size="10pt" Bold="True" />
+          </Style>
+        </TextBox>
+        <TextBox Width="2.1cm" Height="0.4cm" Left="1.3cm" Top="1.1cm" Value="= Fields.Court" Name="textBox4">
+          <Style>
+            <Font Size="10pt" Bold="True" />
+          </Style>
+        </TextBox>
+        <TextBox Width="3.6cm" Height="0.4cm" Left="0cm" Top="1.8cm" Value="Candidate ID" Name="textBox5">
+          <Style>
+            <Font Size="10pt" Bold="True" />
+            <BorderStyle Bottom="Solid" />
+            <BorderColor Bottom="Black" />
+            <BorderWidth Bottom="1pt" />
+          </Style>
+        </TextBox>
+        <TextBox Width="5.2cm" Height="0.4cm" Left="3.6cm" Top="1.8cm" Value="Name" Name="textBox7">
+          <Style>
+            <Font Size="10pt" Bold="True" />
+            <BorderStyle Bottom="Solid" />
+            <BorderColor Bottom="Black" />
+            <BorderWidth Bottom="1pt" />
+          </Style>
+        </TextBox>
+        <TextBox Width="8.76cm" Height="0.4cm" Left="8.8cm" Top="1.8cm" Value="City, Zip" Name="textBox8">
+          <Style>
+            <Font Size="10pt" Bold="True" />
+            <BorderStyle Bottom="Solid" />
+            <BorderColor Bottom="Black" />
+            <BorderWidth Bottom="1pt" />
+          </Style>
+        </TextBox>
+        <TextBox Width="1.49cm" Height="0.4cm" Left="17.56cm" Top="1.8cm" Value="Email" Name="textBox10">
+          <Style>
+            <Font Size="10pt" Bold="True" />
+            <BorderStyle Bottom="Solid" />
+            <BorderColor Bottom="Black" />
+            <BorderWidth Bottom="1pt" />
+          </Style>
+        </TextBox>
+        <TextBox Width="4.3cm" Height="0.4cm" Left="8.8cm" Top="0.5cm" Value="= Fields.AttendDateTime" Name="textBox2">
+          <Style>
+            <Font Bold="True" />
+            <BorderStyle Bottom="Solid" />
+            <BorderColor Bottom="Black" />
+            <BorderWidth Bottom="1pt" />
+          </Style>
+        </TextBox>
+      </Items>
+    </PageHeaderSection>
+    <DetailSection Height="0.8cm" Name="detailSection1">
+      <Style>
+        <BorderStyle Bottom="None" />
+        <BorderColor Bottom="Black" />
+        <BorderWidth Bottom="1pt" />
+      </Style>
+      <Items>
+        <TextBox Width="3.6cm" Height="0.6cm" Left="0cm" Top="0cm" Value="= Fields.[Candidate ID]+&quot;-&quot;+Fields.[Pool Order]" Name="textBox13">
+          <Style>
+            <Font Size="10pt" />
+            <BorderStyle Top="None" />
+            <BorderColor Top="Black" />
+            <BorderWidth Top="1pt" />
+          </Style>
+        </TextBox>
+        <TextBox Width="5.2cm" Height="0.6cm" Left="3.6cm" Top="0cm" Value="= Fields.Name" Name="textBox15">
+          <Style>
+            <Font Size="10pt" />
+            <BorderStyle Top="None" />
+            <BorderColor Top="Black" />
+            <BorderWidth Top="1pt" />
+          </Style>
+        </TextBox>
+        <TextBox Width="8.76cm" Height="0.6cm" Left="8.8cm" Top="0cm" Value="= Fields.[City, Zip]" Name="textBox16">
+          <Style>
+            <Font Size="10pt" />
+            <BorderStyle Top="None" />
+            <BorderColor Top="Black" />
+            <BorderWidth Top="1pt" />
+          </Style>
+        </TextBox>
+        <TextBox Width="1.49cm" Height="0.6cm" Left="17.56cm" Top="0cm" Value="= Fields.Email" Name="textBox18">
+          <Style>
+            <Font Size="10pt" />
+            <BorderStyle Top="None" />
+            <BorderColor Top="Black" />
+            <BorderWidth Top="1pt" />
+          </Style>
+        </TextBox>
+      </Items>
+    </DetailSection>
+    <PageFooterSection Height="0.132cm" Name="pageFooterSection1" />
+    <ReportFooterSection Height="0.6cm" Name="reportFooterSection1">
+      <Style>
+        <BorderStyle Top="Solid" />
+        <BorderColor Top="Black" />
+        <BorderWidth Top="1pt" />
+      </Style>
+      <Items>
+        <TextBox Width="2.7cm" Height="0.4cm" Left="0cm" Top="0.2cm" Value="Total Attended:" Name="textBox12">
+          <Style>
+            <Font Size="10pt" />
+          </Style>
+        </TextBox>
+        <TextBox Width="3cm" Height="0.4cm" Left="2.7cm" Top="0.2cm" Value="= Count(Fields.[Candidate ID])" Name="textBox11">
+          <Style>
+            <Font Size="10pt" Bold="True" />
+          </Style>
+        </TextBox>
+      </Items>
+    </ReportFooterSection>
+  </Items>
+  <PageSettings PaperKind="Letter" Landscape="False" ContinuousPaper="False">
+    <Margins>
+      <MarginsU Left="0.5in" Right="0.5in" Top="0.5cm" Bottom="0.5in" />
+    </Margins>
+  </PageSettings>
+  <StyleSheet>
+    <StyleRule>
+      <Style>
+        <Padding Left="2pt" Right="2pt" />
+      </Style>
+      <Selectors>
+        <TypeSelector Type="TextItemBase" />
+        <TypeSelector Type="HtmlTextBox" />
+      </Selectors>
+    </StyleRule>
+  </StyleSheet>
+  <ReportParameters>
+    <ReportParameter Name="LocationId" Type="Integer" Text="Location" Visible="True">
+      <AvailableValues DataSourceName="Location" DisplayMember="= Fields.Name" ValueMember="= Fields.id">
+        <Sortings>
+          <Sorting Expression="= Fields.id" Direction="Asc" />
+        </Sortings>
+      </AvailableValues>
+    </ReportParameter>
+    <ReportParameter Name="AttendDate" Type="DateTime" Text="Attend Date" Visible="True" />
+  </ReportParameters>
+</Report>

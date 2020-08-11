@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Report DataSourceName="Main" Width="7.5in" Name="CaseNominal" xmlns="http://schemas.telerik.com/reporting/2020/2.0">
+  <DataSources>
+    <SqlDataSource QueryDesignerState="null" ParameterValues="null" ConnectionString="JmsDb" SelectCommand="select cc.CandidateId, pc.OrderNumber, c.FirstName, c.MiddleName, c.LastName, c.Occupation,&#xD;&#xA;cadd.Address 'CandidateAddress', cadd.City 'CandidateCity', cadd.State 'CandidateState', &#xD;&#xA;ca.Name 'CaseName', ca.Description 'CaseDescription',&#xD;&#xA;l.Name 'LocationName' from CaseCandidates cc&#xD;&#xA;inner join PoolCandidates pc on cc.CandidateId = pc.CandidateId&#xD;&#xA;inner join pools p on pc.PoolId = p.Id&#xD;&#xA;inner join Candidates c on pc.CandidateId = c.id&#xD;&#xA;inner join CandidateAddresses cadd on c.id = cadd.CandidateId&#xD;&#xA;inner join locations l on p.LocationId = l.id&#xD;&#xA;inner join cases ca on cc.CaseId = ca.Id&#xD;&#xA;where ca.id = @CaseId&#xD;&#xA;order by c.Id" Name="Main">
+      <Parameters>
+        <SqlDataSourceParameter DbType="Int32" Name="@CaseId">
+          <Value>
+            <String>= Parameters.CaseId.Value</String>
+          </Value>
+        </SqlDataSourceParameter>
+      </Parameters>
+    </SqlDataSource>
+    <SqlDataSource QueryDesignerState="null" ParameterValues="null" ConnectionString="JmsDb" SelectCommand="select distinct(l.Name), l.id from cases ca&#xD;&#xA;inner join locations l on ca.LocationId = l.Id" Name="Location" />
+    <SqlDataSource QueryDesignerState="null" ParameterValues="null" ConnectionString="JmsDb" SelectCommand="select ca.id, ca.Name, ca.StartDateTime from cases ca&#xD;&#xA;inner join locations l on ca.LocationId = l.Id&#xD;&#xA;where l.id = @LocationId" Name="Case">
+      <Parameters>
+        <SqlDataSourceParameter DbType="Int32" Name="@LocationId">
+          <Value>
+            <String>= Parameters.LocationId.Value</String>
+          </Value>
+        </SqlDataSourceParameter>
+      </Parameters>
+    </SqlDataSource>
+  </DataSources>
+  <Items>
+    <PageHeaderSection Height="1.8in" Name="pageHeaderSection1">
+      <Items>
+        <TextBox Width="1.2in" Height="0.2in" Left="0in" Top="1.1in" Value="Summons No" Name="textBox6">
+          <Style>
+            <Font Bold="True" />
+          </Style>
+        </TextBox>
+        <TextBox Width="2in" Height="0.2in" Left="1.2in" Top="1.1in" Value="Name" Name="textBox7">
+          <Style>
+            <Font Bold="True" />
+          </Style>
+        </TextBox>
+        <TextBox Width="1.9in" Height="0.2in" Left="3.2in" Top="1.1in" Value="Address" Name="textBox8">
+          <Style>
+            <Font Bold="True" />
+          </Style>
+        </TextBox>
+        <TextBox Width="1.2in" Height="0.2in" Left="6.3in" Top="1.1in" Value="Occupation" Name="textBox9">
+          <Style>
+            <Font Bold="True" />
+          </Style>
+        </TextBox>
+        <Shape Width="7.5in" Height="0.1in" Left="0in" Top="1.3in" Name="shape1">
+          <ShapeType>
+            <LineShape Direction="EW" />
+          </ShapeType>
+        </Shape>
+        <TextBox Width="2.5in" Height="0.2in" Left="2.5in" Top="0.2in" Value="Panel Nominal List By Candidate Id: " Name="textBox12">
+          <Style TextAlign="Center">
+            <Font Bold="True" />
+          </Style>
+        </TextBox>
+        <TextBox Width="1.2in" Height="0.2in" Left="0in" Top="0.5in" Value="Date: " Name="textBox10" />
+        <TextBox Width="1.2in" Height="0.2in" Left="0in" Top="0.7in" Value="Court Name: " Name="textBox11" />
+        <TextBox Width="3in" Height="0.2in" Left="1.2in" Top="0.5in" Value="= Format('{0:dddd, MMMM d, yyyy}',Today())" Name="textBox13" />
+        <TextBox Width="3in" Height="0.2in" Left="1.2in" Top="0.7in" Value="= Fields.LocationName" Name="textBox14" />
+      </Items>
+    </PageHeaderSection>
+    <DetailSection Height="0.2in" Name="detailSection1">
+      <Style>
+        <Font Size="8pt" />
+      </Style>
+      <Items>
+        <TextBox Width="2in" Height="0.2in" Left="1.2in" Top="0in" Value="= Fields.FirstName + &quot; &quot; + Fields.LastName" Name="textBox2">
+          <Style>
+            <Font Size="8pt" />
+          </Style>
+        </TextBox>
+        <TextBox Width="3.1in" Height="0.2in" Left="3.2in" Top="0in" Value="= Fields.CandidateAddress + &quot; &quot; + Fields.CandidateCity + &quot;, &quot; + Fields.CandidateState" Name="textBox3">
+          <Style>
+            <Font Size="8pt" />
+          </Style>
+        </TextBox>
+        <TextBox Width="1.2in" Height="0.2in" Left="0in" Top="0in" Value="= Format(&quot;{0:0000000000}&quot;,Fields.CandidateId) + &quot; - &quot; + Format(&quot;{0:00000}&quot;,Fields.OrderNumber)" Name="textBox15">
+          <Style>
+            <Font Size="8pt" />
+          </Style>
+        </TextBox>
+        <TextBox Width="1.2in" Height="0.2in" Left="6.3in" Top="0in" Value="= Fields.Occupation" Name="textBox1" />
+      </Items>
+    </DetailSection>
+    <PageFooterSection Height="0.6in" Name="pageFooterSection1">
+      <Items>
+        <TextBox Width="6.1in" Height="0.2in" Left="0in" Top="0.1in" Value="= &quot;Powered by Courthouse Technologies on &quot; + Format('{0:dddd, MMMM d, yyyy}',Today())" Name="textBox5" />
+        <Shape Width="7.5in" Height="0.1in" Left="0in" Top="0in" Name="shape2">
+          <ShapeType>
+            <LineShape Direction="EW" />
+          </ShapeType>
+        </Shape>
+      </Items>
+    </PageFooterSection>
+  </Items>
+  <PageSettings PaperKind="Letter" Landscape="False" ColumnCount="1" ColumnSpacing="0in" ContinuousPaper="False">
+    <Margins>
+      <MarginsU Left="0.5in" Right="0.5in" Top="0.5in" Bottom="0.5in" />
+    </Margins>
+  </PageSettings>
+  <StyleSheet>
+    <StyleRule>
+      <Style>
+        <Padding Left="2pt" Right="2pt" />
+      </Style>
+      <Selectors>
+        <TypeSelector Type="TextItemBase" />
+        <TypeSelector Type="HtmlTextBox" />
+      </Selectors>
+    </StyleRule>
+  </StyleSheet>
+  <ReportParameters>
+    <ReportParameter Name="LocationId" Type="Integer" Text="Location" Visible="True">
+      <AvailableValues DataSourceName="Location" DisplayMember="= Fields.Name" ValueMember="= Fields.id">
+        <Sortings>
+          <Sorting Expression="= Fields.id" Direction="Asc" />
+        </Sortings>
+      </AvailableValues>
+    </ReportParameter>
+    <ReportParameter Name="CaseId" Type="Integer" Text="Case" Visible="True">
+      <AvailableValues DataSourceName="Case" DisplayMember="= Fields.Name" ValueMember="= Fields.id">
+        <Sortings>
+          <Sorting Expression="= Fields.StartDateTime" Direction="Desc" />
+        </Sortings>
+      </AvailableValues>
+    </ReportParameter>
+  </ReportParameters>
+</Report>

@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Report DataSourceName="Main" Width="10in" Name="CaseJurorList" xmlns="http://schemas.telerik.com/reporting/2020/2.0">
+  <DataSources>
+    <SqlDataSource QueryDesignerState="null" ParameterValues="null" ConnectionString="JmsDb" SelectCommand="select cc.CandidateId, c.FirstName, c.MiddleName, c.LastName, c.gender, cc.EmpanelmentResult, &#xD;&#xA;cadd.Address, cadd.City, cadd.State, cadd.zip,&#xD;&#xA;j.Id 'JudgeId', j.Name 'JudgeName', ca.Name 'CaseName', ca.Description, ca.StartDateTime,&#xD;&#xA;r.Name 'RoomName',&#xD;&#xA;CASE&#xD;&#xA;    WHEN cc.EmpanelmentResult = '0' THEN 'Juror'&#xD;&#xA;&#x9;WHEN cc.EmpanelmentResult = '1' THEN 'Alternate'&#xD;&#xA;&#x9;WHEN cc.EmpanelmentResult = '2' THEN 'For Cause (P)'&#xD;&#xA;&#x9;WHEN cc.EmpanelmentResult = '3' THEN 'For Cause (D)'&#xD;&#xA;&#x9;WHEN cc.EmpanelmentResult = '4' THEN 'Peremptory (D)'&#xD;&#xA;&#x9;WHEN cc.EmpanelmentResult = '5' THEN 'Peremptory (P)'&#xD;&#xA;&#x9;WHEN cc.EmpanelmentResult = '6' THEN 'Joint Cause'&#xD;&#xA;&#x9;WHEN cc.EmpanelmentResult = '7' THEN 'Court'&#xD;&#xA;&#x9;WHEN cc.EmpanelmentResult = '8' THEN 'Not Used'    &#xD;&#xA;    ELSE 'error'&#xD;&#xA;END as 'PanelResult' from CaseCandidates cc&#xD;&#xA;inner join cases ca on cc.CaseId = ca.id&#xD;&#xA;inner join candidates c on cc.CandidateId = c.id&#xD;&#xA;inner join CandidateAddresses cadd on cc.CandidateId = cadd.CandidateId&#xD;&#xA;left join JudgeLocations jl on ca.JudgeId = jl.JudgeId and ca.LocationId = jl.LocationId&#xD;&#xA;left join judges j on jl.JudgeId = j.id&#xD;&#xA;left join rooms r on r.id = ca.RoomId and r.LocationId = ca.LocationId&#xD;&#xA;where ca.id = @CaseId&#xD;&#xA;&#xD;&#xA;/*&#xD;&#xA;&#x9;&#x9;[EnumMember(Value = &quot;Juror&quot;)] Juror = 0,&#xD;&#xA;        [EnumMember(Value = &quot;Alternate&quot;)] Alternate = 1,&#xD;&#xA;        [EnumMember(Value = &quot;For Cause (P)&quot;)] ForCauseProsecution = 2,&#xD;&#xA;        [EnumMember(Value = &quot;For Cause (D)&quot;)] ForCauseDefense = 3,&#xD;&#xA;        [EnumMember(Value = &quot;Peremptory (D)&quot;)] PeremptoryForDefense = 4,&#xD;&#xA;        [EnumMember(Value = &quot;Peremptory (P)&quot;)] PeremptoryForProsecution = 5,&#xD;&#xA;        [EnumMember(Value = &quot;Joint Cause&quot;)] JointCause = 6,&#xD;&#xA;        [EnumMember(Value = &quot;Court&quot;)] Court = 7,&#xD;&#xA;        [EnumMember(Value = &quot;Not Used&quot;)] NotUsed = 8&#xD;&#xA;*/&#xD;&#xA;&#xD;&#xA;" Name="Main">
+      <Parameters>
+        <SqlDataSourceParameter DbType="Int32" Name="@CaseId">
+          <Value>
+            <String>= Parameters.CaseId.Value</String>
+          </Value>
+        </SqlDataSourceParameter>
+      </Parameters>
+    </SqlDataSource>
+    <SqlDataSource QueryDesignerState="null" ParameterValues="null" ConnectionString="JmsDb" SelectCommand="select distinct(l.name), l.id from cases ca&#xD;&#xA;inner join locations l on ca.LocationId = l.id" Name="Location" />
+    <SqlDataSource QueryDesignerState="null" ParameterValues="null" ConnectionString="JmsDb" SelectCommand="select ca.name, ca.id, ca.StartDateTime from cases ca&#xD;&#xA;inner join locations l on ca.LocationId = l.id&#xD;&#xA;where ca.LocationId = @LocationId" Name="Case">
+      <Parameters>
+        <SqlDataSourceParameter DbType="Int32" Name="@LocationId">
+          <Value>
+            <String>= Parameters.LocationId.Value</String>
+          </Value>
+        </SqlDataSourceParameter>
+      </Parameters>
+    </SqlDataSource>
+  </DataSources>
+  <Items>
+    <PageHeaderSection Height="2.4in" Name="pageHeaderSection1">
+      <Items>
+        <TextBox Width="1.2in" Height="0.3in" Left="4.4in" Top="0.2in" Value="Jury List" Name="textBox1">
+          <Style TextAlign="Center">
+            <Font Size="18pt" />
+          </Style>
+        </TextBox>
+        <TextBox Width="0.7in" Height="0.2in" Left="4in" Top="0.5in" Value="Trial Date:" Name="textBox8" />
+        <TextBox Width="1in" Height="0.2in" Left="0in" Top="0.7in" Value="Judge Name: " Name="textBox7">
+          <Style>
+            <Font Bold="True" />
+          </Style>
+        </TextBox>
+        <TextBox Width="1in" Height="0.2in" Left="0in" Top="0.9in" Value="Case ID: " Name="textBox6">
+          <Style>
+            <Font Bold="True" />
+          </Style>
+        </TextBox>
+        <TextBox Width="1in" Height="0.2in" Left="0in" Top="1.1in" Value="Description: " Name="textBox5">
+          <Style>
+            <Font Bold="True" />
+          </Style>
+        </TextBox>
+        <TextBox Width="1in" Height="0.2in" Left="0in" Top="1.3in" Value="Courtroom: " Name="textBox4">
+          <Style>
+            <Font Bold="True" />
+          </Style>
+        </TextBox>
+        <TextBox Width="1.2in" Height="0.2in" Left="0in" Top="1.9in" Value="Candidate ID" Name="textBox3">
+          <Style>
+            <Font Bold="True" />
+          </Style>
+        </TextBox>
+        <TextBox Width="1.2in" Height="0.2in" Left="1.4in" Top="1.9in" Value="Name" Name="textBox13">
+          <Style>
+            <Font Bold="True" />
+          </Style>
+        </TextBox>
+        <TextBox Width="0.6in" Height="0.2in" Left="2.7in" Top="1.9in" Value="Gender" Name="textBox12">
+          <Style TextAlign="Center">
+            <Font Bold="True" />
+          </Style>
+        </TextBox>
+        <TextBox Width="4in" Height="0.2in" Left="3.8in" Top="1.9in" Value="Address" Name="textBox11">
+          <Style>
+            <Font Bold="True" />
+          </Style>
+        </TextBox>
+        <TextBox Width="2.2in" Height="0.2in" Left="7.8in" Top="1.9in" Value="Status" Name="textBox10">
+          <Style>
+            <Font Bold="True" />
+          </Style>
+        </TextBox>
+        <TextBox Width="0.5in" Height="0.2in" Left="7.1in" Top="0.7in" Value="Date:" Name="textBox2">
+          <Style>
+            <Font Bold="True" />
+          </Style>
+        </TextBox>
+        <TextBox Width="0.5in" Height="0.2in" Left="7.1in" Top="1in" Value="Time: " Name="textBox9">
+          <Style>
+            <Font Bold="True" />
+          </Style>
+        </TextBox>
+        <Shape Width="10in" Height="0.1in" Left="0in" Top="2.1in" Name="shape1">
+          <ShapeType>
+            <LineShape Direction="EW" />
+          </ShapeType>
+        </Shape>
+        <TextBox Width="1.2in" Height="0.2in" Left="1in" Top="0.7in" Value="= Fields.JudgeName" Name="textBox20" />
+        <TextBox Width="1.2in" Height="0.2in" Left="1in" Top="0.9in" Value="= Fields.CaseName" Name="textBox21" />
+        <TextBox Width="1.2in" Height="0.2in" Left="1in" Top="1.1in" Value="= Fields.Description" Name="textBox22" />
+        <TextBox Width="1.2in" Height="0.2in" Left="1in" Top="1.3in" Value="= Fields.RoomName" Name="textBox23" />
+        <TextBox Width="1.2in" Height="0.2in" Left="4.7in" Top="0.5in" Value="= Fields.StartDateTime" Name="textBox24" />
+        <TextBox Width="1.2in" Height="0.2in" Left="7.6in" Top="0.7in" Value="= Today()" Format="{0:D}" Name="textBox25" />
+        <TextBox Width="1.2in" Height="0.2in" Left="7.6in" Top="1in" Value="= Today()" Format="{0:t}" Name="textBox26" />
+      </Items>
+    </PageHeaderSection>
+    <DetailSection Height="0.3in" Name="detailSection1">
+      <Items>
+        <TextBox Width="1.2in" Height="0.2in" Left="0in" Top="0in" Value="= Fields.CandidateId" Name="textBox15" />
+        <TextBox Width="1.2in" Height="0.2in" Left="1.4in" Top="0in" Value="= Fields.FirstName" Name="textBox16" />
+        <TextBox Width="0.6in" Height="0.2in" Left="2.7in" Top="0in" Value="= Fields.gender" Name="textBox17">
+          <Style TextAlign="Center" />
+        </TextBox>
+        <TextBox Width="4in" Height="0.2in" Left="3.8in" Top="0in" Value="= Fields.Address" Name="textBox19" />
+        <TextBox Width="2.2in" Height="0.2in" Left="7.8in" Top="0in" Value="= Fields.PanelResult" Name="textBox18" />
+      </Items>
+    </DetailSection>
+    <PageFooterSection Height="0.5in" Name="pageFooterSection1">
+      <Items>
+        <TextBox Width="0.6in" Height="0.2in" Left="2.5in" Top="0.2in" Value="Total: " Name="textBox14">
+          <Style>
+            <Font Bold="True" />
+          </Style>
+        </TextBox>
+        <TextBox Width="0.6in" Height="0.2in" Left="3.1in" Top="0.2in" Value="= Count(Fields.CandidateId)" Name="textBox27">
+          <Style>
+            <Font Bold="True" />
+          </Style>
+        </TextBox>
+      </Items>
+    </PageFooterSection>
+  </Items>
+  <PageSettings PaperKind="Letter" Landscape="True" ColumnCount="1" ColumnSpacing="0in" ContinuousPaper="False">
+    <Margins>
+      <MarginsU Left="0.5in" Right="0.5in" Top="0.5in" Bottom="0.5in" />
+    </Margins>
+  </PageSettings>
+  <StyleSheet>
+    <StyleRule>
+      <Style>
+        <Padding Left="2pt" Right="2pt" />
+      </Style>
+      <Selectors>
+        <TypeSelector Type="TextItemBase" />
+        <TypeSelector Type="HtmlTextBox" />
+      </Selectors>
+    </StyleRule>
+  </StyleSheet>
+  <ReportParameters>
+    <ReportParameter Name="LocationId" Type="Integer" Text="Location" Visible="True">
+      <AvailableValues DataSourceName="Location" DisplayMember="= Fields.name" ValueMember="= Fields.id">
+        <Sortings>
+          <Sorting Expression="= Fields.id" Direction="Asc" />
+        </Sortings>
+      </AvailableValues>
+    </ReportParameter>
+    <ReportParameter Name="CaseId" Type="Integer" Text="Case" Visible="True">
+      <AvailableValues DataSourceName="Case" DisplayMember="= Fields.name" ValueMember="= Fields.id">
+        <Sortings>
+          <Sorting Expression="= Fields.StartDateTime" Direction="Desc" />
+        </Sortings>
+      </AvailableValues>
+    </ReportParameter>
+  </ReportParameters>
+</Report>

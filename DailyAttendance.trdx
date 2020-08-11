@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Report DataSourceName="Main" Width="19.05cm" Name="Daily Attendance" xmlns="http://schemas.telerik.com/reporting/2020/2.0">
+  <Style>
+    <BorderStyle Top="Solid" />
+    <BorderColor Top="Black" />
+    <BorderWidth Top="1pt" />
+  </Style>
+  <DataSources>
+    <SqlDataSource QueryDesignerState="null" ParameterValues="{&quot;@LocationId&quot;:&quot;1&quot;,&quot;@AttendDate&quot;:&quot;3/26/2019&quot;}" ConnectionString="JmsDb" SelectCommand="Select a.AttendDateTime, l.Name as LocationName, c.Id as CandidateId, p.PoolNumber, a.PoolId, c.FirstName, c.LastName, c.Gender, a.TimeIn&#xD;&#xA;From AttendanceSchedules a&#xD;&#xA;Left join Candidates c on a.PoolCandidateId = c.Id&#xD;&#xA;Left join Locations l on a.LocationId=l.Id&#xD;&#xA;Left join PoolCandidates pc on  a.PoolCandidateId=pc.CandidateId&#xD;&#xA;Left join Pools p on a.PoolId = p.Id&#xD;&#xA;where l.Id = @LocationId AND CAST(a.AttendDateTime AS DATE) = @AttendDate" Name="Main">
+      <Parameters>
+        <SqlDataSourceParameter DbType="Int32" Name="@LocationId">
+          <Value>
+            <String>= Parameters.LocationId.Value</String>
+          </Value>
+        </SqlDataSourceParameter>
+        <SqlDataSourceParameter DbType="DateTime" Name="@AttendDate">
+          <Value>
+            <String>= Parameters.AttendDate.Value</String>
+          </Value>
+        </SqlDataSourceParameter>
+      </Parameters>
+    </SqlDataSource>
+    <SqlDataSource QueryDesignerState="null" ParameterValues="null" ConnectionString="JmsDb" SelectCommand="Select distinct(l.id), l.name from AttendanceSchedules a&#xD;&#xA;Left join Candidates c on a.PoolCandidateId = c.Id&#xD;&#xA;Left join Locations l on a.LocationId=l.Id&#xD;&#xA;Left join PoolCandidates pc on  a.PoolCandidateId=pc.CandidateId&#xD;&#xA;Left join Pools p on a.PoolId = p.Id&#xD;&#xA;" Name="Location" />
+  </DataSources>
+  <Items>
+    <PageHeaderSection Height="2.9cm" Name="pageHeaderSection1">
+      <Style>
+        <BorderStyle Top="None" Bottom="Solid" Left="None" Right="None" />
+        <BorderColor Top="Black" Bottom="Black" Left="Black" Right="Black" />
+        <BorderWidth Top="1pt" Bottom="1pt" Left="1pt" Right="1pt" />
+      </Style>
+      <Items>
+        <TextBox Width="3.4cm" Height="0.4cm" Left="6.096cm" Top="0.6cm" Value="Daily Attendance:" Name="textBox1">
+          <Style>
+            <Font Size="10pt" Bold="True" />
+            <BorderStyle Bottom="Solid" />
+            <BorderColor Bottom="Black" />
+            <BorderWidth Bottom="1pt" />
+          </Style>
+        </TextBox>
+        <TextBox Width="3.692cm" Height="0.4cm" Left="9.496cm" Top="0.6cm" Value="= Fields.[AttendDateTime].Date" Format="{0:D}" Name="textBox2">
+          <Style>
+            <Font Size="10pt" Bold="True" />
+            <BorderStyle Bottom="Solid" />
+            <BorderColor Bottom="Black" />
+            <BorderWidth Bottom="1pt" />
+          </Style>
+        </TextBox>
+        <TextBox Width="1.3cm" Height="0.6cm" Left="0cm" Top="1.4cm" Value="Court: " Name="textBox3">
+          <Style>
+            <Font Size="10pt" Bold="True" />
+          </Style>
+        </TextBox>
+        <TextBox Width="3cm" Height="0.6cm" Left="1.3cm" Top="1.4cm" Value="= Fields.LocationName" Name="textBox4">
+          <Style>
+            <Font Size="10pt" Bold="True" />
+          </Style>
+        </TextBox>
+        <TextBox Width="3cm" Height="0.4cm" Left="0cm" Top="2.4cm" Value="Panelist ID" Name="textBox5">
+          <Style>
+            <Font Size="10pt" Bold="True" />
+          </Style>
+        </TextBox>
+        <TextBox Width="2.6cm" Height="0.4cm" Left="3cm" Top="2.4cm" Value="Pool ID" Name="textBox6">
+          <Style>
+            <Font Size="10pt" Bold="True" />
+          </Style>
+        </TextBox>
+        <TextBox Width="2.2cm" Height="0.4cm" Left="5.6cm" Top="2.4cm" Value="Group ID" Name="textBox7">
+          <Style>
+            <Font Size="10pt" Bold="True" />
+          </Style>
+        </TextBox>
+        <TextBox Width="5cm" Height="0.4cm" Left="7.8cm" Top="2.4cm" Value="Name" Name="textBox8">
+          <Style>
+            <Font Size="10pt" Bold="True" />
+          </Style>
+        </TextBox>
+        <TextBox Width="1.599cm" Height="0.4cm" Left="12.8cm" Top="2.4cm" Value="Gender" Name="textBox9">
+          <Style>
+            <Font Size="10pt" Bold="True" />
+          </Style>
+        </TextBox>
+      </Items>
+    </PageHeaderSection>
+    <DetailSection Height="1.3cm" Name="detailSection1">
+      <Style>
+        <Font Size="18pt" />
+        <BorderStyle Top="None" Bottom="None" Left="None" Right="None" />
+        <BorderColor Top="Black" Bottom="Black" Left="Black" Right="Black" />
+        <BorderWidth Top="1pt" Bottom="1pt" Left="1pt" Right="1pt" />
+      </Style>
+      <Items>
+        <TextBox Width="3cm" Height="0.9cm" Left="0cm" Top="0.2cm" Value="= Format('{0:0000000000}', Fields.[CandidateId])" Name="textBox10">
+          <Style>
+            <Font Size="10pt" />
+          </Style>
+        </TextBox>
+        <TextBox Width="2.6cm" Height="0.9cm" Left="3cm" Top="0.2cm" Value="= Fields.PoolNumber" Name="textBox11">
+          <Style>
+            <Font Size="10pt" />
+          </Style>
+        </TextBox>
+        <TextBox Width="2.2cm" Height="0.9cm" Left="5.6cm" Top="0.2cm" Value="=Format('{0:00000}', Fields.[PoolId])" Name="textBox12">
+          <Style>
+            <Font Size="10pt" />
+          </Style>
+        </TextBox>
+        <TextBox Width="5cm" Height="0.9cm" Left="7.8cm" Top="0.2cm" Value="= Fields.LastName + &quot;, &quot; + Fields.FirstName" Name="textBox13">
+          <Style>
+            <Font Size="10pt" />
+          </Style>
+        </TextBox>
+        <TextBox Width="1.599cm" Height="0.9cm" Left="12.8cm" Top="0.2cm" Value="= Fields.Gender" Name="textBox14">
+          <Style TextAlign="Center">
+            <Font Size="10pt" />
+          </Style>
+        </TextBox>
+        <TextBox Width="4.651cm" Height="0.9cm" Left="14.399cm" Top="0.2cm" Value="= &quot;*&quot; + Format('{0:0000000000}', Fields.[CandidateId]) + &quot;*&quot; " Name="textBox17">
+          <Style>
+            <Font Name="Free 3 of 9 Extended" Size="18pt" />
+          </Style>
+        </TextBox>
+      </Items>
+    </DetailSection>
+    <PageFooterSection Height="0.4cm" Name="pageFooterSection1">
+      <Style>
+        <BorderStyle Top="Solid" Bottom="None" Left="None" Right="None" />
+        <BorderColor Top="Black" Bottom="Black" Left="Black" Right="Black" />
+        <BorderWidth Top="1pt" Bottom="1pt" Left="1pt" Right="1pt" />
+      </Style>
+    </PageFooterSection>
+    <ReportFooterSection Height="1cm" Name="reportFooterSection1">
+      <Style>
+        <BorderStyle Top="Solid" Bottom="None" Left="None" Right="None" />
+        <BorderColor Top="Black" Bottom="Black" Left="Black" Right="Black" />
+        <BorderWidth Top="1pt" Bottom="1pt" Left="1pt" Right="1pt" />
+      </Style>
+      <Items>
+        <TextBox Width="3cm" Height="0.6cm" Left="0cm" Top="0.2cm" Value="Total Attending:" Name="textBox15">
+          <Style>
+            <Font Size="10pt" Bold="True" />
+          </Style>
+        </TextBox>
+        <TextBox Width="3cm" Height="0.6cm" Left="3cm" Top="0.2cm" Value="=Count(Fields.[CandidateId])" Name="textBox16">
+          <Style>
+            <Font Size="10pt" />
+          </Style>
+        </TextBox>
+      </Items>
+    </ReportFooterSection>
+  </Items>
+  <PageSettings PaperKind="Letter" Landscape="False" ContinuousPaper="False">
+    <Margins>
+      <MarginsU Left="0.5in" Right="0.5in" Top="0.5in" Bottom="0.5in" />
+    </Margins>
+  </PageSettings>
+  <StyleSheet>
+    <StyleRule>
+      <Style>
+        <Padding Left="2pt" Right="2pt" />
+      </Style>
+      <Selectors>
+        <TypeSelector Type="TextItemBase" />
+        <TypeSelector Type="HtmlTextBox" />
+      </Selectors>
+    </StyleRule>
+  </StyleSheet>
+  <ReportParameters>
+    <ReportParameter Name="LocationId" Type="Integer" Text="Location" Visible="True">
+      <AvailableValues DataSourceName="Location" DisplayMember="= Fields.Name" ValueMember="= Fields.Id">
+        <Sortings>
+          <Sorting Expression="= Fields.id" Direction="Asc" />
+        </Sortings>
+      </AvailableValues>
+    </ReportParameter>
+    <ReportParameter Name="AttendDate" Type="DateTime" Text="Attend Date" Visible="True">
+      <AvailableValues DisplayMember="= Fields.AttendDateTime" ValueMember="= Parameters.AttendDate.Value" />
+    </ReportParameter>
+  </ReportParameters>
+</Report>

@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Report DataSourceName="Main" Width="7.5in" Name="CasePanelResult" xmlns="http://schemas.telerik.com/reporting/2020/2.0">
+  <DataSources>
+    <SqlDataSource QueryDesignerState="null" ParameterValues="null" ConnectionString="JmsDb" SelectCommand="select ca.Name 'CaseName', ca.StartDateTime, ca.EndDate, ca.TrialStartDateTime, ca.EndDate, ca.JudgeId, j.Name 'JudgeName', ca.RequestedNumJurors, ca.RequestedNumPanelists, ca.RequestedNumAlternates, &#xD;&#xA;ca.PanelistsSentCount, ca.RoomId, r.Name 'RoomName', ca.JurorsSeatedCount, ca.AlternatesSeatedCount, ca.NotUsedCount,&#xD;&#xA;ca.ProsecutionForCauseCount, ca.DefenseForCauseCount, ca.ProsecutionForPeremptoryCount, ca.DefenseForPeremptoryCount, ca.JointForCauseCount, ca.DismissedByCourtCount&#xD;&#xA;from cases ca&#x9;&#xD;&#xA;left join JudgeLocations jl on ca.JudgeId = jl.JudgeId and ca.LocationId = jl.LocationId&#xD;&#xA;left join judges j on jl.JudgeId = j.id&#xD;&#xA;left join rooms r on r.id = ca.RoomId and r.LocationId = ca.LocationId&#xD;&#xA;where ca.EndDate IS NOT NULL&#xD;&#xA;and ca.JurorsSeatedCount&gt;0&#xD;&#xA;and ca.StartDateTime between @FromDate and @ToDate&#xD;&#xA;and ca.LocationId = @LocationId" Name="Main">
+      <Parameters>
+        <SqlDataSourceParameter DbType="DateTime" Name="@FromDate" />
+        <SqlDataSourceParameter DbType="DateTime" Name="@ToDate" />
+        <SqlDataSourceParameter DbType="Int32" Name="@LocationId">
+          <Value>
+            <String>= Parameters.LocationId.Value</String>
+          </Value>
+        </SqlDataSourceParameter>
+      </Parameters>
+    </SqlDataSource>
+    <SqlDataSource QueryDesignerState="null" ParameterValues="null" ConnectionString="JmsDb" SelectCommand="select ca.LocationId, l.Name from cases ca&#xD;&#xA;inner join locations l on ca.LocationId = l.id" Name="Location" />
+  </DataSources>
+  <Items>
+    <PageHeaderSection Height="1.7in" Name="pageHeaderSection1">
+      <Style>
+        <BorderStyle Top="Solid" Bottom="Solid" Left="Solid" Right="Solid" />
+        <BorderColor Default="Transparent" Top="Transparent" Bottom="Transparent" Left="Transparent" Right="Transparent" />
+        <BorderWidth Top="1pt" Bottom="1pt" Left="1pt" Right="1pt" />
+      </Style>
+      <Items>
+        <TextBox Width="2.7in" Height="0.3in" Left="2.4in" Top="0.2in" Value="Panel Results" Name="textBox1">
+          <Style TextAlign="Center">
+            <Font Size="14pt" Underline="False" />
+          </Style>
+        </TextBox>
+        <TextBox Width="0.9in" Height="0.2in" Left="0in" Top="0.8in" Value="Date Printed: " Name="textBox18" />
+        <TextBox Width="0.9in" Height="0.2in" Left="0in" Top="1.2in" Value="Time Printed: " Name="textBox19" />
+        <TextBox Width="1.8in" Height="0.2in" Left="0.9in" Top="0.8in" Value="= Today()" Format="{0:D}" Name="textBox35" />
+        <TextBox Width="1.8in" Height="0.2in" Left="0.9in" Top="1.2in" Value="= Today()" Format="{0:t}" Name="textBox36" />
+        <Shape Width="3.7in" Height="0.052in" Left="1.9in" Top="0.5in" Angle="0" Name="shape5">
+          <ShapeType>
+            <LineShape Direction="EW" />
+          </ShapeType>
+        </Shape>
+        <Shape Width="7.5in" Height="0.1in" Left="0in" Top="1.5in" Name="shape2">
+          <Style LineWidth="2pt" />
+          <ShapeType>
+            <LineShape Direction="EW" />
+          </ShapeType>
+        </Shape>
+      </Items>
+    </PageHeaderSection>
+    <DetailSection Height="5.8in" Name="detailSection1">
+      <Style>
+        <Font Bold="False" />
+      </Style>
+      <Items>
+        <TextBox Width="1.7in" Height="0.2in" Left="4.6in" Top="4.3in" Value="By Court: " Name="textBox2">
+          <Style TextAlign="Right">
+            <Font Bold="True" />
+          </Style>
+        </TextBox>
+        <TextBox Width="1.7in" Height="0.2in" Left="4.6in" Top="4in" Value="Joint Cause: " Name="textBox3">
+          <Style TextAlign="Right">
+            <Font Bold="True" />
+          </Style>
+        </TextBox>
+        <TextBox Width="1.7in" Height="0.2in" Left="4.6in" Top="3.6in" Value="Premptory ( Prosecution ): " Name="textBox4">
+          <Style TextAlign="Right">
+            <Font Bold="True" />
+          </Style>
+        </TextBox>
+        <TextBox Width="1.7in" Height="0.2in" Left="4.6in" Top="3.3in" Value="Premptory ( Defence ): " Name="textBox5">
+          <Style TextAlign="Right">
+            <Font Bold="True" />
+          </Style>
+        </TextBox>
+        <TextBox Width="1.7in" Height="0.2in" Left="4.6in" Top="2.9in" Value="For Cause ( Prosecution ): " Name="textBox6">
+          <Style TextAlign="Right">
+            <Font Bold="True" />
+          </Style>
+        </TextBox>
+        <TextBox Width="1.7in" Height="0.2in" Left="4.6in" Top="2.6in" Value="For Cause ( Defence ): " Name="textBox7">
+          <Style TextAlign="Right">
+            <Font Bold="True" />
+          </Style>
+        </TextBox>
+        <TextBox Width="1.7in" Height="0.2in" Left="4.6in" Top="2.1in" Value="Not Used: " Name="textBox8">
+          <Style TextAlign="Right">
+            <Font Bold="True" />
+          </Style>
+        </TextBox>
+        <TextBox Width="1.7in" Height="0.2in" Left="4.6in" Top="1.7in" Value="Room: " Name="textBox9">
+          <Style TextAlign="Right">
+            <Font Bold="True" />
+          </Style>
+        </TextBox>
+        <TextBox Width="1.4in" Height="0.2in" Left="2.5in" Top="2.1in" Value="Alternatives: " Name="textBox10">
+          <Style TextAlign="Right">
+            <Font Bold="True" />
+          </Style>
+        </TextBox>
+        <TextBox Width="1.4in" Height="0.2in" Left="2.5in" Top="1.7in" Value="Members Sent: " Name="textBox11">
+          <Style TextAlign="Right">
+            <Font Bold="True" />
+          </Style>
+        </TextBox>
+        <TextBox Width="1.7in" Height="0.2in" Left="0in" Top="2.1in" Value="Jurors: " Name="textBox12">
+          <Style TextAlign="Right">
+            <Font Bold="True" />
+          </Style>
+        </TextBox>
+        <TextBox Width="1.7in" Height="0.2in" Left="0in" Top="1.7in" Value="Members Requested:" Name="textBox13">
+          <Style TextAlign="Right">
+            <Font Bold="True" />
+          </Style>
+        </TextBox>
+        <TextBox Width="1.7in" Height="0.2in" Left="0in" Top="1.3in" Value="Judge: " Name="textBox14">
+          <Style TextAlign="Right">
+            <Font Bold="True" />
+          </Style>
+        </TextBox>
+        <TextBox Width="1.1in" Height="0.2in" Left="0in" Top="0.8in" Value="End Date: " Name="textBox15" />
+        <TextBox Width="1.1in" Height="0.2in" Left="0in" Top="0.5in" Value="Start Date: " Name="textBox16" />
+        <TextBox Width="1.1in" Height="0.2in" Left="0in" Top="0.2in" Value="Case Name: " Name="textBox17" />
+        <Shape Width="7.5in" Height="0.2in" Left="0in" Top="1.1in" Name="shape3">
+          <ShapeType>
+            <LineShape Direction="EW" />
+          </ShapeType>
+        </Shape>
+        <Shape Width="7.5in" Height="0.2in" Left="0in" Top="2.3in" Name="shape4">
+          <ShapeType>
+            <LineShape Direction="EW" />
+          </ShapeType>
+        </Shape>
+        <TextBox Width="0.3in" Height="0.2in" Left="3.9in" Top="1.7in" Value="= Fields.PanelistsSentCount" Name="textBox20" />
+        <TextBox Width="0.3in" Height="0.2in" Left="3.9in" Top="2.1in" Value="= Fields.AlternatesSeatedCount" Name="textBox21" />
+        <TextBox Width="0.4in" Height="0.2in" Left="6.3in" Top="2.1in" Value="= Fields.NotUsedCount" Name="textBox22" />
+        <TextBox Width="0.6in" Height="0.2in" Left="1.7in" Top="2.1in" Value="= Fields.JurorsSeatedCount" Name="textBox23" />
+        <TextBox Width="1.2in" Height="0.2in" Left="6.3in" Top="2.6in" Value="= Fields.DefenseForCauseCount" Name="textBox24" />
+        <TextBox Width="1.2in" Height="0.2in" Left="6.3in" Top="3.3in" Value="= Fields.DefenseForPeremptoryCount" Name="textBox25" />
+        <TextBox Width="1.2in" Height="0.2in" Left="6.3in" Top="4in" Value="= Fields.JointForCauseCount" Name="textBox26" />
+        <TextBox Width="1.2in" Height="0.2in" Left="6.3in" Top="4.3in" Value="= Fields.DismissedByCourtCount" Name="textBox27" />
+        <TextBox Width="1.2in" Height="0.2in" Left="6.3in" Top="3.6in" Value="= Fields.ProsecutionForPeremptoryCount" Name="textBox28" />
+        <TextBox Width="1.2in" Height="0.2in" Left="6.3in" Top="2.9in" Value="= Fields.ProsecutionForCauseCount" Name="textBox29" />
+        <TextBox Width="1.2in" Height="0.2in" Left="6.3in" Top="1.7in" Value="= Fields.RoomName" Name="textBox30" />
+        <TextBox Width="0.6in" Height="0.2in" Left="1.7in" Top="1.7in" Value="= Fields.RequestedNumPanelists" Name="textBox31" />
+        <TextBox Width="2.5in" Height="0.2in" Left="1.1in" Top="0.2in" Value="= Fields.CaseName" Name="textBox32" />
+        <TextBox Width="2.5in" Height="0.2in" Left="1.1in" Top="0.5in" Value="= Fields.StartDateTime" Format="{0:D}" Name="textBox33" />
+        <TextBox Width="2.5in" Height="0.2in" Left="1.1in" Top="0.8in" Value="= Fields.EndDate" Name="textBox34" />
+        <TextBox Width="1.2in" Height="0.2in" Left="1.7in" Top="1.3in" Value="= Fields.JudgeName" Name="textBox37" />
+      </Items>
+    </DetailSection>
+    <PageFooterSection Height="1in" Name="pageFooterSection1" />
+  </Items>
+  <PageSettings PaperKind="Letter" Landscape="False" ColumnCount="1" ColumnSpacing="0in" ContinuousPaper="False">
+    <Margins>
+      <MarginsU Left="0.5in" Right="0.5in" Top="0.5in" Bottom="0.5in" />
+    </Margins>
+  </PageSettings>
+  <StyleSheet>
+    <StyleRule>
+      <Style>
+        <Padding Left="2pt" Right="2pt" />
+      </Style>
+      <Selectors>
+        <TypeSelector Type="TextItemBase" />
+        <TypeSelector Type="HtmlTextBox" />
+      </Selectors>
+    </StyleRule>
+  </StyleSheet>
+  <ReportParameters>
+    <ReportParameter Name="LocationId" Type="Integer" Text="Location" Visible="True">
+      <AvailableValues DataSourceName="Location" DisplayMember="= Fields.Name" ValueMember="= Fields.LocationId">
+        <Sortings>
+          <Sorting Expression="= Fields.LocationId" Direction="Asc" />
+        </Sortings>
+      </AvailableValues>
+    </ReportParameter>
+    <ReportParameter Name="FromDate" Type="DateTime" Text="From Date" Visible="True" />
+    <ReportParameter Name="ToDate" Type="DateTime" Text="To Date" Visible="True" />
+  </ReportParameters>
+</Report>
