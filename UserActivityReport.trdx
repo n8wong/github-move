@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Report DataSourceName="Main" Width="7.5in" Name="UserActivityReport" Zoom="2" xmlns="http://schemas.telerik.com/reporting/2020/2.0">
+  <DataSources>
+    <SqlDataSource QueryDesignerState="null" ParameterValues="null" ConnectionString="JmsDb" SelectCommand="select FORMAT(ch.CreatedDateTimeUtc, 'dd/MM/yyyy, hh:mm:ss') 'HistoryDate', ch.CreatedBy, p.PoolNumber,&#xD;&#xA;ch.Description, ch.notes , ca.Name 'CaseName'&#xD;&#xA;from CandidateHistoryEntries ch&#xD;&#xA;inner join pools p on ch.PoolId = p.id&#xD;&#xA;left join cases ca on ch.CaseId = ca.Id&#xD;&#xA;where ch.CreatedBy = @username&#xD;&#xA;and ch.CreatedDateTimeUtc between @from and @to&#xD;&#xA;group by FORMAT(ch.CreatedDateTimeUtc, 'dd/MM/yyyy, hh:mm:ss') , ch.CreatedBy, p.PoolNumber, &#xD;&#xA;ch.Description, ch.notes, ca.Name&#xD;&#xA;order by FORMAT(ch.CreatedDateTimeUtc, 'dd/MM/yyyy, hh:mm:ss') asc" Name="Main">
+      <Parameters>
+        <SqlDataSourceParameter DbType="String" Name="@username">
+          <Value>
+            <String>= Parameters.username.Value</String>
+          </Value>
+        </SqlDataSourceParameter>
+        <SqlDataSourceParameter DbType="DateTime" Name="@from">
+          <Value>
+            <String>= Parameters.FromDate.Value</String>
+          </Value>
+        </SqlDataSourceParameter>
+        <SqlDataSourceParameter DbType="DateTime" Name="@to">
+          <Value>
+            <String>= Parameters.ToDate.Value</String>
+          </Value>
+        </SqlDataSourceParameter>
+      </Parameters>
+    </SqlDataSource>
+    <SqlDataSource QueryDesignerState="null" ParameterValues="null" ConnectionString="JmsDb" SelectCommand="select Distinct(CreatedBy) from CandidateHistoryEntries&#xD;&#xA;order by CreatedBy" Name="Username" />
+  </DataSources>
+  <Items>
+    <PageHeaderSection Height="1.3in" Name="pageHeaderSection1">
+      <Items>
+        <TextBox Width="1.8in" Height="0.2in" Left="0in" Top="1in" Value="Date / Time" Name="textBox6" />
+        <TextBox Width="0.755in" Height="0.2in" Left="1.82in" Top="1in" Value="Pool ID" Name="textBox7">
+          <Style TextAlign="Center" />
+        </TextBox>
+        <TextBox Width="1.2in" Height="0.2in" Left="2.645in" Top="1in" Value="Case ID" Name="textBox8">
+          <Style TextAlign="Center" />
+        </TextBox>
+        <TextBox Width="1.725in" Height="0.2in" Left="3.845in" Top="1in" Value="Description" Name="textBox9" />
+        <TextBox Width="1.93in" Height="0.2in" Left="5.57in" Top="1in" Value="Action Description" Name="textBox10" />
+        <Shape Width="7.5in" Height="0.1in" Left="0in" Top="1.2in" Name="shape2">
+          <ShapeType>
+            <LineShape Direction="EW" />
+          </ShapeType>
+        </Shape>
+        <TextBox Width="1.5in" Height="0.2in" Left="0in" Top="0.5in" Value="User Activity Between: " Name="textBox12" />
+        <TextBox Width="2.5in" Height="0.2in" Left="0in" Top="0.2in" Value="User Activity Report for User Name:" Name="textBox13">
+          <Style>
+            <Font Bold="True" />
+          </Style>
+        </TextBox>
+        <TextBox Width="1.35in" Height="0.2in" Left="2.495in" Top="0.2in" Value="= Fields.CreatedBy" Name="textBox14" />
+        <TextBox Width="3.2in" Height="0.2in" Left="1.5in" Top="0.5in" Value="= Format('{0:MM-dd-yy}', Parameters.FromDate.Value) + &quot; and &quot; + Format('{0:MM-dd-yy}', Parameters.ToDate.Value)&#xD;&#xA;&#xD;&#xA;" Name="textBox15" />
+      </Items>
+    </PageHeaderSection>
+    <DetailSection Height="0.2in" Name="detailSection1">
+      <Items>
+        <TextBox Width="0.755in" Height="0.2in" Left="1.82in" Top="0in" Value="= Fields.PoolNumber" Name="textBox2">
+          <Style TextAlign="Center" />
+        </TextBox>
+        <TextBox Width="1.2in" Height="0.2in" Left="2.645in" Top="0in" Value="= Fields.CaseName" Name="textBox3">
+          <Style TextAlign="Center" />
+        </TextBox>
+        <TextBox Width="1.725in" Height="0.2in" Left="3.845in" Top="0in" Value="= Fields.Description" Name="textBox4" />
+        <TextBox Width="1.93in" Height="0.2in" Left="5.57in" Top="0in" Value="= Fields.notes" Name="textBox5" />
+        <TextBox Width="1.82in" Height="0.2in" Left="0in" Top="0in" Value="= Fields.HistoryDate" Name="textBox1" />
+      </Items>
+    </DetailSection>
+    <PageFooterSection Height="1.048in" Name="pageFooterSection1">
+      <Items>
+        <TextBox Width="6.1in" Height="0.2in" Left="0in" Top="0.1in" Value="= &quot;Powered by Courthouse Technologies on &quot; + Format('{0:dddd, MMMM d, yyyy}',Today())" Name="textBox11" />
+        <Shape Width="7.5in" Height="0.1in" Left="0in" Top="0in" Name="shape1">
+          <ShapeType>
+            <LineShape Direction="EW" />
+          </ShapeType>
+        </Shape>
+      </Items>
+    </PageFooterSection>
+  </Items>
+  <PageSettings PaperKind="Letter" Landscape="False" ColumnCount="1" ColumnSpacing="0in">
+    <Margins>
+      <MarginsU Left="1in" Right="1in" Top="1in" Bottom="1in" />
+    </Margins>
+  </PageSettings>
+  <StyleSheet>
+    <StyleRule>
+      <Style>
+        <Padding Left="2pt" Right="2pt" />
+      </Style>
+      <Selectors>
+        <TypeSelector Type="TextItemBase" />
+        <TypeSelector Type="HtmlTextBox" />
+      </Selectors>
+    </StyleRule>
+  </StyleSheet>
+  <ReportParameters>
+    <ReportParameter Name="Username" Text="Username" Visible="True">
+      <AvailableValues DataSourceName="Username" DisplayMember="= Fields.CreatedBy" ValueMember="= Fields.CreatedBy" />
+      <Value>
+        <String></String>
+      </Value>
+    </ReportParameter>
+    <ReportParameter Name="FromDate" Type="DateTime" Text="From Date" Visible="True" />
+    <ReportParameter Name="ToDate" Type="DateTime" Text="To Date" Visible="True" />
+  </ReportParameters>
+</Report>
