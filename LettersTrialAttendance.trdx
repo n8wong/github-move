@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Report DataSourceName="Main" Width="7.5in" Name="l_trial_attendance" xmlns="http://schemas.telerik.com/reporting/2020/2.0">
+  <DataSources>
+    <SqlDataSource QueryDesignerState="null" ParameterValues="null" ConnectionString="JmsDb" SelectCommand="select cc.CandidateId, cc.CaseId, c.FirstName, c.MiddleName, c.LastName,&#xD;&#xA;ca.Address as 'CandidateAddress', ca.City as 'CandidateCity', ca.state as 'CandidateState', ca.zip as 'CandidateZip',&#xD;&#xA;p.PoolNumber, p.SummonsDateTime,&#xD;&#xA;l.Address as 'LocationAddress', l.City as 'LocationCity', l.State  as 'LocationState', &#xD;&#xA;l.Zip  as 'LocationZip', l.Phone  as 'LocationPhone', l.CallInPhone, l.Fax, l.Building, l.name as LocationName, l.SignatureName,  l.SignatureTitle,&#xD;&#xA;cases.TrialStartDateTime from CaseCandidates cc&#xD;&#xA;inner join candidates c on cc.CandidateId = c.Id&#xD;&#xA;inner join CandidateAddresses ca on ca.CandidateId = c.Id&#xD;&#xA;inner join pools p on cc.PoolId = p.Id&#xD;&#xA;inner join cases on cc.CaseId = cases.Id&#xD;&#xA;inner join  locations l on cc.LocationId = l.id&#xD;&#xA;where cc.CandidateId in (@CandidateId)" Name="Main">
+      <Parameters>
+        <SqlDataSourceParameter DbType="Int32" Name="@CandidateId">
+          <Value>
+            <String>= Parameters.CandidateId.Value</String>
+          </Value>
+        </SqlDataSourceParameter>
+      </Parameters>
+    </SqlDataSource>
+    <SqlDataSource QueryDesignerState="null" ParameterValues="null" ConnectionString="JmsDb" SelectCommand="select distinct(l.name), l.id from cases ca&#xD;&#xA;inner join locations l on ca.LocationId = l.id&#xD;&#xA;" Name="Location" />
+    <SqlDataSource QueryDesignerState="null" ParameterValues="null" ConnectionString="JmsDb" SelectCommand="select name, id from cases&#xD;&#xA;where locationid=@LocationId &#xD;&#xA;order by id desc" Name="Case">
+      <Parameters>
+        <SqlDataSourceParameter DbType="Int32" Name="@LocationId">
+          <Value>
+            <String>= Parameters.LocationId.Value</String>
+          </Value>
+        </SqlDataSourceParameter>
+      </Parameters>
+    </SqlDataSource>
+    <SqlDataSource QueryDesignerState="null" ParameterValues="null" ConnectionString="JmsDb" SelectCommand="select CandidateId from CaseCandidates&#xD;&#xA;inner join cases on CaseCandidates.CaseId = cases.Id&#xD;&#xA;where cases.id = @CaseId" Name="Candidate">
+      <Parameters>
+        <SqlDataSourceParameter DbType="Int32" Name="@CaseId">
+          <Value>
+            <String>= Parameters.CaseId.Value</String>
+          </Value>
+        </SqlDataSourceParameter>
+      </Parameters>
+    </SqlDataSource>
+  </DataSources>
+  <Items>
+    <PageHeaderSection Height="2in" Name="pageHeaderSection1">
+      <Items>
+        <TextBox Width="6.5in" Height="0.5in" Left="0.5in" Top="0.1in" Value="= Fields.LocationName" Name="textBox9">
+          <Style TextAlign="Center" VerticalAlign="Bottom">
+            <Font Name="Times New Roman" Size="14pt" />
+          </Style>
+        </TextBox>
+        <TextBox Width="6.5in" Height="0.2in" Left="0.5in" Top="0.6in" Value="= Fields.Building" Name="textBox10">
+          <Style TextAlign="Center">
+            <Font Name="Times New Roman" />
+          </Style>
+        </TextBox>
+        <TextBox Width="6.5in" Height="0.2in" Left="0.5in" Top="0.8in" Value="= Fields.LocationAddress" Name="textBox11">
+          <Style TextAlign="Center">
+            <Font Name="Times New Roman" />
+          </Style>
+        </TextBox>
+        <TextBox Width="6.5in" Height="0.2in" Left="0.5in" Top="1in" Value="= Fields.LocationCity + &quot;, &quot; + Fields.LocationState + &quot; &quot; + IIF(len(Fields.LocationZip) &gt; 5, SubStr(Fields.LocationZip, 0 ,5) + &quot;-&quot; + SubStr(Fields.LocationZip, 5, 9), Fields.LocationZip)" Name="textBox12">
+          <Style TextAlign="Center">
+            <Font Name="Times New Roman" />
+          </Style>
+        </TextBox>
+        <TextBox Width="6.5in" Height="0.2in" Left="0.5in" Top="1.2in" Value="= &quot;Telephone: &quot; + Fields.LocationPhone" Name="textBox13">
+          <Style TextAlign="Center">
+            <Font Name="Times New Roman" />
+          </Style>
+        </TextBox>
+      </Items>
+    </PageHeaderSection>
+    <DetailSection PageBreak="After" Height="5.8in" Name="detailSection1">
+      <Items>
+        <TextBox Width="6.5in" Height="0.2in" Left="0.5in" Top="0in" Value="= Fields.FirstName + &quot; &quot; + Fields.LastName" Name="textBox1" />
+        <TextBox Width="6.5in" Height="0.2in" Left="0.5in" Top="0.2in" Value="= Fields.CandidateAddress" Name="textBox2" />
+        <TextBox Width="6.5in" Height="0.2in" Left="0.5in" Top="0.4in" Value="= Fields.CandidateCity + &quot;, &quot;  + Fields.CandidateState + &quot; &quot; + &#xD;&#xA;IIF(len(Fields.CandidateZip) &gt; 5, SubStr(Fields.CandidateZip, 0 ,5) + &quot;-&quot; + SubStr(Fields.CandidateZip, 5, 9), Fields.CandidateZip)" Name="textBox3" />
+        <TextBox Width="6.5in" Height="0.2in" Left="0.5in" Top="1.7in" Value="Dear Juror" Name="textBox4" />
+        <TextBox Width="6.5in" Height="0.2in" Left="0.5in" Top="1.2in" Value="Notice of Scheduled Trial" Name="textBox5" />
+        <TextBox Width="6.5in" Height="0.2in" Left="0.5in" Top="0.8in" Value="= &quot;Juror No. &quot; + Format('{0:0000000000}', Fields.CandidateId)" Name="textBox6" />
+        <TextBox Width="6.5in" Height="0.2in" Left="0.5in" Top="4.693in" Value="= Fields.SignatureName" Name="textBox14" />
+        <TextBox Width="6.5in" Height="0.2in" Left="0.5in" Top="4.893in" Value="= Fields.SignatureTitle" Name="textBox15" />
+        <HtmlTextBox Width="6.5in" Height="2.4in" Left="0.5in" Top="2.2in" Value="&lt;p&gt;You were previously summoned as a District Court Juror for the period of {Fields.SummonsDateTime.ToString(&quot;MMMM d, yyyy&quot;)}. Please report on the date specified below for jury selection. The jury trial will commence immediately following the jury selection.&lt;/p&gt;&lt;p&gt;&lt;strong&gt;&lt;span style=&quot;text-decoration: underline&quot;&gt;Trial Report Date:&lt;/span&gt;&lt;/strong&gt; {Fields.TrialStartDateTime.ToString(&quot;dddd, d MMMM, yyyy&quot;)}&lt;/p&gt;&lt;p&gt;Please called the Jury Line at {Fields.CallInPhone} after 5:00pm on the day BEFORE you are to appear for jury service. You will be advised of the time and place to appear as well as any changes in the court schedule.&lt;/p&gt;&lt;p&gt;Except in the case of an emergency, there will be no excusals from jury service on the day of the trial.&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Failure to appear for jury service as directed will result in&amp;nbsp;Contempt of Court proceedings before a District Judge.&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;Respectfully yours,&lt;/p&gt;" Name="htmlTextBox1" />
+      </Items>
+    </DetailSection>
+    <PageFooterSection Height="0.2in" Name="pageFooterSection1">
+      <Items>
+        <TextBox Width="7.5in" Height="0.2in" Left="0in" Top="0in" Value="= &quot;Powered By Courthouse Technologies on: &quot; + Format('{0:dddd, MMMM d, yyyy}',Today())" Name="textBox16" />
+      </Items>
+    </PageFooterSection>
+  </Items>
+  <PageSettings PaperKind="Letter" Landscape="False" ColumnCount="1" ColumnSpacing="0in" ContinuousPaper="False">
+    <Margins>
+      <MarginsU Left="0.5in" Right="0.5in" Top="0.5in" Bottom="0.5in" />
+    </Margins>
+  </PageSettings>
+  <StyleSheet>
+    <StyleRule>
+      <Style>
+        <Padding Left="2pt" Right="2pt" />
+      </Style>
+      <Selectors>
+        <TypeSelector Type="TextItemBase" />
+        <TypeSelector Type="HtmlTextBox" />
+      </Selectors>
+    </StyleRule>
+  </StyleSheet>
+  <ReportParameters>
+    <ReportParameter Name="LocationId" Type="Integer" Text="Location" Visible="True">
+      <AvailableValues DataSourceName="Location" DisplayMember="= Fields.name" ValueMember="= Fields.id">
+        <Sortings>
+          <Sorting Expression="= Fields.id" Direction="Asc" />
+        </Sortings>
+      </AvailableValues>
+    </ReportParameter>
+    <ReportParameter Name="CaseId" Type="Integer" Text="Case" Visible="True">
+      <AvailableValues DataSourceName="Case" DisplayMember="= Fields.name" ValueMember="= Fields.id">
+        <Sortings>
+          <Sorting Expression="= Fields.id" Direction="Desc" />
+        </Sortings>
+      </AvailableValues>
+    </ReportParameter>
+    <ReportParameter Name="CandidateId" Type="Integer" Text="Candidate" Visible="True" MultiValue="True">
+      <AvailableValues DataSourceName="Candidate" DisplayMember="= Format('{0:0000000000}',Fields.CandidateId)" ValueMember="= Fields.CandidateId">
+        <Sortings>
+          <Sorting Expression="= Fields.CandidateId" Direction="Asc" />
+        </Sortings>
+      </AvailableValues>
+    </ReportParameter>
+  </ReportParameters>
+</Report>
