@@ -8,7 +8,7 @@
         <TextBox Width="3.3in" Height="0.2in" Left="2.9in" Top="0in" Value="= IIF(len(Fields.locationFax)&gt;0, Fields.locationFax,&quot;&quot;)&#xD;&#xA;&#xD;&#xA;" Name="textBox3">
           <Style TextAlign="Right" />
         </TextBox>
-        <TextBox Width="2in" Height="0.2in" Left="1.2in" Top="0.7in" Value="= &quot;test&quot;+ Format(&quot;{0:000-000-0000}&quot;,0000000000)" Name="textBox18" />
+        <TextBox Width="2in" Height="0.2in" Left="1.2in" Top="0.7in" Value="= &quot;test &quot;+ Format(&quot;{0:000-000-0000}&quot;,0000000000)" Name="textBox18" />
       </Items>
     </DetailSection>
     <PageFooterSection Height="1in" Name="pageFooterSection1">
