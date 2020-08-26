@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Report DataSourceName="Main" Width="7.5in" Name="FinancialCandidate" Zoom="1.5" xmlns="http://schemas.telerik.com/reporting/2020/2.0">
+  <DataSources>
+    <SqlDataSource QueryDesignerState="null" ParameterValues="null" ConnectionString="JmsDb" SelectCommand="select distinct(pc.CandidateId), &#xD;&#xA;c.FirstName, c.MiddleName, c.LastName, &#xD;&#xA;cadd.Address, cadd.City, cadd.State, cadd.Zip,&#xD;&#xA;(select con.ContactValue from CandidateContacts con where con.ContactType=0 and con.CandidateId = c.id) as 'EmailAddress',&#xD;&#xA;(select con.ContactValue from CandidateContacts con where con.ContactType=1 and con.CandidateId = c.id) as 'HomePhone',&#xD;&#xA;(select con.ContactValue from CandidateContacts con where con.ContactType=2 and con.CandidateId = c.id) as 'MobilePhone',&#xD;&#xA;(select con.ContactValue from CandidateContacts con where con.ContactType=3 and con.CandidateId = c.id) as 'BusinessPhone',&#xD;&#xA;c.IsHispanic, c.Employer, c.SocialSecurityNumber,&#xD;&#xA;c.DriversLicenseNumber, c.DriversStateId&#xD;&#xA;from candidates c&#xD;&#xA;inner join PoolCandidates pc on c.id = pc.CandidateId&#xD;&#xA;inner join CandidateAddresses cadd on c.id = cadd.CandidateId&#xD;&#xA;where pc.CandidateId=@CandidateId" Name="Main">
+      <Parameters>
+        <SqlDataSourceParameter DbType="Int32" Name="@CandidateId">
+          <Value>
+            <String>= Parameters.CandidateId.Value</String>
+          </Value>
+        </SqlDataSourceParameter>
+      </Parameters>
+    </SqlDataSource>
+  </DataSources>
+  <Items>
+    <PageHeaderSection Height="0.052in" Name="pageHeaderSection1">
+      <Style Visible="False" />
+    </PageHeaderSection>
+    <DetailSection Height="3.748in" Name="detailSection1">
+      <Items>
+        <TextBox Width="2.8in" Height="0.2in" Left="2.3in" Top="0in" Value="Candidate Details / Financial History" Name="textBox1">
+          <Style TextAlign="Center">
+            <Font Bold="True" Underline="True" />
+          </Style>
+        </TextBox>
+        <TextBox Width="2in" Height="0.2in" Left="0in" Top="0.348in" Value="Candidate ID:" Name="textBox2">
+          <Style TextAlign="Right" />
+        </TextBox>
+        <TextBox Width="2in" Height="0.2in" Left="0in" Top="0.648in" Value="Name:" Name="textBox3">
+          <Style TextAlign="Right" />
+        </TextBox>
+        <Shape Width="7.5in" Height="0.052in" Left="0in" Top="1.348in" Name="shape1">
+          <ShapeType>
+            <LineShape Direction="EW" />
+          </ShapeType>
+        </Shape>
+        <TextBox Width="2in" Height="0.2in" Left="0in" Top="1.5in" Value="Home Phone:" Name="textBox4">
+          <Style TextAlign="Right" />
+        </TextBox>
+        <TextBox Width="2in" Height="0.2in" Left="0in" Top="1.8in" Value="Work Phone:" Name="textBox5">
+          <Style TextAlign="Right" />
+        </TextBox>
+        <TextBox Width="2in" Height="0.2in" Left="0in" Top="2.1in" Value="Cell Phone:" Name="textBox6">
+          <Style TextAlign="Right" />
+        </TextBox>
+        <TextBox Width="2in" Height="0.2in" Left="0in" Top="2.4in" Value="Email:" Name="textBox7">
+          <Style TextAlign="Right" />
+        </TextBox>
+        <TextBox Width="2in" Height="0.2in" Left="0in" Top="2.7in" Value="Hispanic:" Name="textBox8">
+          <Style TextAlign="Right" />
+        </TextBox>
+        <TextBox Width="2in" Height="0.2in" Left="0in" Top="3in" Value="Employer:" Name="textBox9">
+          <Style TextAlign="Right" />
+        </TextBox>
+        <TextBox Width="2in" Height="0.2in" Left="0in" Top="3.3in" Value="Driving License Province:" Name="textBox10">
+          <Style TextAlign="Right" />
+        </TextBox>
+        <TextBox Width="2.5in" Height="0.2in" Left="2in" Top="0.348in" Value="= Fields.CandidateId" Format="{0:0000000000}" Name="textBox11" />
+        <TextBox Width="3.3in" Height="0.2in" Left="2in" Top="0.648in" Value="= Fields.FirstName + &quot; &quot; + Fields.MiddleName + &quot; &quot; + Fields.LastName" Name="textBox12" />
+        <TextBox Width="3.3in" Height="0.2in" Left="2in" Top="0.848in" Value="= Fields.Address" Name="textBox13" />
+        <TextBox Width="3.3in" Height="0.2in" Left="2in" Top="1.048in" Value="= Fields.City + &quot;, &quot; + Fields.State + &quot; &quot; + Fields.Zip" Name="textBox14" />
+        <TextBox Width="4in" Height="0.2in" Left="2in" Top="1.5in" Value="= Format(&quot;{0:000-000-0000}&quot;, CInt(Fields.HomePhone))" Name="textBox15" />
+        <TextBox Width="4in" Height="0.2in" Left="2in" Top="2.1in" Value="= Format(&quot;{0:000-000-0000}&quot;,CInt(Fields.MobilePhone))" Name="textBox16" />
+        <TextBox Width="4in" Height="0.2in" Left="2in" Top="1.8in" Value="= Format(&quot;{0:000-000-0000}&quot;,CInt(Fields.BusinessPhone))" Name="textBox17" />
+        <TextBox Width="4in" Height="0.2in" Left="2in" Top="2.4in" Value="= Fields.EmailAddress" Name="textBox18" />
+        <TextBox Width="1.2in" Height="0.2in" Left="2in" Top="2.7in" Value="= Fields.IsHispanic" Name="textBox19" />
+        <TextBox Width="1.4in" Height="0.2in" Left="2in" Top="3in" Value="= Fields.Employer" Name="textBox20" />
+        <TextBox Width="1.2in" Height="0.2in" Left="2in" Top="3.3in" Value="= Fields.DriversStateId" Name="textBox21" />
+        <TextBox Width="1.7in" Height="0.2in" Left="3.5in" Top="3in" Value="Social Insurance No:" Name="textBox23">
+          <Style TextAlign="Right" />
+        </TextBox>
+        <TextBox Width="1.7in" Height="0.2in" Left="3.5in" Top="3.3in" Value="Driving License No:" Name="textBox22">
+          <Style TextAlign="Right" />
+        </TextBox>
+        <TextBox Width="1.2in" Height="0.2in" Left="5.2in" Top="3in" Value="= Fields.SocialSecurityNumber" Name="textBox24" />
+        <TextBox Width="1.2in" Height="0.2in" Left="5.2in" Top="3.3in" Value="= Fields.DriversLicenseNumber" Name="textBox25" />
+        <Shape Width="7.5in" Height="0.052in" Left="0in" Top="3.648in" Name="shape2">
+          <ShapeType>
+            <LineShape Direction="EW" />
+          </ShapeType>
+        </Shape>
+      </Items>
+    </DetailSection>
+    <PageFooterSection Height="0.052in" Name="pageFooterSection1">
+      <Style Visible="False" />
+    </PageFooterSection>
+    <ReportFooterSection Height="1.2in" Name="reportFooterSection1">
+      <Items>
+        <SubReport Width="7.5in" Height="1.2in" Left="0in" Top="0in" Name="subReport1">
+          <ReportSource>
+            <UriReportSource Uri="FinancialCandidateSubFooter.trdx">
+              <Parameters>
+                <Parameter Name="CandidateId">
+                  <Value>
+                    <String>= Parameters.CandidateId.Value</String>
+                  </Value>
+                </Parameter>
+              </Parameters>
+            </UriReportSource>
+          </ReportSource>
+        </SubReport>
+      </Items>
+    </ReportFooterSection>
+  </Items>
+  <PageSettings PaperKind="Letter" Landscape="False" ColumnCount="1" ColumnSpacing="0in" ContinuousPaper="False">
+    <Margins>
+      <MarginsU Left="0.5in" Right="0.5in" Top="0.5in" Bottom="0.5in" />
+    </Margins>
+  </PageSettings>
+  <StyleSheet>
+    <StyleRule>
+      <Style>
+        <Padding Left="2pt" Right="2pt" />
+      </Style>
+      <Selectors>
+        <TypeSelector Type="TextItemBase" />
+        <TypeSelector Type="HtmlTextBox" />
+      </Selectors>
+    </StyleRule>
+    <StyleRule>
+      <Style Color="Black">
+        <Font Name="Tahoma" Size="9pt" />
+        <BorderStyle Default="Solid" />
+        <BorderColor Default="Black" />
+        <BorderWidth Default="1px" />
+      </Style>
+      <Selectors>
+        <StyleSelector Type="Table" StyleName="Normal.TableNormal" />
+      </Selectors>
+    </StyleRule>
+    <StyleRule>
+      <Style>
+        <Font Name="Tahoma" Size="9pt" />
+        <BorderStyle Default="Solid" />
+        <BorderColor Default="Black" />
+        <BorderWidth Default="1px" />
+      </Style>
+      <Selectors>
+        <DescendantSelector>
+          <Selectors>
+            <TypeSelector Type="Table" />
+            <StyleSelector Type="ReportItem" StyleName="Normal.TableBody" />
+          </Selectors>
+        </DescendantSelector>
+      </Selectors>
+    </StyleRule>
+    <StyleRule>
+      <Style>
+        <Font Name="Tahoma" Size="10pt" />
+        <BorderStyle Default="Solid" />
+        <BorderColor Default="Black" />
+        <BorderWidth Default="1px" />
+      </Style>
+      <Selectors>
+        <DescendantSelector>
+          <Selectors>
+            <TypeSelector Type="Table" />
+            <StyleSelector Type="ReportItem" StyleName="Normal.TableCorner" />
+          </Selectors>
+        </DescendantSelector>
+      </Selectors>
+    </StyleRule>
+    <StyleRule>
+      <Style VerticalAlign="Middle">
+        <Font Name="Tahoma" Size="10pt" />
+        <BorderStyle Default="Solid" />
+        <BorderColor Default="Black" />
+        <BorderWidth Default="1px" />
+      </Style>
+      <Selectors>
+        <DescendantSelector>
+          <Selectors>
+            <TypeSelector Type="Table" />
+            <StyleSelector Type="ReportItem" StyleName="Normal.TableHeader" />
+          </Selectors>
+        </DescendantSelector>
+      </Selectors>
+    </StyleRule>
+    <StyleRule>
+      <Style>
+        <Font Name="Tahoma" Size="9pt" />
+        <BorderStyle Default="Solid" />
+        <BorderColor Default="Black" />
+        <BorderWidth Default="1px" />
+      </Style>
+      <Selectors>
+        <DescendantSelector>
+          <Selectors>
+            <TypeSelector Type="Table" />
+            <StyleSelector Type="ReportItem" StyleName="Normal.TableGroup" />
+          </Selectors>
+        </DescendantSelector>
+      </Selectors>
+    </StyleRule>
+  </StyleSheet>
+  <ReportParameters>
+    <ReportParameter Name="CandidateId" Type="Integer" Text="Candidate" Visible="True" />
+  </ReportParameters>
+</Report>

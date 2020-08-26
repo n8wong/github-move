@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Report Width="6.5in" Name="FinancialCandidate" Zoom="1.5" xmlns="http://schemas.telerik.com/reporting/2020/2.0">
+  <DataSources>
+    <SqlDataSource QueryDesignerState="null" ParameterValues="null" ConnectionString="JmsDb" SelectCommand="select pc.CandidateId, asch.AttendDateTime, c.FirstName, c.LastName, af.* from AttendanceFees af&#xD;&#xA;inner join AttendanceSchedules asch on af.AttendanceScheduleId = asch.id&#xD;&#xA;inner join PoolCandidates pc on asch.PoolCandidateId = pc.id&#xD;&#xA;inner join candidates c on pc.CandidateId = c.Id&#xD;&#xA;where pc.CandidateId=@CandidateId" Name="Main">
+      <Parameters>
+        <SqlDataSourceParameter DbType="Int32" Name="@CandidateId">
+          <Value>
+            <String>= Parameters.CandidateId.Value</String>
+          </Value>
+        </SqlDataSourceParameter>
+      </Parameters>
+    </SqlDataSource>
+  </DataSources>
+  <Items>
+    <PageHeaderSection Height="0.052in" Name="pageHeaderSection1">
+      <Style Visible="False" />
+    </PageHeaderSection>
+    <DetailSection Height="0.6in" Name="detailSection1">
+      <Items>
+        <Crosstab DataSourceName="Main" Width="1.295in" Height="0.6in" Left="0in" Top="0in" Name="crosstab1" StyleName="Normal.TableNormal">
+          <Body>
+            <Cells>
+              <TableCell RowIndex="0" ColumnIndex="0" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="0.39in" Height="0.2in" Left="0in" Top="0in" Value="= Sum(Fields.Amount)" Format="{0:N2}" Name="textBox7" StyleName="Normal.TableBody">
+                    <Style>
+                      <Font Size="8pt" />
+                    </Style>
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="0" ColumnIndex="1" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="0.251in" Height="0.2in" Left="0in" Top="0in" Value="= Sum(Fields.Quantity)" Format="{0:N0}" Name="textBox8" StyleName="Normal.TableBody">
+                    <Style TextAlign="Center">
+                      <Font Size="8pt" />
+                    </Style>
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+            </Cells>
+            <Columns>
+              <Column Width="0.39in" />
+              <Column Width="0.251in" />
+            </Columns>
+            <Rows>
+              <Row Height="0.2in" />
+            </Rows>
+          </Body>
+          <Corner>
+            <Cells>
+              <TableCell RowIndex="0" ColumnIndex="0" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="0.654in" Height="0.2in" Left="0in" Top="0in" Value="" Name="textBox5" StyleName="Normal.TableCorner" />
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="1" ColumnIndex="0" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="0.654in" Height="0.2in" Left="0in" Top="0in" Value="Attend Date Time Date" Name="textBox6" StyleName="Normal.TableHeader">
+                    <Style>
+                      <Font Size="8pt" />
+                    </Style>
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+            </Cells>
+          </Corner>
+          <Style>
+            <Font Size="8pt" />
+          </Style>
+          <RowGroups>
+            <TableGroup Name="attendDateTimeDate">
+              <ReportItem>
+                <TextBox Width="0.654in" Height="0.2in" Left="0in" Top="0in" Value="= Fields.AttendDateTime.Date" Format="{0:d}" Name="textBox4" StyleName="Normal.TableGroup">
+                  <Style>
+                    <Font Size="8pt" />
+                  </Style>
+                </TextBox>
+              </ReportItem>
+              <Groupings>
+                <Grouping Expression="= Fields.AttendDateTime.Date" />
+              </Groupings>
+              <Sortings>
+                <Sorting Expression="= Fields.AttendDateTime.Date" Direction="Asc" />
+              </Sortings>
+            </TableGroup>
+          </RowGroups>
+          <ColumnGroups>
+            <TableGroup Name="description">
+              <ReportItem>
+                <TextBox Width="0.641in" Height="0.2in" Left="0in" Top="0in" Value="= Fields.Description" Name="textBox1" StyleName="Normal.TableGroup">
+                  <Style TextAlign="Center">
+                    <Font Size="8pt" />
+                  </Style>
+                </TextBox>
+              </ReportItem>
+              <ChildGroups>
+                <TableGroup Name="amount">
+                  <ReportItem>
+                    <TextBox Width="0.39in" Height="0.2in" Left="0in" Top="0in" Value="Amt" Format="{0:N2}" Name="textBox2" StyleName="Normal.TableHeader">
+                      <Style>
+                        <Font Size="8pt" />
+                      </Style>
+                    </TextBox>
+                  </ReportItem>
+                </TableGroup>
+                <TableGroup Name="quantity">
+                  <ReportItem>
+                    <TextBox Width="0.251in" Height="0.2in" Left="0in" Top="0in" Value="Qty" Name="textBox3" StyleName="Normal.TableHeader">
+                      <Style TextAlign="Center">
+                        <Font Size="8pt" />
+                      </Style>
+                    </TextBox>
+                  </ReportItem>
+                </TableGroup>
+              </ChildGroups>
+              <Groupings>
+                <Grouping Expression="= Fields.Description" />
+              </Groupings>
+              <Sortings>
+                <Sorting Expression="= Fields.Description" Direction="Asc" />
+              </Sortings>
+            </TableGroup>
+          </ColumnGroups>
+        </Crosstab>
+      </Items>
+    </DetailSection>
+    <PageFooterSection Height="0.052in" Name="pageFooterSection1">
+      <Style Visible="False" />
+    </PageFooterSection>
+    <ReportFooterSection Height="0.6in" Name="reportFooterSection1">
+      <Items>
+        <Crosstab DataSourceName="Main" Width="0.641in" Height="0.2in" Left="0.654in" Top="0in" Name="crosstab2" StyleName="Normal.TableNormal">
+          <Body>
+            <Cells>
+              <TableCell RowIndex="0" ColumnIndex="0" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="0.39in" Height="0.2in" Left="0in" Top="0in" Value="= Sum(Fields.Amount)" Format="{0:N2}" Name="textBox9" StyleName="Normal.TableBody">
+                    <Style>
+                      <Font Size="8pt" />
+                    </Style>
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="0" ColumnIndex="1" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="0.251in" Height="0.2in" Left="0in" Top="0in" Value="= Sum(Fields.Quantity)" Format="{0:N0}" Name="textBox10" StyleName="Normal.TableBody">
+                    <Style TextAlign="Center">
+                      <Font Size="8pt" />
+                    </Style>
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+            </Cells>
+            <Columns>
+              <Column Width="0.39in" />
+              <Column Width="0.251in" />
+            </Columns>
+            <Rows>
+              <Row Height="0.2in" />
+            </Rows>
+          </Body>
+          <Corner />
+          <Style>
+            <Font Size="8pt" Bold="True" />
+          </Style>
+          <RowGroups>
+            <TableGroup Name="attendDateTimeDate" />
+          </RowGroups>
+          <ColumnGroups>
+            <TableGroup Name="description">
+              <ChildGroups>
+                <TableGroup Name="amount" />
+                <TableGroup Name="quantity" />
+              </ChildGroups>
+              <Groupings>
+                <Grouping Expression="= Fields.Description" />
+              </Groupings>
+              <Sortings>
+                <Sorting Expression="= Fields.Description" Direction="Asc" />
+              </Sortings>
+            </TableGroup>
+          </ColumnGroups>
+        </Crosstab>
+      </Items>
+    </ReportFooterSection>
+  </Items>
+  <PageSettings PaperKind="Letter" Landscape="False" ColumnCount="1" ColumnSpacing="0in" ContinuousPaper="False">
+    <Margins>
+      <MarginsU Left="0.5in" Right="0.5in" Top="0.5in" Bottom="0.5in" />
+    </Margins>
+  </PageSettings>
+  <StyleSheet>
+    <StyleRule>
+      <Style>
+        <Padding Left="2pt" Right="2pt" />
+      </Style>
+      <Selectors>
+        <TypeSelector Type="TextItemBase" />
+        <TypeSelector Type="HtmlTextBox" />
+      </Selectors>
+    </StyleRule>
+    <StyleRule>
+      <Style Color="Black">
+        <Font Name="Tahoma" Size="9pt" />
+        <BorderStyle Default="Solid" />
+        <BorderColor Default="Black" />
+        <BorderWidth Default="1px" />
+      </Style>
+      <Selectors>
+        <StyleSelector Type="Table" StyleName="Normal.TableNormal" />
+      </Selectors>
+    </StyleRule>
+    <StyleRule>
+      <Style>
+        <Font Name="Tahoma" Size="9pt" />
+        <BorderStyle Default="Solid" />
+        <BorderColor Default="Black" />
+        <BorderWidth Default="1px" />
+      </Style>
+      <Selectors>
+        <DescendantSelector>
+          <Selectors>
+            <TypeSelector Type="Table" />
+            <StyleSelector Type="ReportItem" StyleName="Normal.TableBody" />
+          </Selectors>
+        </DescendantSelector>
+      </Selectors>
+    </StyleRule>
+    <StyleRule>
+      <Style>
+        <Font Name="Tahoma" Size="10pt" />
+        <BorderStyle Default="Solid" />
+        <BorderColor Default="Black" />
+        <BorderWidth Default="1px" />
+      </Style>
+      <Selectors>
+        <DescendantSelector>
+          <Selectors>
+            <TypeSelector Type="Table" />
+            <StyleSelector Type="ReportItem" StyleName="Normal.TableCorner" />
+          </Selectors>
+        </DescendantSelector>
+      </Selectors>
+    </StyleRule>
+    <StyleRule>
+      <Style VerticalAlign="Middle">
+        <Font Name="Tahoma" Size="10pt" />
+        <BorderStyle Default="Solid" />
+        <BorderColor Default="Black" />
+        <BorderWidth Default="1px" />
+      </Style>
+      <Selectors>
+        <DescendantSelector>
+          <Selectors>
+            <TypeSelector Type="Table" />
+            <StyleSelector Type="ReportItem" StyleName="Normal.TableHeader" />
+          </Selectors>
+        </DescendantSelector>
+      </Selectors>
+    </StyleRule>
+    <StyleRule>
+      <Style>
+        <Font Name="Tahoma" Size="9pt" />
+        <BorderStyle Default="Solid" />
+        <BorderColor Default="Black" />
+        <BorderWidth Default="1px" />
+      </Style>
+      <Selectors>
+        <DescendantSelector>
+          <Selectors>
+            <TypeSelector Type="Table" />
+            <StyleSelector Type="ReportItem" StyleName="Normal.TableGroup" />
+          </Selectors>
+        </DescendantSelector>
+      </Selectors>
+    </StyleRule>
+  </StyleSheet>
+  <ReportParameters>
+    <ReportParameter Name="CandidateId" Type="Integer" Text="Candidate" />
+  </ReportParameters>
+</Report>
