@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Report DataSourceName="Main" Width="7.2in" Name="CandidateDetailsByPoolAnswersFooter" xmlns="http://schemas.telerik.com/reporting/2020/2.0">
+  <DataSources>
+    <SqlDataSource QueryDesignerState="null" ParameterValues="null" ConnectionString="JmsDb" SelectCommand="select cs.CandidateId, sq.id, sq.Text, csa.Value from SurveyQuestions sq&#xD;&#xA;left join CandidateSurveyAnswers csa on sq.id = csa.SurveyQuestionId&#xD;&#xA;inner join CandidateSurveys cs on csa.CandidateSurveyId = cs.Id&#xD;&#xA;where cs.CandidateId=@CandidateId&#xD;&#xA;order by sq.Id" Name="Main">
+      <Parameters>
+        <SqlDataSourceParameter DbType="Int32" Name="@CandidateId">
+          <Value>
+            <String>= Parameters.CandidateId.Value</String>
+          </Value>
+        </SqlDataSourceParameter>
+      </Parameters>
+    </SqlDataSource>
+  </DataSources>
+  <Items>
+    <PageHeaderSection Height="0.052in" Name="pageHeaderSection1" />
+    <DetailSection Height="0.248in" Name="detailSection1">
+      <Items>
+        <HtmlTextBox Width="7in" Height="0.2in" Left="0.1in" Top="0in" Value="&lt;strong&gt;{Fields.id} {Fields.Text}&lt;/strong&gt; {Fields.Value}" Name="htmlTextBox1" />
+      </Items>
+    </DetailSection>
+    <PageFooterSection Height="0.052in" Name="pageFooterSection1" />
+    <ReportHeaderSection Height="0.248in" Name="reportHeaderSection1">
+      <Items>
+        <TextBox Width="1.2in" Height="0.2in" Left="0in" Top="0in" Value="Questionnaire:" Name="textBox2">
+          <Style TextAlign="Left">
+            <Font Bold="True" />
+          </Style>
+        </TextBox>
+      </Items>
+    </ReportHeaderSection>
+  </Items>
+  <PageSettings PaperKind="Letter" Landscape="False" ColumnCount="1" ColumnSpacing="0in" ContinuousPaper="False">
+    <Margins>
+      <MarginsU Left="0.5in" Right="0.5in" Top="0.5in" Bottom="0.5in" />
+    </Margins>
+  </PageSettings>
+  <StyleSheet>
+    <StyleRule>
+      <Style>
+        <Padding Left="2pt" Right="2pt" />
+      </Style>
+      <Selectors>
+        <TypeSelector Type="TextItemBase" />
+        <TypeSelector Type="HtmlTextBox" />
+      </Selectors>
+    </StyleRule>
+  </StyleSheet>
+  <ReportParameters>
+    <ReportParameter Name="CandidateId" Type="Integer" Text="CandidateId" Visible="True" />
+  </ReportParameters>
+</Report>
