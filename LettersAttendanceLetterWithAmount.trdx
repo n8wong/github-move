@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Report DataSourceName="Main" Width="7.5in" Name="r_attendance_letter" xmlns="http://schemas.telerik.com/reporting/2020/2.0">
   <DataSources>
-    <SqlDataSource QueryDesignerState="null" ParameterValues="null" ConnectionString="JmsDb" SelectCommand="select asch.id, asch.PoolCandidateId,&#xD;&#xA;(select sum(af.Quantity * af.amount) from AttendanceFees af&#xD;&#xA;where asch.id = af.AttendanceScheduleId&#xD;&#xA;group by af.AttendanceScheduleId&#xD;&#xA;) as 'Amount',&#xD;&#xA;asch.PoolId, asch.AttendDateTime, asch.TimeIn, asch.TimeOut, asch.LocationId, asch.AttendStatus, &#xD;&#xA;asch.PanelCounter, asch.FtaPrintDateTimeUtc, asch.PaymentRegisterEntryId,&#xD;&#xA;c.id as 'CandidateId', c.FirstName, c.MiddleName, c.LastName,&#xD;&#xA;ca.Address 'CandidateAddress', ca.city 'CandidateCity', ca.State 'CandidateState', ca.zip 'CandidateZip',&#xD;&#xA;l.Name 'LocationName', l.Address 'LocationAddress', l.Phone 'LocationPhone', l.Building, l.City 'LocationCity', l.State 'LocationState', l.zip 'LocationZip', l.SignatureName, l.SignatureTitle, l.Fax&#xD;&#xA;from AttendanceSchedules asch&#xD;&#xA;inner join PoolCandidates pc on asch.PoolCandidateId = pc.id&#xD;&#xA;inner join candidates c on pc.CandidateId = c.id&#xD;&#xA;inner join CandidateAddresses ca on c.id = ca.CandidateId&#xD;&#xA;inner join Pools p on p.id = asch.PoolId&#xD;&#xA;inner join Locations l on asch.LocationId = l.id&#xD;&#xA;where asch.TimeIn is not null&#xD;&#xA;and asch.PoolId = @PoolId" Name="Main">
+    <SqlDataSource QueryDesignerState="null" ParameterValues="null" ConnectionString="JmsDb" SelectCommand="select asch.id, asch.PoolCandidateId,&#xD;&#xA;(select sum(af.Quantity * af.amount) from AttendanceFees af&#xD;&#xA;where asch.id = af.AttendanceScheduleId&#xD;&#xA;group by af.AttendanceScheduleId&#xD;&#xA;) as 'Amount',&#xD;&#xA;asch.PoolId, asch.AttendDateTime, asch.TimeIn, asch.TimeOut, asch.LocationId, asch.AttendStatus, &#xD;&#xA;asch.PanelCounter, asch.FtaPrintDateTimeUtc, asch.PaymentRegisterEntryId,&#xD;&#xA;c.id as 'CandidateId', c.FirstName, c.MiddleName, c.LastName,&#xD;&#xA;ca.Address 'CandidateAddress', ca.city 'CandidateCity', ca.State 'CandidateState', ca.zip 'CandidateZip',&#xD;&#xA;l.Name 'LocationName', l.Address 'LocationAddress', l.Phone 'LocationPhone', l.Building, l.City 'LocationCity', l.State 'LocationState', l.zip 'LocationZip', l.SignatureName, l.SignatureTitle, l.Fax&#xD;&#xA;from AttendanceSchedules asch&#xD;&#xA;inner join PoolCandidates pc on asch.PoolCandidateId = pc.id&#xD;&#xA;inner join candidates c on pc.CandidateId = c.id&#xD;&#xA;inner join CandidateAddresses ca on c.id = ca.CandidateId&#xD;&#xA;inner join Pools p on p.id = asch.PoolId&#xD;&#xA;inner join Locations l on asch.LocationId = l.id&#xD;&#xA;where asch.TimeIn is not null&#xD;&#xA;and asch.PoolId = @PoolId&#xD;&#xA;and pc.CandidateId in (@CandidateId)" Name="Main">
       <Parameters>
         <SqlDataSourceParameter DbType="Int32" Name="@PoolId">
           <Value>
             <String>= Parameters.PoolId.Value</String>
+          </Value>
+        </SqlDataSourceParameter>
+        <SqlDataSourceParameter DbType="Int32" Name="@CandidateId">
+          <Value>
+            <String>= Parameters.CandidateId.Value</String>
           </Value>
         </SqlDataSourceParameter>
       </Parameters>
@@ -16,6 +21,15 @@
         <SqlDataSourceParameter DbType="Int32" Name="@LocationId">
           <Value>
             <String>= Parameters.LocationId.Value</String>
+          </Value>
+        </SqlDataSourceParameter>
+      </Parameters>
+    </SqlDataSource>
+    <SqlDataSource QueryDesignerState="null" ParameterValues="null" ConnectionString="JmsDb" SelectCommand="select pc.CandidateId from AttendanceSchedules asch&#xD;&#xA;inner join PoolCandidates pc on asch.PoolCandidateId = pc.id&#xD;&#xA;inner join candidates c on pc.CandidateId = c.id&#xD;&#xA;inner join CandidateAddresses ca on c.id = ca.CandidateId&#xD;&#xA;inner join Pools p on p.id = asch.PoolId&#xD;&#xA;inner join Locations l on asch.LocationId = l.id&#xD;&#xA;where asch.TimeIn is not null&#xD;&#xA;and asch.PoolId = @PoolId" Name="CandidateId">
+      <Parameters>
+        <SqlDataSourceParameter DbType="Int32" Name="@PoolId">
+          <Value>
+            <String>= Parameters.PoolId.Value</String>
           </Value>
         </SqlDataSourceParameter>
       </Parameters>
@@ -58,7 +72,7 @@
     </DetailSection>
     <PageFooterSection Height="0.2in" Name="pageFooterSection1">
       <Items>
-        <TextBox Width="6.1in" Height="0.2in" Left="0in" Top="0in" Value="= &quot;Powered by Courthouse Technologies on &quot; + Format('{0:dddd, MMMM d, yyyy}',Today())" Name="textBox4" />
+        <TextBox Width="6.1in" Height="0.2in" Left="0in" Top="0in" Value="= &quot;Powered by Tyler Technologies on &quot; + Format('{0:dddd, MMMM d, yyyy}',Today())" Name="textBox4" />
       </Items>
     </PageFooterSection>
   </Items>
@@ -124,16 +138,9 @@
       </AvailableValues>
     </ReportParameter>
     <ReportParameter Name="CandidateId" Type="Integer" Text="Candidate" Visible="True" MultiValue="True">
-      <AvailableValues DataSourceName="Main" DisplayMember="= Format( &quot;{0:0000000000}&quot;, Fields.CandidateId)" ValueMember="= Fields.CandidateId">
+      <AvailableValues DataSourceName="CandidateId" DisplayMember="= Format( &quot;{0:0000000000}&quot;, Fields.CandidateId)" ValueMember="= Fields.CandidateId">
         <Sortings>
           <Sorting Expression="= Fields.CandidateId" Direction="Asc" />
-        </Sortings>
-      </AvailableValues>
-    </ReportParameter>
-    <ReportParameter Name="CaseId" Type="Integer" Text="Case">
-      <AvailableValues DataSourceName="Case" DisplayMember="= Fields.Name" ValueMember="= Fields.id">
-        <Sortings>
-          <Sorting Expression="= Fields.id" Direction="Desc" />
         </Sortings>
       </AvailableValues>
     </ReportParameter>

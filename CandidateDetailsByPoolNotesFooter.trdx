@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Report DataSourceName="Main" Width="7.5in" Name="CandidateDetailsByPoolAnswersFooter" xmlns="http://schemas.telerik.com/reporting/2020/2.0">
   <DataSources>
-    <SqlDataSource QueryDesignerState="null" ParameterValues="null" ConnectionString="JmsDb" SelectCommand="select n.* from Notes n&#xD;&#xA;where n.CandidateId = @CandidateId&#xD;&#xA;" Name="Main">
+    <SqlDataSource QueryDesignerState="null" ParameterValues="null" ConnectionString="JmsDb" SelectCommand="select n.* from Notes n&#xD;&#xA;where n.CandidateId = (@CandidateId)&#xD;&#xA;" Name="Main">
       <Parameters>
         <SqlDataSourceParameter DbType="Int32" Name="@CandidateId">
           <Value>
@@ -51,6 +51,6 @@
     </StyleRule>
   </StyleSheet>
   <ReportParameters>
-    <ReportParameter Name="CandidateId" Type="Integer" Text="CandidateId" Visible="True" />
+    <ReportParameter Name="CandidateId" Type="Integer" Text="CandidateId" Visible="True" MultiValue="True" />
   </ReportParameters>
 </Report>

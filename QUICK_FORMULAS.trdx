@@ -15,7 +15,7 @@
     </DetailSection>
     <PageFooterSection Height="1in" Name="pageFooterSection1">
       <Items>
-        <TextBox Width="6.1in" Height="0.2in" Left="0in" Top="0.3in" Value="= &quot;Powered by Courthouse Technologies on &quot; + Format('{0:dddd, MMMM d, yyyy}',Today())" Name="textBox4" />
+        <TextBox Width="6.1in" Height="0.2in" Left="0in" Top="0.3in" Value="= &quot;Powered by Tyler Technologies on &quot; + Format('{0:dddd, MMMM d, yyyy}',Today())" Name="textBox4" />
       </Items>
     </PageFooterSection>
   </Items>

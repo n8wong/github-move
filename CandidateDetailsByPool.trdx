@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Report DataSourceName="Main" Width="7.5in" Name="CandidateDetailsByPool" xmlns="http://schemas.telerik.com/reporting/2020/2.0">
   <DataSources>
-    <SqlDataSource QueryDesignerState="null" ParameterValues="null" ConnectionString="JmsDb" SelectCommand="select c.id 'CandidateId', pc.PoolId, p.PoolNumber, p.SummonsDateTime, l.Id 'LocationId', l.Name,&#xD;&#xA;c.FirstName, c.MiddleName, c.LastName,&#xD;&#xA;cadd.Address, cadd.City, cadd.State, cadd.Zip,&#xD;&#xA;c.DateOfBirth,&#xD;&#xA;c.Employer, c.Occupation,&#xD;&#xA;c.SpouseName, c.SpouseEmployer, c.SpouseOccupation&#xD;&#xA;from candidates c&#xD;&#xA;inner join CandidateAddresses cadd on c.id = cadd.CandidateId&#xD;&#xA;inner join PoolCandidates pc on pc.CandidateId = c.id&#xD;&#xA;inner join pools p on pc.PoolId = p.id&#xD;&#xA;inner join locations l on p.LocationId = l.id&#xD;&#xA;where p.id = @PoolId&#xD;&#xA;and pc.CandidateId =@CandidateId" Name="Main">
+    <SqlDataSource QueryDesignerState="null" ParameterValues="null" ConnectionString="JmsDb" SelectCommand="select c.id 'CandidateId', pc.PoolId, p.PoolNumber, p.SummonsDateTime, l.Id 'LocationId', l.Name,&#xD;&#xA;c.FirstName, c.MiddleName, c.LastName,&#xD;&#xA;cadd.Address, cadd.City, cadd.State, cadd.Zip,&#xD;&#xA;c.DateOfBirth,&#xD;&#xA;c.Employer, c.Occupation,&#xD;&#xA;c.SpouseName, c.SpouseEmployer, c.SpouseOccupation&#xD;&#xA;from candidates c&#xD;&#xA;inner join CandidateAddresses cadd on c.id = cadd.CandidateId&#xD;&#xA;inner join PoolCandidates pc on pc.CandidateId = c.id&#xD;&#xA;inner join pools p on pc.PoolId = p.id&#xD;&#xA;inner join locations l on p.LocationId = l.id&#xD;&#xA;where p.id = @PoolId&#xD;&#xA;and pc.CandidateId in (@CandidateId)" Name="Main">
       <Parameters>
         <SqlDataSourceParameter DbType="Int32" Name="@PoolId">
           <Value>
@@ -25,10 +25,19 @@
         </SqlDataSourceParameter>
       </Parameters>
     </SqlDataSource>
+    <SqlDataSource QueryDesignerState="null" ParameterValues="null" ConnectionString="JmsDb" SelectCommand="select pc.CandidateId&#xD;&#xA;from PoolCandidates pc&#xD;&#xA;inner join Candidates c on pc.CandidateId = c.id&#xD;&#xA;inner join CandidateAddresses cadd on c.id = cadd.CandidateId&#xD;&#xA;inner join pools p on pc.PoolId = p.id&#xD;&#xA;inner join locations l on p.LocationId = l.id&#xD;&#xA;where p.id = @PoolId&#xD;&#xA;" Name="Candidate">
+      <Parameters>
+        <SqlDataSourceParameter DbType="Int32" Name="@PoolId">
+          <Value>
+            <String>= Parameters.PoolId.Value</String>
+          </Value>
+        </SqlDataSourceParameter>
+      </Parameters>
+    </SqlDataSource>
   </DataSources>
   <Items>
     <PageHeaderSection Height="0.052in" Name="pageHeaderSection1" />
-    <DetailSection Height="3.248in" Name="detailSection1">
+    <DetailSection PageBreak="None" Height="6.296in" Name="detailSection1">
       <Items>
         <TextBox Width="6.3in" Height="0.2in" Left="1.2in" Top="2.148in" Value="= Fields.SpouseEmployer" Name="textBox7" />
         <TextBox Width="6.3in" Height="0.2in" Left="1.2in" Top="1.848in" Value="= Fields.SpouseName" Name="textBox8" />
@@ -78,12 +87,15 @@
           </Style>
         </TextBox>
         <SubReport Width="7.5in" Height="0.4in" Left="0in" Top="2.848in" Name="subReport1">
+          <Style>
+            <BorderStyle Default="None" />
+          </Style>
           <ReportSource>
             <UriReportSource Uri="CandidateDetailsByPoolNotesFooter.trdx">
               <Parameters>
                 <Parameter Name="CandidateId">
                   <Value>
-                    <String>= Parameters.CandidateId.Value</String>
+                    <String>= Fields.CandidateId</String>
                   </Value>
                 </Parameter>
               </Parameters>
@@ -91,12 +103,15 @@
           </ReportSource>
         </SubReport>
         <SubReport Width="7.5in" Height="0.3in" Left="0in" Top="2.448in" Name="subReport2">
+          <Style>
+            <BorderStyle Default="None" />
+          </Style>
           <ReportSource>
             <UriReportSource Uri="CandidateDetailsByPoolAnswersFooter.trdx">
               <Parameters>
                 <Parameter Name="CandidateId">
                   <Value>
-                    <String>= Parameters.CandidateId.Value</String>
+                    <String>= Fields.CandidateId</String>
                   </Value>
                 </Parameter>
               </Parameters>
@@ -124,6 +139,19 @@
       </Selectors>
     </StyleRule>
   </StyleSheet>
+  <Groups>
+    <Group Name="group">
+      <GroupHeader>
+        <GroupHeaderSection Height="0.052in" Name="groupHeaderSection" />
+      </GroupHeader>
+      <GroupFooter>
+        <GroupFooterSection Height="0.052in" Name="groupFooterSection" />
+      </GroupFooter>
+      <Groupings>
+        <Grouping Expression="= Fields.CandidateId" />
+      </Groupings>
+    </Group>
+  </Groups>
   <ReportParameters>
     <ReportParameter Name="LocationId" Type="Integer" Text="Location" Visible="True">
       <AvailableValues DataSourceName="Location" DisplayMember="= Fields.name" ValueMember="= Fields.id">
@@ -139,6 +167,12 @@
         </Sortings>
       </AvailableValues>
     </ReportParameter>
-    <ReportParameter Name="CandidateId" Type="Integer" Text="CandidateId" Visible="True" />
+    <ReportParameter Name="CandidateId" Type="Integer" Text="Candidate" Visible="True" MultiValue="True">
+      <AvailableValues DataSourceName="Candidate" DisplayMember="= Fields.CandidateId" ValueMember="= Fields.CandidateId">
+        <Sortings>
+          <Sorting Expression="= Fields.CandidateId" Direction="Asc" />
+        </Sortings>
+      </AvailableValues>
+    </ReportParameter>
   </ReportParameters>
 </Report>
