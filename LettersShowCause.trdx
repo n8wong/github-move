@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Report DataSourceName="Main" Width="7in" Name="LetterShowCause" xmlns="http://schemas.telerik.com/reporting/2020/2.0">
   <DataSources>
-    <SqlDataSource QueryDesignerState="null" ParameterValues="null" ConnectionString="JmsDb" SelectCommand="select c.id CandidateID, c.FirstName, c.LastName, pc.PoolId, p.PoolNumber, p.SummonsDateTime, &#xD;&#xA;cadd.Address CandidateAddress, cadd.City CandidateCity, cadd.State CandidateState, cadd.Zip CandidateZip,&#xD;&#xA;l.Name LocationName, l.City LocationCity, l.State LocationState, l.zip LocationZip from PoolCandidates pc&#xD;&#xA;inner join Candidates c on pc.CandidateId = c.Id&#xD;&#xA;inner join CandidateAddresses cadd on c.id = cadd.CandidateId&#xD;&#xA;inner join pools p on pc.PoolId = p.Id&#xD;&#xA;inner join locations l on p.LocationId = l.id&#xD;&#xA;where p.Id = @PoolId&#xD;&#xA;" Name="Main">
+    <SqlDataSource QueryDesignerState="null" ParameterValues="null" ConnectionString="JmsDb" SelectCommand="select c.id CandidateId, c.FirstName, c.LastName, pc.PoolId, p.PoolNumber, p.SummonsDateTime, &#xD;&#xA;cadd.Address CandidateAddress, cadd.City CandidateCity, cadd.State CandidateState, cadd.Zip CandidateZip,&#xD;&#xA;l.Name LocationName, l.City LocationCity, l.State LocationState, l.zip LocationZip from PoolCandidates pc&#xD;&#xA;inner join Candidates c on pc.CandidateId = c.Id&#xD;&#xA;inner join CandidateAddresses cadd on c.id = cadd.CandidateId&#xD;&#xA;inner join pools p on pc.PoolId = p.Id&#xD;&#xA;inner join locations l on p.LocationId = l.id&#xD;&#xA;where p.Id = @PoolId&#xD;&#xA;and c.Id in (@CandidateId)" Name="Main">
       <Parameters>
         <SqlDataSourceParameter DbType="Int32" Name="@PoolId">
           <Value>
             <String>= Parameters.PoolId.Value</String>
+          </Value>
+        </SqlDataSourceParameter>
+        <SqlDataSourceParameter DbType="Int32" Name="@CandidateId">
+          <Value>
+            <String>= Parameters.CandidateId.Value</String>
           </Value>
         </SqlDataSourceParameter>
       </Parameters>
@@ -21,6 +26,15 @@
       </Parameters>
     </SqlDataSource>
     <SqlDataSource QueryDesignerState="null" ParameterValues="null" ConnectionString="JmsDb" SelectCommand="select id, name, shortname from Judges" Name="Judge" />
+    <SqlDataSource QueryDesignerState="null" ParameterValues="null" ConnectionString="JmsDb" SelectCommand="select c.id 'CandidateId'&#xD;&#xA;from PoolCandidates pc&#xD;&#xA;inner join Candidates c on pc.CandidateId = c.Id&#xD;&#xA;inner join CandidateAddresses cadd on c.id = cadd.CandidateId&#xD;&#xA;inner join pools p on pc.PoolId = p.Id&#xD;&#xA;inner join locations l on p.LocationId = l.id&#xD;&#xA;where p.Id = @PoolId&#xD;&#xA;" Name="Candidate">
+      <Parameters>
+        <SqlDataSourceParameter DbType="Int32" Name="@PoolId">
+          <Value>
+            <String>= Parameters.PoolId.Value</String>
+          </Value>
+        </SqlDataSourceParameter>
+      </Parameters>
+    </SqlDataSource>
   </DataSources>
   <Items>
     <PageHeaderSection Height="1in" Name="pageHeaderSection1">
@@ -110,5 +124,12 @@
       </AvailableValues>
     </ReportParameter>
     <ReportParameter Name="ShowCauseDate" Type="DateTime" Text="Show Cause Date" Visible="True" />
+    <ReportParameter Name="CandidateId" Type="Integer" Text="Candidate" Visible="True" MultiValue="True">
+      <AvailableValues DataSourceName="Candidate" DisplayMember="= Fields.CandidateID" ValueMember="= Fields.CandidateID">
+        <Sortings>
+          <Sorting Expression="= Fields.CandidateID" Direction="Asc" />
+        </Sortings>
+      </AvailableValues>
+    </ReportParameter>
   </ReportParameters>
 </Report>
