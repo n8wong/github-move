@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Report DataSourceName="Main" Width="6.5in" Name="DocsCertificateOfService" xmlns="http://schemas.telerik.com/reporting/2020/2.0">
   <DataSources>
-    <SqlDataSource QueryDesignerState="null" ParameterValues="null" ConnectionString="JmsDb" SelectCommand="select pc.CandidateId, asch.AttendDateTime, asch.TimeIn, p.PoolNumber, asch.CaseId,&#xD;&#xA;c.FirstName, c.MiddleName, c.LastName,&#xD;&#xA;cadd.Address, cadd.City, cadd.State, cadd.zip,&#xD;&#xA;l.name 'LocationName', l.SignatureName, l.SignatureTitle from AttendanceSchedules asch&#xD;&#xA;inner join PoolCandidates pc on asch.PoolCandidateId = pc.Id&#xD;&#xA;inner join candidates c on pc.CandidateId = c.id&#xD;&#xA;inner join pools p on asch.PoolId = p.id&#xD;&#xA;inner join CandidateAddresses cadd on pc.CandidateId = cadd.CandidateId&#xD;&#xA;inner join locations l on p.LocationId = l.Id&#xD;&#xA;where p.id = @PoolId&#xD;&#xA;" Name="Main">
+    <SqlDataSource QueryDesignerState="null" ParameterValues="null" ConnectionString="JmsDb" SelectCommand="select pc.CandidateId, asch.AttendDateTime, asch.TimeIn, p.PoolNumber, asch.CaseId,&#xD;&#xA;c.FirstName, c.MiddleName, c.LastName,&#xD;&#xA;cadd.Address, cadd.City, cadd.State, cadd.zip,&#xD;&#xA;l.name 'LocationName', l.SignatureName, l.SignatureTitle from AttendanceSchedules asch&#xD;&#xA;inner join PoolCandidates pc on asch.PoolCandidateId = pc.Id&#xD;&#xA;inner join candidates c on pc.CandidateId = c.id&#xD;&#xA;inner join pools p on asch.PoolId = p.id&#xD;&#xA;inner join CandidateAddresses cadd on pc.CandidateId = cadd.CandidateId&#xD;&#xA;inner join locations l on p.LocationId = l.Id&#xD;&#xA;where p.id = @PoolId&#xD;&#xA;and pc.CandidateId in (@CandidateId)" Name="Main">
       <Parameters>
         <SqlDataSourceParameter DbType="Int32" Name="@PoolId">
           <Value>
             <String>= Parameters.PoolId.Value</String>
+          </Value>
+        </SqlDataSourceParameter>
+        <SqlDataSourceParameter DbType="Int32" Name="@CandidateId">
+          <Value>
+            <String>= Parameters.CandidateId.Value</String>
           </Value>
         </SqlDataSourceParameter>
       </Parameters>
@@ -29,6 +34,15 @@
         </SqlDataSourceParameter>
       </Parameters>
     </SqlDataSource>
+    <SqlDataSource QueryDesignerState="null" ParameterValues="null" ConnectionString="JmsDb" SelectCommand="select pc.CandidateId&#xD;&#xA;from AttendanceSchedules asch&#xD;&#xA;inner join PoolCandidates pc on asch.PoolCandidateId = pc.Id&#xD;&#xA;inner join candidates c on pc.CandidateId = c.id&#xD;&#xA;inner join pools p on asch.PoolId = p.id&#xD;&#xA;inner join CandidateAddresses cadd on pc.CandidateId = cadd.CandidateId&#xD;&#xA;inner join locations l on p.LocationId = l.Id&#xD;&#xA;where p.id = @PoolId&#xD;&#xA;" Name="Candidate">
+      <Parameters>
+        <SqlDataSourceParameter DbType="Int32" Name="@PoolId">
+          <Value>
+            <String>= Parameters.PoolId.Value</String>
+          </Value>
+        </SqlDataSourceParameter>
+      </Parameters>
+    </SqlDataSource>
   </DataSources>
   <Items>
     <PageHeaderSection Height="0.052in" Name="pageHeaderSection1" />
@@ -39,7 +53,7 @@
     </DetailSection>
     <PageFooterSection Height="0.4in" Name="pageFooterSection1">
       <Items>
-        <TextBox Width="6.1in" Height="0.2in" Left="0in" Top="0in" Value="= &quot;Powered by Courthouse Technologies on &quot; + Format('{0:dddd, MMMM d, yyyy}',Today())" Name="textBox7">
+        <TextBox Width="6.1in" Height="0.2in" Left="0in" Top="0in" Value="= &quot;Powered by Tyler Technologies on &quot; + Format('{0:dddd, MMMM d, yyyy}',Today())" Name="textBox7">
           <Style>
             <Font Size="9pt" />
           </Style>
@@ -125,7 +139,7 @@
       </AvailableValues>
     </ReportParameter>
     <ReportParameter Name="CandidateId" Type="Integer" Text="Candidate" Visible="True" MultiValue="True">
-      <AvailableValues DataSourceName="Main" DisplayMember="= Fields.CandidateId" ValueMember="= Fields.CandidateId">
+      <AvailableValues DataSourceName="Candidate" DisplayMember="= Fields.CandidateId" ValueMember="= Fields.CandidateId">
         <Sortings>
           <Sorting Expression="= Fields.CandidateId" Direction="Asc" />
         </Sortings>

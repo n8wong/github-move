@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Report DataSourceName="Main" Width="7.5in" Name="r_attendance_letter" xmlns="http://schemas.telerik.com/reporting/2020/2.0">
   <DataSources>
-    <SqlDataSource QueryDesignerState="null" ParameterValues="null" ConnectionString="JmsDb" SelectCommand="select c.Id as 'CandidateId', c.FirstName, c.LastName, c.MiddleName, ca.Address as 'CandidateAddress', ca.City as 'CandidateCity', ca.State as 'CandidateState', ca.zip as 'CandidateZip',&#xD;&#xA;a.TimeIn,&#xD;&#xA;l.Building, l.Name as 'LocationName', l.Address as 'LocationAddress', l.City as 'LocationCity', l.State as 'LocationState', l.zip as 'LocationZip', l.SignatureName, l.SignatureTitle, l.Phone as 'LocationPhone', l.fax,&#xD;&#xA;a.CaseId, cas.Name 'CaseName'&#xD;&#xA;from AttendanceSchedules a&#xD;&#xA;left join PoolCandidates pc on pc.id = a.PoolCandidateId&#xD;&#xA;left join cases cas on a.CaseId = cas.Id&#xD;&#xA;left join Candidates c on pc.CandidateId = c.Id&#xD;&#xA;left join pools p on pc.PoolId = p.id&#xD;&#xA;left join Locations l on a.LocationId = l.Id&#xD;&#xA;left join CandidateAddresses ca on c.Id = ca.CandidateId&#xD;&#xA;where a.TimeIn is not null&#xD;&#xA;and cas.id = @CaseId" Name="Main">
+    <SqlDataSource QueryDesignerState="null" ParameterValues="null" ConnectionString="JmsDb" SelectCommand="select c.Id as 'CandidateId', c.FirstName, c.LastName, c.MiddleName, ca.Address as 'CandidateAddress', ca.City as 'CandidateCity', ca.State as 'CandidateState', ca.zip as 'CandidateZip',&#xD;&#xA;a.TimeIn,&#xD;&#xA;l.Building, l.Name as 'LocationName', l.Address as 'LocationAddress', l.City as 'LocationCity', l.State as 'LocationState', l.zip as 'LocationZip', l.SignatureName, l.SignatureTitle, l.Phone as 'LocationPhone', l.fax,&#xD;&#xA;a.CaseId, cas.Name 'CaseName'&#xD;&#xA;from AttendanceSchedules a&#xD;&#xA;left join PoolCandidates pc on pc.id = a.PoolCandidateId&#xD;&#xA;left join cases cas on a.CaseId = cas.Id&#xD;&#xA;left join Candidates c on pc.CandidateId = c.Id&#xD;&#xA;left join pools p on pc.PoolId = p.id&#xD;&#xA;left join Locations l on a.LocationId = l.Id&#xD;&#xA;left join CandidateAddresses ca on c.Id = ca.CandidateId&#xD;&#xA;where a.TimeIn is not null&#xD;&#xA;and cas.id = @CaseId&#xD;&#xA;and c.Id in (@CandidateId)" Name="Main">
       <Parameters>
-        <SqlDataSourceParameter DbType="String" Name="@CaseId">
+        <SqlDataSourceParameter DbType="Int32" Name="@CaseId">
           <Value>
             <String>= Parameters.CaseId.Value</String>
+          </Value>
+        </SqlDataSourceParameter>
+        <SqlDataSourceParameter DbType="Int32" Name="@CandidateId">
+          <Value>
+            <String>= Parameters.CandidateId.Value</String>
           </Value>
         </SqlDataSourceParameter>
       </Parameters>
@@ -16,6 +21,15 @@
         <SqlDataSourceParameter DbType="String" Name="@LocationId">
           <Value>
             <String>= Parameters.LocationId.Value</String>
+          </Value>
+        </SqlDataSourceParameter>
+      </Parameters>
+    </SqlDataSource>
+    <SqlDataSource QueryDesignerState="null" ParameterValues="null" ConnectionString="JmsDb" SelectCommand="select c.Id as 'CandidateId'&#xD;&#xA;from AttendanceSchedules a&#xD;&#xA;left join PoolCandidates pc on pc.id = a.PoolCandidateId&#xD;&#xA;left join cases cas on a.CaseId = cas.Id&#xD;&#xA;left join Candidates c on pc.CandidateId = c.Id&#xD;&#xA;left join pools p on pc.PoolId = p.id&#xD;&#xA;left join Locations l on a.LocationId = l.Id&#xD;&#xA;left join CandidateAddresses ca on c.Id = ca.CandidateId&#xD;&#xA;where a.TimeIn is not null&#xD;&#xA;and cas.id = @CaseId" Name="Candidate">
+      <Parameters>
+        <SqlDataSourceParameter DbType="Int32" Name="@CaseId">
+          <Value>
+            <String>= Parameters.CaseId.Value</String>
           </Value>
         </SqlDataSourceParameter>
       </Parameters>
@@ -52,7 +66,7 @@
     </DetailSection>
     <PageFooterSection Height="0.2in" Name="pageFooterSection1">
       <Items>
-        <TextBox Width="6.1in" Height="0.2in" Left="0in" Top="0in" Value="= &quot;Powered by Courthouse Technologies on &quot; + Format('{0:dddd, MMMM d, yyyy}',Today())" Name="textBox4" />
+        <TextBox Width="6.1in" Height="0.2in" Left="0in" Top="0in" Value="= &quot;Powered by Tyler Technologies on &quot; + Format('{0:dddd, MMMM d, yyyy}',Today())" Name="textBox4" />
       </Items>
     </PageFooterSection>
   </Items>
@@ -114,6 +128,13 @@
       <AvailableValues DataSourceName="Case" DisplayMember="= Fields.Name" ValueMember="= Fields.id">
         <Sortings>
           <Sorting Expression="= Fields.id" Direction="Asc" />
+        </Sortings>
+      </AvailableValues>
+    </ReportParameter>
+    <ReportParameter Name="CandidateId" Type="Integer" Text="Candidate" Visible="True" MultiValue="True">
+      <AvailableValues DataSourceName="Candidate" DisplayMember="= Fields.CandidateId" ValueMember="= Fields.CandidateId">
+        <Sortings>
+          <Sorting Expression="= Fields.CandidateId" Direction="Asc" />
         </Sortings>
       </AvailableValues>
     </ReportParameter>

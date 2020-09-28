@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Report DataSourceName="Main" Width="4in" Name="mailing_labels" xmlns="http://schemas.telerik.com/reporting/2020/2.0">
   <DataSources>
-    <SqlDataSource QueryDesignerState="null" ParameterValues="null" ConnectionString="JmsDb" SelectCommand="select c.id, c.FirstName, c.MiddleName, c.LastName, ca.Address, ca.city, ca.Zip from PoolCandidates pc&#xD;&#xA;left join Candidates c on pc.CandidateId = c.Id&#xD;&#xA;left join CandidateAddresses ca on c.id = ca.CandidateId&#xD;&#xA;left join pools p on pc.PoolId = p.Id&#xD;&#xA;where p.id = @PoolId&#xD;&#xA;&#xD;&#xA;" Name="Main">
+    <SqlDataSource QueryDesignerState="null" ParameterValues="null" ConnectionString="JmsDb" SelectCommand="select c.id, c.FirstName, c.MiddleName, c.LastName, ca.Address, ca.city, ca.Zip from PoolCandidates pc&#xD;&#xA;left join Candidates c on pc.CandidateId = c.Id&#xD;&#xA;left join CandidateAddresses ca on c.id = ca.CandidateId&#xD;&#xA;left join pools p on pc.PoolId = p.Id&#xD;&#xA;where p.id = @PoolId&#xD;&#xA;and c.id in (@CandidateId)&#xD;&#xA;" Name="Main">
       <Parameters>
         <SqlDataSourceParameter DbType="Int32" Name="@PoolId">
           <Value>
             <String>= Parameters.PoolID.Value</String>
+          </Value>
+        </SqlDataSourceParameter>
+        <SqlDataSourceParameter DbType="Int32" Name="@CandidateId">
+          <Value>
+            <String>= Parameters.CandidateID.Value</String>
           </Value>
         </SqlDataSourceParameter>
       </Parameters>
@@ -16,6 +21,15 @@
         <SqlDataSourceParameter DbType="Int32" Name="@LocationId">
           <Value>
             <String>= Parameters.LocationId.Value</String>
+          </Value>
+        </SqlDataSourceParameter>
+      </Parameters>
+    </SqlDataSource>
+    <SqlDataSource QueryDesignerState="null" ParameterValues="null" ConnectionString="JmsDb" SelectCommand="select c.id&#xD;&#xA;from PoolCandidates pc&#xD;&#xA;left join Candidates c on pc.CandidateId = c.Id&#xD;&#xA;left join CandidateAddresses ca on c.id = ca.CandidateId&#xD;&#xA;left join pools p on pc.PoolId = p.Id&#xD;&#xA;where p.id = @PoolId&#xD;&#xA;&#xD;&#xA;" Name="Candidate">
+      <Parameters>
+        <SqlDataSourceParameter DbType="Int32" Name="@PoolId">
+          <Value>
+            <String>= Parameters.PoolID.Value</String>
           </Value>
         </SqlDataSourceParameter>
       </Parameters>
@@ -63,7 +77,7 @@
       </AvailableValues>
     </ReportParameter>
     <ReportParameter Name="CandidateID" Type="Integer" Text="Candidate" Visible="True" MultiValue="True">
-      <AvailableValues DataSourceName="Main" DisplayMember="= Format( &quot;{0:0000000000}&quot;,Fields.id)" ValueMember="= Fields.id">
+      <AvailableValues DataSourceName="Candidate" DisplayMember="= Format( &quot;{0:0000000000}&quot;,Fields.id)" ValueMember="= Fields.id">
         <Sortings>
           <Sorting Expression="= Fields.id" Direction="Asc" />
         </Sortings>

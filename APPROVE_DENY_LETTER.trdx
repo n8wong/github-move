@@ -20,15 +20,7 @@
         </SqlDataSourceParameter>
       </Parameters>
     </SqlDataSource>
-    <SqlDataSource QueryDesignerState="null" ParameterValues="null" ConnectionString="JmsDb" SelectCommand="select pc.CandidateId from PoolCandidates pc&#xD;&#xA;left join pools p on pc.PoolId = p.id&#xD;&#xA;where p.id = @PoolId" Name="Candidate">
-      <Parameters>
-        <SqlDataSourceParameter DbType="Int32" Name="@PoolId">
-          <Value>
-            <String>= Parameters.PooldId.Value</String>
-          </Value>
-        </SqlDataSourceParameter>
-      </Parameters>
-    </SqlDataSource>
+    <SqlDataSource QueryDesignerState="null" ParameterValues="null" ConnectionString="JmsDb" SelectCommand="select ch.CandidateId&#xD;&#xA;from CandidateHistoryEntries ch&#xD;&#xA;inner join Candidates c on ch.CandidateId = c.Id&#xD;&#xA;inner join CandidateAddresses ca on ch.CandidateId = ca.CandidateId&#xD;&#xA;inner join Pools p on ch.PoolId = p.Id&#xD;&#xA;inner join Locations l on l.id = p.LocationId&#xD;&#xA;where ch.Description like '%Denied%'&#xD;&#xA;or ch.Description like '%Approved%'" Name="Candidate" />
   </DataSources>
   <Items>
     <PageHeaderSection Height="1.4in" Name="pageHeaderSection1">
@@ -66,7 +58,7 @@
         <TextBox Width="3.2in" Height="0.2in" Left="0.5in" Top="0.3in" Value="= Fields.CandidateFirst + &quot; &quot; + Fields.CandidateLast" Name="textBox12" />
         <TextBox Width="3.1in" Height="0.2in" Left="0.5in" Top="4.2in" Value="= Fields.SignatureName" Name="textBox13" />
         <TextBox Width="3.1in" Height="0.2in" Left="0.5in" Top="4.4in" Value="= Fields.SignatureTitle" Name="textBox14" />
-        <HtmlTextBox Width="6.5in" Height="1.7in" Left="0.5in" Top="2in" Value="You request to be {Fields.RequestType} from jury service on &lt;strong&gt;{Fields.SummonsDate.ToString(&quot;dddd, MMMM d, yyyy&quot;)}&lt;/strong&gt; has been {Fields.ApprovedOrDenied} by the court." Name="htmlTextBox1" />
+        <HtmlTextBox Width="6.5in" Height="1.7in" Left="0.5in" Top="2in" Value="You request to be {Fields.RequestType} from jury service on &lt;strong&gt;{Fields.SummonsDateTime.ToString(&quot;dddd, MMMM d, yyyy&quot;)}&lt;/strong&gt; has been {Fields.ApprovedOrDenied} by the court." Name="htmlTextBox1" />
       </Items>
     </DetailSection>
     <PageFooterSection Height="0.3in" Name="pageFooterSection1">

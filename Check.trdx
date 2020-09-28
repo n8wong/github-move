@@ -92,5 +92,6 @@
         <String>11</String>
       </Value>
     </ReportParameter>
+    <ReportParameter Name="CandidateId" Type="Integer" Text="Candidate" />
   </ReportParameters>
 </Report>

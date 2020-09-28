@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Report DataSourceName="Main" Width="7.5in" Name="l_fta_letter" xmlns="http://schemas.telerik.com/reporting/2020/2.0">
   <DataSources>
-    <SqlDataSource QueryDesignerState="null" ParameterValues="null" ConnectionString="JmsDb" SelectCommand="select c.id as 'CandidateId', p.PoolNumber, c.FirstName, c.LastName, ca.Address, ca.City, ca.state, ca.Zip,&#xD;&#xA;l.name as 'LocationName', l.Building, a.AttendDateTime,&#xD;&#xA;l.Address as 'LocationAddress', l.City as 'LocationCity', l.State  as 'LocationState', &#xD;&#xA;l.Zip  as 'LocationZip', l.Phone  as 'LocationPhone', l.CallInPhone, l.Fax, &#xD;&#xA;l.SignatureName, l.SignatureTitle&#xD;&#xA;from AttendanceSchedules a&#xD;&#xA;left join PoolCandidates pc on pc.id = a.PoolCandidateId&#xD;&#xA;left join candidates c on pc.CandidateId = c.Id&#xD;&#xA;left join pools p on a.PoolId = p.id&#xD;&#xA;left join CandidateAddresses ca on c.id = ca.CandidateId&#xD;&#xA;left join Locations l on p.LocationId = l.Id&#xD;&#xA;where a.AttendDateTime &lt; getdate()&#xD;&#xA;and Convert(date,a.AttendDateTime) = @FtaDate&#xD;&#xA;and  a.TimeIn IS NULL&#xD;&#xA;and l.id = @LocationId" Name="Main">
+    <SqlDataSource QueryDesignerState="null" ParameterValues="null" ConnectionString="JmsDb" SelectCommand="select c.id as 'CandidateId', p.PoolNumber, c.FirstName, c.LastName, ca.Address, ca.City, ca.state, ca.Zip,&#xD;&#xA;l.name as 'LocationName', l.Building, a.AttendDateTime,&#xD;&#xA;l.Address as 'LocationAddress', l.City as 'LocationCity', l.State  as 'LocationState', &#xD;&#xA;l.Zip  as 'LocationZip', l.Phone  as 'LocationPhone', l.CallInPhone, l.Fax, &#xD;&#xA;l.SignatureName, l.SignatureTitle&#xD;&#xA;from AttendanceSchedules a&#xD;&#xA;left join PoolCandidates pc on pc.id = a.PoolCandidateId&#xD;&#xA;left join candidates c on pc.CandidateId = c.Id&#xD;&#xA;left join pools p on a.PoolId = p.id&#xD;&#xA;left join CandidateAddresses ca on c.id = ca.CandidateId&#xD;&#xA;left join Locations l on p.LocationId = l.Id&#xD;&#xA;where a.AttendDateTime &lt; getdate()&#xD;&#xA;and Convert(date,a.AttendDateTime) = @FtaDate&#xD;&#xA;and  a.TimeIn IS NULL&#xD;&#xA;and l.id = @LocationId&#xD;&#xA;and c.id in (@CandidateId)" Name="Main">
       <Parameters>
         <SqlDataSourceParameter DbType="DateTime" Name="@ftaDate">
           <Value>
@@ -13,9 +13,28 @@
             <String>= Parameters.LocationId.Value</String>
           </Value>
         </SqlDataSourceParameter>
+        <SqlDataSourceParameter DbType="Int32" Name="@CandidateId">
+          <Value>
+            <String>= Parameters.CandidateId.Value</String>
+          </Value>
+        </SqlDataSourceParameter>
       </Parameters>
     </SqlDataSource>
     <SqlDataSource QueryDesignerState="null" ParameterValues="null" ConnectionString="JmsDb" SelectCommand="select distinct(l.id), l.name&#xD;&#xA;from AttendanceSchedules a&#xD;&#xA;left join PoolCandidates pc on pc.id = a.PoolCandidateId&#xD;&#xA;left join candidates c on pc.CandidateId = c.Id&#xD;&#xA;left join pools p on a.PoolId = p.id&#xD;&#xA;left join CandidateAddresses ca on c.id = ca.CandidateId&#xD;&#xA;left join Locations l on p.LocationId = l.Id&#xD;&#xA;left join CandidateContacts cc on c.id = cc.CandidateId&#xD;&#xA;where a.AttendDateTime &lt; getdate()&#xD;&#xA;and  a.TimeIn IS NULL" Name="Location" />
+    <SqlDataSource QueryDesignerState="null" ParameterValues="null" ConnectionString="JmsDb" SelectCommand="select c.id as 'CandidateId'&#xD;&#xA;from AttendanceSchedules a&#xD;&#xA;left join PoolCandidates pc on pc.id = a.PoolCandidateId&#xD;&#xA;left join candidates c on pc.CandidateId = c.Id&#xD;&#xA;left join pools p on a.PoolId = p.id&#xD;&#xA;left join CandidateAddresses ca on c.id = ca.CandidateId&#xD;&#xA;left join Locations l on p.LocationId = l.Id&#xD;&#xA;where a.AttendDateTime &lt; getdate()&#xD;&#xA;and Convert(date,a.AttendDateTime) = @FtaDate&#xD;&#xA;and  a.TimeIn IS NULL&#xD;&#xA;and l.id = @LocationId" Name="Candidate">
+      <Parameters>
+        <SqlDataSourceParameter DbType="DateTime" Name="@FtaDate">
+          <Value>
+            <String>= Parameters.FtaDate.Value</String>
+          </Value>
+        </SqlDataSourceParameter>
+        <SqlDataSourceParameter DbType="Int32" Name="@LocationId">
+          <Value>
+            <String>= Parameters.LocationId.Value</String>
+          </Value>
+        </SqlDataSourceParameter>
+      </Parameters>
+    </SqlDataSource>
   </DataSources>
   <Items>
     <PageHeaderSection Height="1.6in" Name="pageHeaderSection1">
@@ -53,7 +72,7 @@
     </DetailSection>
     <PageFooterSection Height="0.3in" Name="pageFooterSection1">
       <Items>
-        <TextBox Width="5.6in" Height="0.2in" Left="0in" Top="0in" Value="= &quot;Powered by Courthouse Technologies on &quot; + Today()" Name="textBox9" />
+        <TextBox Width="5.6in" Height="0.2in" Left="0in" Top="0in" Value="= &quot;Powered by Tyler Technologies on &quot; + Today()" Name="textBox9" />
       </Items>
     </PageFooterSection>
   </Items>
@@ -114,7 +133,7 @@
       <AvailableValues DisplayMember="= Fields.AttendDateTime" ValueMember="= Fields.AttendDateTime" />
     </ReportParameter>
     <ReportParameter Name="CandidateId" Type="Integer" Text="Candidate" Visible="True" MultiValue="True">
-      <AvailableValues DataSourceName="Main" DisplayMember="=Format(&quot;{0:0000000000}&quot;, Fields.CandidateId)" ValueMember="= Fields.CandidateId">
+      <AvailableValues DataSourceName="Candidate" DisplayMember="=Format(&quot;{0:0000000000}&quot;, Fields.CandidateId)" ValueMember="= Fields.CandidateId">
         <Sortings>
           <Sorting Expression="= Fields.CandidateId" Direction="Asc" />
         </Sortings>

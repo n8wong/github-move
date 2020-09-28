@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Report DataSourceName="Main" Width="7.5in" Name="l_non_responded" xmlns="http://schemas.telerik.com/reporting/2020/2.0">
   <DataSources>
-    <SqlDataSource QueryDesignerState="null" ParameterValues="null" ConnectionString="JmsDb" SelectCommand="select pc.CandidateID, c.FirstName, c.LastName, c.MiddleName, pc.Status 'CandidateStatus', ca.Address as 'CandidateAddress', ca.City as 'CandidateCity', ca.State 'CandidateState', ca.zip as 'CandidateZip',&#xD;&#xA;l.Name as 'LocationName', l.Building, l.Address as 'LocationAddress', l.City as 'LocationCity', l.State as 'LocationState', l.Zip as 'LocZip', l.SignatureName, l.SignatureTitle, l.Phone, l.Fax, l.Website from PoolCandidates pc&#xD;&#xA;left join Candidates c on pc.CandidateId = c.Id&#xD;&#xA;left join pools p on pc.PoolId = p.id&#xD;&#xA;left join Locations l on p.LocationId = l.Id&#xD;&#xA;left join CandidateAddresses ca on c.id = ca.CandidateId&#xD;&#xA;where pc.Status &lt; 2&#xD;&#xA;and p.id = @PoolId&#xD;&#xA;" Name="Main">
+    <SqlDataSource QueryDesignerState="null" ParameterValues="null" ConnectionString="JmsDb" SelectCommand="select pc.CandidateID, c.FirstName, c.LastName, c.MiddleName, pc.Status 'CandidateStatus', ca.Address as 'CandidateAddress', ca.City as 'CandidateCity', ca.State 'CandidateState', ca.zip as 'CandidateZip',&#xD;&#xA;l.Name as 'LocationName', l.Building, l.Address as 'LocationAddress', l.City as 'LocationCity', l.State as 'LocationState', l.Zip as 'LocZip', l.SignatureName, l.SignatureTitle, l.Phone, l.Fax, l.Website from PoolCandidates pc&#xD;&#xA;left join Candidates c on pc.CandidateId = c.Id&#xD;&#xA;left join pools p on pc.PoolId = p.id&#xD;&#xA;left join Locations l on p.LocationId = l.Id&#xD;&#xA;left join CandidateAddresses ca on c.id = ca.CandidateId&#xD;&#xA;where pc.Status &lt; 2&#xD;&#xA;and p.id = @PoolId&#xD;&#xA;and pc.CandidateId in (@CandidateId)" Name="Main">
       <Parameters>
         <SqlDataSourceParameter DbType="Int32" Name="@PoolId">
           <Value>
             <String>= Parameters.PoolId.Value</String>
+          </Value>
+        </SqlDataSourceParameter>
+        <SqlDataSourceParameter DbType="Int32" Name="@CandidateId">
+          <Value>
+            <String>= Parameters.CandidateId.Value</String>
           </Value>
         </SqlDataSourceParameter>
       </Parameters>
@@ -16,6 +21,15 @@
         <SqlDataSourceParameter DbType="Int32" Name="@LocationId">
           <Value>
             <String>= Parameters.LocationId.Value</String>
+          </Value>
+        </SqlDataSourceParameter>
+      </Parameters>
+    </SqlDataSource>
+    <SqlDataSource QueryDesignerState="null" ParameterValues="null" ConnectionString="JmsDb" SelectCommand="select pc.CandidateID &#xD;&#xA;from PoolCandidates pc&#xD;&#xA;left join Candidates c on pc.CandidateId = c.Id&#xD;&#xA;left join pools p on pc.PoolId = p.id&#xD;&#xA;left join Locations l on p.LocationId = l.Id&#xD;&#xA;left join CandidateAddresses ca on c.id = ca.CandidateId&#xD;&#xA;where pc.Status &lt; 2&#xD;&#xA;and p.id = @PoolId&#xD;&#xA;" Name="Candidate">
+      <Parameters>
+        <SqlDataSourceParameter DbType="Int32" Name="@PoolId">
+          <Value>
+            <String>= Parameters.PoolId.Value</String>
           </Value>
         </SqlDataSourceParameter>
       </Parameters>
@@ -62,7 +76,7 @@
     </DetailSection>
     <PageFooterSection Height="0.2in" Name="pageFooterSection1">
       <Items>
-        <TextBox Width="7.5in" Height="0.2in" Left="0in" Top="0in" Value="= &quot;Powered by Courthouse Technologies on &quot; + Today()" Name="textBox9" />
+        <TextBox Width="7.5in" Height="0.2in" Left="0in" Top="0in" Value="= &quot;Powered by Tyler Technologies on &quot; + Today()" Name="textBox9" />
       </Items>
     </PageFooterSection>
   </Items>
@@ -98,7 +112,7 @@
       </AvailableValues>
     </ReportParameter>
     <ReportParameter Name="CandidateId" Type="Integer" Text="Candidate" Visible="True" MultiValue="True">
-      <AvailableValues DataSourceName="Main" DisplayMember="=Format(&quot;{0:0000000000}&quot;, Fields.CandidateID)" ValueMember="= Fields.CandidateID">
+      <AvailableValues DataSourceName="Candidate" DisplayMember="=Format(&quot;{0:0000000000}&quot;, Fields.CandidateID)" ValueMember="= Fields.CandidateID">
         <Sortings>
           <Sorting Expression="= Fields.CandidateID" Direction="Asc" />
         </Sortings>

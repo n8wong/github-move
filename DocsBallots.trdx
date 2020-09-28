@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Report DataSourceName="Main" Width="4in" Name="ballots" xmlns="http://schemas.telerik.com/reporting/2020/2.0">
   <DataSources>
-    <SqlDataSource QueryDesignerState="null" ParameterValues="null" ConnectionString="JmsDb" SelectCommand="select cc.CandidateId, c.FirstName, c.LastName, ca.Address, ca.City, p.PoolNumber, cc.PoolOrderNumber from CaseCandidates cc&#xD;&#xA;left join Candidates c on c.id = cc.CandidateId&#xD;&#xA;left join Pools p on cc.PoolId = p.id&#xD;&#xA;left join CandidateAddresses ca on ca.CandidateId = c.Id&#xD;&#xA;left join cases on cc.CaseId = cases.Id&#xD;&#xA;where cases.id = @CaseId" Name="Main">
+    <SqlDataSource QueryDesignerState="null" ParameterValues="null" ConnectionString="JmsDb" SelectCommand="select cc.CandidateId, c.FirstName, c.LastName, ca.Address, ca.City, p.PoolNumber, cc.PoolOrderNumber from CaseCandidates cc&#xD;&#xA;left join Candidates c on c.id = cc.CandidateId&#xD;&#xA;left join Pools p on cc.PoolId = p.id&#xD;&#xA;left join CandidateAddresses ca on ca.CandidateId = c.Id&#xD;&#xA;left join cases on cc.CaseId = cases.Id&#xD;&#xA;where cases.id = @CaseId&#xD;&#xA;and cc.CandidateID in (@CandidateId)" Name="Main">
       <Parameters>
         <SqlDataSourceParameter DbType="Int32" Name="@CaseId">
           <Value>
             <String>= Parameters.CaseId.Value</String>
+          </Value>
+        </SqlDataSourceParameter>
+        <SqlDataSourceParameter DbType="Int32" Name="@CandidateId">
+          <Value>
+            <String>= Parameters.CandidateId.Value</String>
           </Value>
         </SqlDataSourceParameter>
       </Parameters>
@@ -14,6 +19,15 @@
     <SqlDataSource QueryDesignerState="null" ParameterValues="null" ConnectionString="JmsDb" SelectCommand="select c.Id, c.Name, c.StartDateTime from cases c &#xD;&#xA;inner join locations l on c.LocationId = l.id&#xD;&#xA;where l.id = @LocationId" Name="Case">
       <Parameters>
         <SqlDataSourceParameter DbType="Int32" Name="@LocationId">
+          <Value>
+            <String>= Parameters.LocationId.Value</String>
+          </Value>
+        </SqlDataSourceParameter>
+      </Parameters>
+    </SqlDataSource>
+    <SqlDataSource QueryDesignerState="null" ParameterValues="null" ConnectionString="JmsDb" SelectCommand="select cc.CandidateId&#xD;&#xA;from CaseCandidates cc&#xD;&#xA;left join Candidates c on c.id = cc.CandidateId&#xD;&#xA;left join Pools p on cc.PoolId = p.id&#xD;&#xA;left join CandidateAddresses ca on ca.CandidateId = c.Id&#xD;&#xA;left join cases on cc.CaseId = cases.Id&#xD;&#xA;where cases.id = @CaseId" Name="Candidate">
+      <Parameters>
+        <SqlDataSourceParameter DbType="Int32" Name="@CaseId">
           <Value>
             <String>= Parameters.LocationId.Value</String>
           </Value>
@@ -64,7 +78,7 @@
       </AvailableValues>
     </ReportParameter>
     <ReportParameter Name="CandidateId" Type="Integer" Text="Candidate" Visible="True" MultiValue="True">
-      <AvailableValues DataSourceName="Main" DisplayMember="= Format( &quot;{0:0000000000}&quot;,Fields.CandidateId)" ValueMember="= Fields.CandidateId">
+      <AvailableValues DataSourceName="Candidate" DisplayMember="= Format( &quot;{0:0000000000}&quot;,Fields.CandidateId)" ValueMember="= Fields.CandidateId">
         <Sortings>
           <Sorting Expression="= Fields.CandidateId" Direction="Asc" />
         </Sortings>
