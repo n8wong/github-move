@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Report DataSourceName="Main" Width="7.2in" Name="r_case_random_list" Zoom="2" xmlns="http://schemas.telerik.com/reporting/2020/2.0">
+<Report DataSourceName="Main" Width="7.2in" Name="r_case_random_list" Zoom="2" xmlns="http://schemas.telerik.com/reporting/2021/2.0">
   <DataSources>
-    <SqlDataSource QueryDesignerState="null" ParameterValues="{&quot;@CaseId&quot;:&quot;1&quot;}" ConnectionString="JmsDb" SelectCommand="/*&#xD;&#xA;random list&#xD;&#xA;&#xD;&#xA;similar to attorney list query but actually uses less fields&#xD;&#xA;&#xD;&#xA;brief case info in the header, &#xD;&#xA;selection id, pool order no, candidate id, full name, and a barcode which will need to be the 10 digit candidate ID&#xD;&#xA;&#xD;&#xA;&#xD;&#xA;*/&#xD;&#xA;&#xD;&#xA;&#xD;&#xA;SELECT cc.RandomOrder, cc.PoolOrderNumber, cc.SelectedNumber, pc.GroupNumber, pc.OrderNumber, cc.CandidateId, &#xD;&#xA;c.LastName, c.FirstName, c.MiddleName, c.Gender, ca.StartDateTime, ca.RoomId, r.Name AS RoomName, ca.JudgeId, j.Name AS JudgeName, ca.Name AS CaseName,&#xD;&#xA;cadd.Address, cadd.City, cadd.State, cadd.Zip&#xD;&#xA;from CaseCandidates cc&#xD;&#xA;INNER JOIN Candidates c ON cc.CandidateId = c.Id&#xD;&#xA;INNER JOIN Cases ca ON cc.CaseId = ca.Id&#xD;&#xA;LEFT JOIN Rooms r ON ca.RoomId = r.id&#xD;&#xA;LEFT JOIN Judges j ON ca.JudgeId = j.id&#xD;&#xA;INNER JOIN PoolCandidates pc ON cc.PoolCandidateId = pc.Id&#xD;&#xA;INNER JOIN CandidateAddresses cadd ON cadd.CandidateId = c.Id&#xD;&#xA;WHERE ca.Id = @CaseId" Name="Main">
+    <SqlDataSource QueryDesignerState="null" ParameterValues="{&quot;@CaseId&quot;:&quot;1&quot;}" ConnectionString="JmsDb" SelectCommand="/*&#xD;&#xA;random list&#xD;&#xA;&#xD;&#xA;similar to attorney list query but actually uses less fields&#xD;&#xA;&#xD;&#xA;brief case info in the header, &#xD;&#xA;selection id, pool order no, candidate id, full name, and a barcode which will need to be the 10 digit candidate ID&#xD;&#xA;&#xD;&#xA;&#xD;&#xA;*/&#xD;&#xA;&#xD;&#xA;&#xD;&#xA;SELECT cc.RandomOrder, cc.PoolOrderNumber, cc.SelectedNumber, pc.GroupNumber, pc.OrderNumber, cc.CandidateId, &#xD;&#xA;c.LastName, c.FirstName, c.MiddleName, g.Name AS Gender, ca.StartDateTime, ca.RoomId, r.Name AS RoomName, ca.JudgeId, j.Name AS JudgeName, ca.Name AS CaseName,&#xD;&#xA;cadd.Address, cadd.City, cadd.State, cadd.Zip&#xD;&#xA;from CaseCandidates cc&#xD;&#xA;INNER JOIN Candidates c ON cc.CandidateId = c.Id&#xD;&#xA;INNER JOIN Genders g ON c.GenderId = g.Id&#xD;&#xA;INNER JOIN Cases ca ON cc.CaseId = ca.Id&#xD;&#xA;LEFT JOIN Rooms r ON ca.RoomId = r.id&#xD;&#xA;LEFT JOIN Judges j ON ca.JudgeId = j.id&#xD;&#xA;INNER JOIN PoolCandidates pc ON cc.PoolCandidateId = pc.Id&#xD;&#xA;INNER JOIN CandidateAddresses cadd ON cadd.CandidateId = c.Id&#xD;&#xA;WHERE ca.Id = @CaseId" Name="Main">
       <Parameters>
         <SqlDataSourceParameter DbType="Int16" Name="@CaseId">
           <Value>
@@ -68,7 +68,7 @@
         </TextBox>
         <TextBox Width="2.1in" Height="0.3in" Left="1.6in" Top="0.248in" Value="= &quot;*&quot; + Format('{0:0000000000}',Fields.CandidateId) + &quot;*&quot;" Name="textBox15">
           <Style>
-            <Font Name="Free 3 of 9 Extended" Size="22pt" />
+            <Font Name="Microsoft Sans Serif" Size="22pt" />
           </Style>
         </TextBox>
       </Items>
