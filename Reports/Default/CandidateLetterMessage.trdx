@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Report DataSourceName="Messages" Width="17cm" Name="CandidateLetterMessage" xmlns="http://schemas.telerik.com/reporting/2021/2.0">
   <DataSources>
-    <SqlDataSource QueryDesignerState="null" ParameterValues="{&quot;@LocationId&quot;:&quot;1&quot;,&quot;@Status&quot;:&quot;0&quot;,&quot;@MessageType&quot;:&quot;-1&quot;}" ConnectionString="JmsDb" SelectCommand="SELECT l.Id AS LocationId, l.Name as LocationName&#xD;&#xA;&#x9;, l.Address, l.City, l.State, l.Zip&#xD;&#xA;&#x9;, l.Website, l.Email&#xD;&#xA;&#x9;, l.Phone, l.Fax&#xD;&#xA;&#x9;, m.CandidateId, m.Body&#xD;&#xA;FROM CandidateMessageQueueEntries q &#xD;&#xA;&#x9;INNER JOIN CandidateMessages m on q.CandidateMessageId = m.Id &#xD;&#xA;&#x9;INNER JOIN locations l on l.id = q.locationId&#xD;&#xA;WHERE l.Id = @LocationId AND q.Status = @Status AND (m.MessageType = @MessageType OR (ISNULL(@MessageType,-1) = -1 AND m.MessageType BETWEEN 5 AND 10))&#xD;&#xA;ORDER BY m.MessageType" Name="Messages">
+    <SqlDataSource QueryDesignerState="null" ParameterValues="{&quot;@LocationId&quot;:&quot;0&quot;,&quot;@Status&quot;:&quot;0&quot;,&quot;@MessageType&quot;:&quot;0&quot;}" ConnectionString="JmsDb" SelectCommand="SELECT l.Id AS LocationId, l.Name as LocationName&#xD;&#xA;&#x9;, l.Address, l.City, l.State, l.Zip&#xD;&#xA;&#x9;, l.Website, l.Email&#xD;&#xA;&#x9;, l.Phone, l.Fax&#xD;&#xA;&#x9;, m.CandidateId, q.Status, m.Body&#xD;&#xA;FROM CandidateMessageQueueEntries q &#xD;&#xA;&#x9;INNER JOIN CandidateMessages m on q.CandidateMessageId = m.Id &#xD;&#xA;&#x9;INNER JOIN locations l on l.id = q.locationId&#xD;&#xA;WHERE l.Id = @LocationId AND q.Status = @Status AND (m.MessageType = @MessageType OR (ISNULL(@MessageType,-1) = -1 AND m.MessageType BETWEEN 5 AND 10))&#xD;&#xA;ORDER BY m.MessageType" Name="Messages">
       <Parameters>
-        <SqlDataSourceParameter DbType="String" Name="@LocationId">
+        <SqlDataSourceParameter DbType="Int16" Name="@LocationId">
           <Value>
             <String>= Parameters.LocationId.Value</String>
           </Value>
         </SqlDataSourceParameter>
         <SqlDataSourceParameter DbType="String" Name="@Status">
           <Value>
-            <String>= Parameters.MessageStatus.Value</String>
+            <String>= Parameters.QueueStatus.Value</String>
           </Value>
         </SqlDataSourceParameter>
         <SqlDataSourceParameter DbType="String" Name="@MessageType">
@@ -30,9 +30,9 @@
         <DataColumn Name="Name" />
       </Columns>
     </CsvDataSource>
-    <CsvDataSource RecordSeparators="&#xD;&#xA;" FieldSeparators="," HasHeaders="True" Name="MessageStatus">
+    <CsvDataSource RecordSeparators="&#xD;&#xA;" FieldSeparators="," HasHeaders="True" Name="QueueStatus">
       <Source>
-        <String>SWQsTmFtZQ0KMCxRdWV1ZWQNCjcsU2VudA==</String>
+        <String>SWQsTmFtZQ0KMCxRdWV1ZWQNCjMsQ29tcGxldGVk</String>
       </Source>
       <Columns>
         <DataColumn Name="Id" Type="Integer" />
@@ -109,19 +109,19 @@
     <ReportParameter Name="LocationId" Type="Integer" Text="Location" Visible="True">
       <AvailableValues DataSourceName="Locations" DisplayMember="= Fields.Name" ValueMember="= Fields.Id" />
       <Value>
-        <String>= Fields.Id</String>
+        <String></String>
       </Value>
     </ReportParameter>
     <ReportParameter Name="MessageType" Type="Integer" Text="Type" Visible="True">
       <AvailableValues DataSourceName="MessageType" DisplayMember="= Fields.Name" ValueMember="= Fields.Id" />
       <Value>
-        <String>= Fields.Id</String>
+        <String></String>
       </Value>
     </ReportParameter>
-    <ReportParameter Name="MessageStatus" Type="Integer" Text="Status" Visible="True">
-      <AvailableValues DataSourceName="MessageStatus" DisplayMember="= Fields.Name" ValueMember="= Fields.Id" />
+    <ReportParameter Name="QueueStatus" Type="Integer" Text="Status" Visible="True" AllowBlank="False">
+      <AvailableValues DataSourceName="QueueStatus" DisplayMember="= Fields.Name" ValueMember="= Fields.Id" />
       <Value>
-        <String>= Fields.Id</String>
+        <String></String>
       </Value>
     </ReportParameter>
   </ReportParameters>
