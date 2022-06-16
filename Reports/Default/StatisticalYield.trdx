@@ -1,10 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Report DataSourceName="Main" Width="7in" Name="StatisticalYield" xmlns="http://schemas.telerik.com/reporting/2020/2.0">
+<Report DataSourceName="Main" Width="7in" Name="StatisticalYield" xmlns="http://schemas.telerik.com/reporting/2021/2.0">
   <Style>
     <BorderColor Default="Transparent" />
   </Style>
   <DataSources>
-    <SqlDataSource QueryDesignerState="null" ParameterValues="null" ConnectionString="JmsDb" SelectCommand="select pc.CandidateId, pc.ConfirmedBy, pc.Status, p.id, p.PoolNumber, p.SummonsDateTime, t.AttendStatus,&#xD;&#xA;case&#x9;&#xD;&#xA;&#x9;when pc.Status = 0 then 'Summoned'&#xD;&#xA;&#x9;when pc.Status = 1 then 'Selected'&#xD;&#xA;&#x9;when pc.Status = 2 then 'Confirmed'&#xD;&#xA;&#x9;when pc.Status = 3 then 'Excused'&#xD;&#xA;&#x9;when pc.Status = 4 then 'Disqualified'&#xD;&#xA;&#x9;when pc.Status = 5 then 'Deferred'&#xD;&#xA;&#x9;when pc.Status = 6 then 'Postponed'&#xD;&#xA;&#x9;when pc.Status = 7 then 'Panel'&#xD;&#xA;&#x9;when pc.Status = 8 then 'Juror'&#xD;&#xA;&#x9;when pc.Status = 9 then 'Undeliverable'&#xD;&#xA;&#x9;when pc.Status = 10 then 'Selected for Qualification'&#xD;&#xA;&#x9;when pc.Status = 11 then 'Questionnaire Sent'&#xD;&#xA;&#x9;when pc.Status = 12 then 'Questionnaire Pending Review'&#xD;&#xA;&#x9;when pc.Status = 13 then 'Qualified'&#xD;&#xA;&#x9;when pc.Status = 14 then 'Excused (Wheel)'&#xD;&#xA;&#x9;when pc.Status = 15 then 'Disqualified (Wheel)'&#x9;&#xD;&#xA;&#x9;end as 'CandidateStatus'&#xD;&#xA;from PoolCandidates pc&#xD;&#xA;left join&#xD;&#xA;&#x9;(&#xD;&#xA;&#x9;&#x9;select distinct asch.PoolCandidateId, asch.AttendStatus from AttendanceSchedules asch&#xD;&#xA;&#x9;&#x9;where asch.AttendStatus &lt;&gt; 0&#xD;&#xA;&#x9;) as t on pc.id = t.PoolCandidateId&#xD;&#xA;inner join Pools p on pc.PoolId = p.id&#xD;&#xA;" Name="Main" />
+    <SqlDataSource QueryDesignerState="null" ParameterValues="null" ConnectionString="JmsDb" SelectCommand="select pc.CandidateId, pc.ConfirmedBy, pc.Status, p.id, p.PoolNumber, p.SummonsDateTime, t.AttendStatus,&#xD;&#xA;case&#x9;&#xD;&#xA;&#x9;when pc.Status = 0 then 'Summoned'&#xD;&#xA;&#x9;when pc.Status = 1 then 'Selected'&#xD;&#xA;&#x9;when pc.Status = 2 then 'Confirmed'&#xD;&#xA;&#x9;when pc.Status = 3 then 'Excused'&#xD;&#xA;&#x9;when pc.Status = 4 then 'Disqualified'&#xD;&#xA;&#x9;when pc.Status = 5 then 'Deferred'&#xD;&#xA;&#x9;when pc.Status = 6 then 'Postponed'&#xD;&#xA;&#x9;when pc.Status = 7 then 'Panel'&#xD;&#xA;&#x9;when pc.Status = 8 then 'Juror'&#xD;&#xA;&#x9;when pc.Status = 9 then 'Undeliverable'&#xD;&#xA;&#x9;when pc.Status = 10 then 'Selected for Qualification'&#xD;&#xA;&#x9;when pc.Status = 11 then 'Questionnaire Sent'&#xD;&#xA;&#x9;when pc.Status = 12 then 'Questionnaire Pending Review'&#xD;&#xA;&#x9;when pc.Status = 13 then 'Qualified'&#xD;&#xA;&#x9;when pc.Status = 14 then 'Excused (Wheel)'&#xD;&#xA;&#x9;when pc.Status = 15 then 'Disqualified (Wheel)'&#x9;&#xD;&#xA;&#x9;end as 'CandidateStatus'&#xD;&#xA;from PoolCandidates pc&#xD;&#xA;left join&#xD;&#xA;&#x9;(&#xD;&#xA;&#x9;&#x9;select distinct asch.PoolCandidateId, asch.AttendStatus from AttendanceSchedules asch&#xD;&#xA;&#x9;&#x9;where asch.AttendStatus &lt;&gt; 0&#xD;&#xA;&#x9;) as t on pc.id = t.PoolCandidateId&#xD;&#xA;inner join Pools p on pc.PoolId = p.id&#xD;&#xA;WHERE p.SummonsDateTime BETWEEN @FromDate AND @ToDate" Name="Main">
+      <Parameters>
+        <SqlDataSourceParameter DbType="DateTime" Name="@FromDate">
+          <Value>
+            <String>= Parameters.FromDate.Value</String>
+          </Value>
+        </SqlDataSourceParameter>
+        <SqlDataSourceParameter DbType="DateTime" Name="@ToDate">
+          <Value>
+            <String>= Parameters.ToDate.Value</String>
+          </Value>
+        </SqlDataSourceParameter>
+      </Parameters>
+    </SqlDataSource>
   </DataSources>
   <Items>
     <PageHeaderSection Height="1.2in" Name="pageHeaderSection1">
@@ -19,13 +32,13 @@
             <Font Bold="True" />
           </Style>
         </TextBox>
-        <TextBox Width="1.2in" Height="0.2in" Left="1.7in" Top="0.8in" Value="" Name="textBox3" />
+        <TextBox Width="1.2in" Height="0.2in" Left="1.7in" Top="0.8in" Value="= Parameters.FromDate.Value" Name="textBox3" />
         <TextBox Width="1.2in" Height="0.2in" Left="4.1in" Top="0.8in" Value="To Date: " Name="textBox5">
           <Style>
             <Font Bold="True" />
           </Style>
         </TextBox>
-        <TextBox Width="1.2in" Height="0.2in" Left="5.3in" Top="0.8in" Value="" Name="textBox4" />
+        <TextBox Width="1.2in" Height="0.2in" Left="5.3in" Top="0.8in" Value="= Parameters.ToDate.Value" Name="textBox4" />
       </Items>
     </PageHeaderSection>
     <DetailSection Height="0.2in" Name="detailSection1">
@@ -94,7 +107,7 @@
             </BarSeries>
           </Series>
           <Titles>
-            <GraphTitle Text="graph1" Position="TopCenter">
+            <GraphTitle Text="" Position="TopCenter">
               <Style LineWidth="0in" LineColor="LightGray" />
             </GraphTitle>
           </Titles>
@@ -276,4 +289,8 @@
       </Selectors>
     </StyleRule>
   </StyleSheet>
+  <ReportParameters>
+    <ReportParameter Name="FromDate" Type="DateTime" Text="From Date" Visible="True" />
+    <ReportParameter Name="ToDate" Type="DateTime" Text="To Date" Visible="True" />
+  </ReportParameters>
 </Report>
