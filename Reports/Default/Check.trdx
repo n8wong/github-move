@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Report DataSourceName="CheckPayments" Width="6.5in" Name="Check" xmlns="http://schemas.telerik.com/reporting/2020/2.0">
+<Report DataSourceName="CheckPayments" Width="6.5in" Name="Check" xmlns="http://schemas.telerik.com/reporting/2021/2.0">
   <DataSources>
     <SqlDataSource QueryDesignerState="null" ParameterValues="{&quot;@AuditId&quot;:&quot;1&quot;,&quot;@CheckNumber&quot;:&quot;1&quot;}" ConnectionString="JmsDb" SelectCommand="SELECT a.Id AS AuditId, r.CheckNumber&#xD;&#xA;, REPLACE(c.FirstName + ' ' + c.MiddleName + ' ' + c.LastName, ' ', ' ') AS FullName&#xD;&#xA;, r.Amount, a.CreatedDateTimeUtc&#xD;&#xA;FROM PaymentAudits a&#xD;&#xA;INNER JOIN PaymentRegisterEntries AS r ON a.Id = r.PaymentAuditId&#xD;&#xA;INNER JOIN Candidates AS c ON r.CandidateId = c.Id&#xD;&#xA;WHERE a.Id = @AuditId AND r.CheckNumber = @CheckNumber AND r.Amount - r.DonationAmount &gt; 0" Name="CheckPayments">
       <Parameters>
@@ -92,11 +92,11 @@
     </Group>
   </Groups>
   <ReportParameters>
-    <ReportParameter Name="AuditId" Type="Integer" Text="Audit" Visible="True">
+    <ReportParameter Name="AuditId" Type="Integer" Text="Audit #" Visible="True">
       <Value>
-        <String>11</String>
+        <String></String>
       </Value>
     </ReportParameter>
-    <ReportParameter Name="CheckNumber" Type="Integer" Text="Check" Visible="True" />
+    <ReportParameter Name="CheckNumber" Type="Integer" Text="Check #" Visible="True" />
   </ReportParameters>
 </Report>
